@@ -11,6 +11,8 @@
   "scripts": {
     "dev": "turbo run dev",
     "build": "turbo run build",
+    "build:web": "turbo run build --filter=web",
+    "build:docs": "turbo run build --filter=docs",
     "test": "playwright test",
     "test:e2e": "playwright test tests/e2e",
     "test:visual": "playwright test tests/visual",
