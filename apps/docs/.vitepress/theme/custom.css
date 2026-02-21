@@ -1,0 +1,58 @@
+:root {
+  --color-bg-primary: #0A0A0A;
+  --color-bg-secondary: #1C1C1C;
+  --color-bg-tertiary: #2A2A2A;
+  --color-text-primary: #F2F2F2;
+  --color-text-muted: #A3A3A3;
+  --color-accent: #1E3A8A;
+
+  --font-heading: 'IBM Plex Serif', Georgia, serif;
+  --font-body: Inter, -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  background-color: var(--color-bg-primary);
+  color: var(--color-text-primary);
+  font-family: var(--font-body);
+}
+
+.VPNav, .VPSidebar, .VPFooter {
+  background-color: var(--color-bg-primary) !important;
+}
+
+.VPNavBar {
+  background-color: var(--color-bg-secondary) !important;
+  border-bottom: 1px solid var(--color-bg-tertiary) !important;
+}
+
+.VPSidebar {
+  background-color: var(--color-bg-secondary) !important;
+  border-right: 1px solid var(--color-bg-tertiary) !important;
+}
+
+.VPContent {
+  background-color: var(--color-bg-primary);
+}
+
+a {
+  color: var(--color-accent);
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-heading);
+  color: var(--color-text-primary);
+}
+
+.VPButton {
+  background-color: var(--color-accent) !important;
+  border: none !important;
+}
+
+.VPLink.active .link-text {
+  color: var(--color-accent) !important;
+}

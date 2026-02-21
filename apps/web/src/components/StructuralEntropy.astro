@@ -1,0 +1,69 @@
+---
+import { getLangFromUrl, useTranslations } from '../i18n/utils';
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+---
+
+<section class="section">
+  <div class="container">
+    <h2>{t('structuralEntropy.title')}</h2>
+    <p class="definition">{t('structuralEntropy.definition')}</p>
+    
+    <div class="manifestation">
+      <p>{t('structuralEntropy.manifestationTitle')}</p>
+      <ul>
+        <li>{t('structuralEntropy.m1')}</li>
+        <li>{t('structuralEntropy.m2')}</li>
+        <li>{t('structuralEntropy.m3')}</li>
+        <li>{t('structuralEntropy.m4')}</li>
+      </ul>
+      <p>{t('structuralEntropy.cumulative')}</p>
+    </div>
+    
+    <p class="positioning">{t('structuralEntropy.positioning')}</p>
+  </div>
+</section>
+
+<style>
+  .section {
+    padding-top: var(--spacing-section);
+    padding-bottom: var(--spacing-section);
+  }
+
+  h2 {
+    font-family: var(--font-heading);
+    font-size: var(--text-h2);
+    font-weight: var(--weight-heading);
+    margin-bottom: var(--spacing-element);
+  }
+
+  .definition {
+    font-weight: var(--weight-heading);
+    margin-bottom: var(--spacing-block);
+    max-width: 720px;
+  }
+
+  .manifestation {
+    margin-bottom: var(--spacing-block);
+    max-width: 720px;
+  }
+
+  .manifestation ul {
+    list-style: none;
+    padding: 0;
+    margin: var(--spacing-element) 0;
+  }
+
+  .manifestation li {
+    padding: var(--spacing-tight) 0;
+    padding-left: var(--spacing-element);
+    border-left: 2px solid var(--color-text-muted);
+    margin-bottom: var(--spacing-tight);
+  }
+
+  .positioning {
+    font-weight: var(--weight-heading);
+    max-width: 720px;
+  }
+</style>

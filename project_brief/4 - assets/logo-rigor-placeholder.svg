@@ -1,0 +1,18 @@
+<svg width="200" height="60" xmlns="http://www.w3.org/2000/svg">
+  <!-- Containment box (optional variant) -->
+  <rect x="10" y="10" width="180" height="40" fill="none" stroke="#F2F2F2" stroke-width="1"/>
+  
+  <!-- Wordmark: RIGOR -->
+  <text 
+    x="100" 
+    y="40" 
+    font-family="serif" 
+    font-size="24" 
+    font-weight="600" 
+    fill="#F2F2F2" 
+    text-anchor="middle"
+    letter-spacing="3.2"
+  >
+    RIGOR
+  </text>
+</svg>

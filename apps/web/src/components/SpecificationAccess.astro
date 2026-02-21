@@ -1,0 +1,67 @@
+---
+import { getLangFromUrl, useTranslations } from '../i18n/utils';
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+---
+
+<section class="section">
+  <div class="container">
+    <h2>{t('specificationAccess.title')}</h2>
+    <p class="body-text">{t('specificationAccess.body')}</p>
+    
+    <div class="links">
+      <a href="https://docs.rigor.dev" class="cta">{t('specificationAccess.cta')}</a>
+      <a href="https://github.com/rigor" class="secondary-link">{t('specificationAccess.secondary')}</a>
+    </div>
+  </div>
+</section>
+
+<style>
+  .section {
+    padding-top: var(--spacing-section);
+    padding-bottom: var(--spacing-section);
+  }
+
+  h2 {
+    font-family: var(--font-heading);
+    font-size: var(--text-h2);
+    font-weight: var(--weight-heading);
+    margin-bottom: var(--spacing-element);
+  }
+
+  .body-text {
+    margin-bottom: var(--spacing-element);
+    max-width: 720px;
+  }
+
+  .links {
+    display: flex;
+    gap: var(--spacing-block);
+    flex-wrap: wrap;
+  }
+
+  .cta {
+    color: var(--color-text-primary);
+    text-decoration: none;
+    border-bottom: 1px solid var(--color-accent);
+    padding-bottom: 2px;
+    transition: opacity 150ms linear;
+  }
+
+  .cta:hover {
+    opacity: 0.8;
+  }
+
+  .secondary-link {
+    color: var(--color-text-muted);
+    text-decoration: none;
+    border-bottom: 1px solid var(--color-text-muted);
+    padding-bottom: 2px;
+    transition: opacity 150ms linear;
+  }
+
+  .secondary-link:hover {
+    opacity: 0.8;
+  }
+</style>

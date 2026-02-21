@@ -1,0 +1,11 @@
+{
+  "name": "design-tokens",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "main": "index.js",
+  "exports": {
+    "./tailwind.config": "./tailwind.config.js",
+    "./variables.css": "./css/variables.css"
+  }
+}

@@ -1,0 +1,95 @@
+---
+import { getLangFromUrl, useTranslations } from '../i18n/utils';
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+---
+
+<section class="section">
+  <div class="container">
+    <h2>{t('protocolVsPrompt.title')}</h2>
+    
+    <div class="table-container">
+      <table>
+        <thead>
+          <tr>
+            <th>{t('protocolVsPrompt.table.head.aspect')}</th>
+            <th>{t('protocolVsPrompt.table.head.prompt')}</th>
+            <th>{t('protocolVsPrompt.table.head.protocol')}</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>{t('protocolVsPrompt.table.approach')}</strong></td>
+            <td>{t('protocolVsPrompt.table.approach.prompt')}</td>
+            <td>{t('protocolVsPrompt.table.approach.protocol')}</td>
+          </tr>
+          <tr>
+            <td><strong>{t('protocolVsPrompt.table.method')}</strong></td>
+            <td>{t('protocolVsPrompt.table.method.prompt')}</td>
+            <td>{t('protocolVsPrompt.table.method.protocol')}</td>
+          </tr>
+          <tr>
+            <td><strong>{t('protocolVsPrompt.table.control')}</strong></td>
+            <td>{t('protocolVsPrompt.table.control.prompt')}</td>
+            <td>{t('protocolVsPrompt.table.control.protocol')}</td>
+          </tr>
+          <tr>
+            <td><strong>{t('protocolVsPrompt.table.validation')}</strong></td>
+            <td>{t('protocolVsPrompt.table.validation.prompt')}</td>
+            <td>{t('protocolVsPrompt.table.validation.protocol')}</td>
+          </tr>
+          <tr>
+            <td><strong>{t('protocolVsPrompt.table.output')}</strong></td>
+            <td>{t('protocolVsPrompt.table.output.prompt')}</td>
+            <td>{t('protocolVsPrompt.table.output.protocol')}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    
+    <p class="distinction-statement">{t('protocolVsPrompt.statement')}</p>
+  </div>
+</section>
+
+<style>
+  .section {
+    padding-top: var(--spacing-section);
+    padding-bottom: var(--spacing-section);
+  }
+
+  h2 {
+    font-family: var(--font-heading);
+    font-size: var(--text-h2);
+    font-weight: var(--weight-heading);
+    margin-bottom: var(--spacing-block);
+  }
+
+  .table-container {
+    overflow-x: auto;
+    margin-bottom: var(--spacing-block);
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: var(--text-caption);
+  }
+
+  th, td {
+    padding: var(--spacing-element);
+    text-align: left;
+    border: 1px solid var(--color-bg-tertiary);
+  }
+
+  th {
+    font-family: var(--font-heading);
+    font-weight: var(--weight-heading);
+    background-color: var(--color-bg-secondary);
+  }
+
+  .distinction-statement {
+    font-weight: var(--weight-heading);
+    max-width: 720px;
+  }
+</style>

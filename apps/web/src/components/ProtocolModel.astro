@@ -1,0 +1,124 @@
+---
+import { getLangFromUrl, useTranslations } from '../i18n/utils';
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+---
+
+<section class="section">
+  <div class="container">
+    <h2>{t('protocolModel.title')}</h2>
+    
+    <div class="diagram-container">
+      <h3>{t('protocolModel.diagramTitle')}</h3>
+      <p class="diagram-description">{t('protocolModel.diagramDescription')}</p>
+      
+      <div class="diagram">
+        <svg viewBox="0 0 400 320" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect x="100" y="10" width="200" height="36" stroke="#F2F2F2" stroke-width="1.5"/>
+          <text x="200" y="33" fill="#F2F2F2" font-family="Inter, sans-serif" font-size="12" text-anchor="middle">{t('protocolModel.flow.humanIntent')}</text>
+          
+          <path d="M200 46 L200 64" stroke="#F2F2F2" stroke-width="1"/>
+          <polygon points="200,64 196,58 204,58" fill="#F2F2F2"/>
+          
+          <rect x="80" y="68" width="240" height="36" stroke="#1E3A8A" stroke-width="1.5"/>
+          <text x="200" y="91" fill="#F2F2F2" font-family="Inter, sans-serif" font-size="12" text-anchor="middle">{t('protocolModel.flow.specification')}</text>
+          
+          <path d="M200 104 L200 122" stroke="#F2F2F2" stroke-width="1"/>
+          <polygon points="200,122 196,116 204,116" fill="#F2F2F2"/>
+          
+          <rect x="120" y="126" width="160" height="36" stroke="#F2F2F2" stroke-width="1.5"/>
+          <text x="200" y="149" fill="#F2F2F2" font-family="Inter, sans-serif" font-size="12" text-anchor="middle">{t('protocolModel.flow.generation')}</text>
+          
+          <path d="M200 162 L200 180" stroke="#F2F2F2" stroke-width="1"/>
+          <polygon points="200,180 196,174 204,174" fill="#F2F2F2"/>
+          
+          <rect x="100" y="184" width="200" height="36" stroke="#1E3A8A" stroke-width="1.5"/>
+          <text x="200" y="207" fill="#F2F2F2" font-family="Inter, sans-serif" font-size="12" text-anchor="middle">{t('protocolModel.flow.validation')}</text>
+          
+          <path d="M200 220 L200 238" stroke="#F2F2F2" stroke-width="1"/>
+          <polygon points="200,238 196,232 204,232" fill="#F2F2F2"/>
+          
+          <rect x="120" y="242" width="160" height="36" stroke="#F2F2F2" stroke-width="1.5"/>
+          <text x="200" y="265" fill="#F2F2F2" font-family="Inter, sans-serif" font-size="12" text-anchor="middle">{t('protocolModel.flow.execution')}</text>
+        </svg>
+      </div>
+    </div>
+    
+    <div class="component-list">
+      <p>{t('protocolModel.componentsTitle')}</p>
+      <ul>
+        <li><strong>Intent Domain</strong> — {lang === 'en' ? 'Defines the formally allowed structural space.' : 'Define el espacio estructural formalmente permitido.'}</li>
+        <li><strong>Constraint Contract</strong> — {lang === 'en' ? 'Machine-verifiable specification instance.' : 'Instancia de especificación verificable por máquina.'}</li>
+        <li><strong>Generation Boundary</strong> — {lang === 'en' ? 'Interface between AI output and validation.' : 'Interfaz entre salida de IA y validación.'}</li>
+        <li><strong>Validation Engine</strong> — {lang === 'en' ? 'Evaluates structural compliance.' : 'Evalúa el cumplimiento estructural.'}</li>
+        <li><strong>Evolution Layer</strong> — {lang === 'en' ? 'Classifies all structural changes.' : 'Clasifica todos los cambios estructurales.'}</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<style>
+  .section {
+    padding-top: var(--spacing-section);
+    padding-bottom: var(--spacing-section);
+  }
+
+  h2 {
+    font-family: var(--font-heading);
+    font-size: var(--text-h2);
+    font-weight: var(--weight-heading);
+    margin-bottom: var(--spacing-block);
+  }
+
+  h3 {
+    font-family: var(--font-heading);
+    font-size: var(--text-h3);
+    font-weight: var(--weight-heading);
+    margin-bottom: var(--spacing-tight);
+  }
+
+  .diagram-container {
+    margin-bottom: var(--spacing-block);
+  }
+
+  .diagram-description {
+    color: var(--color-text-muted);
+    font-size: var(--text-caption);
+    margin-bottom: var(--spacing-element);
+  }
+
+  .diagram {
+    padding: var(--spacing-block);
+    background-color: var(--color-bg-secondary);
+    border: 1.5px solid var(--color-text-primary);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .diagram svg {
+    max-width: 100%;
+    height: auto;
+  }
+
+  .component-list ul {
+    list-style: none;
+    padding: 0;
+  }
+
+  .component-list li {
+    margin-bottom: var(--spacing-element);
+    padding-left: var(--spacing-element);
+    border-left: 2px solid var(--color-accent);
+  }
+
+  .component-list strong {
+    font-weight: var(--weight-heading);
+  }
+
+  p {
+    margin-bottom: var(--spacing-element);
+    max-width: 720px;
+  }
+</style>

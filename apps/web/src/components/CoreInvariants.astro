@@ -1,0 +1,81 @@
+---
+import { getLangFromUrl, useTranslations } from '../i18n/utils';
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+---
+
+<section class="section">
+  <div class="container">
+    <h2>{t('coreInvariants.title')}</h2>
+    <p class="intro">{t('coreInvariants.intro')}</p>
+    
+    <div class="invariants">
+      <div class="invariant">
+        <h3>{t('coreInvariants.1.title')}</h3>
+        <p>{t('coreInvariants.1.description')}</p>
+      </div>
+      
+      <div class="invariant">
+        <h3>{t('coreInvariants.2.title')}</h3>
+        <p>{t('coreInvariants.2.description')}</p>
+      </div>
+      
+      <div class="invariant">
+        <h3>{t('coreInvariants.3.title')}</h3>
+        <p>{t('coreInvariants.3.description')}</p>
+      </div>
+      
+      <div class="invariant">
+        <h3>{t('coreInvariants.4.title')}</h3>
+        <p>{t('coreInvariants.4.description')}</p>
+      </div>
+      
+      <div class="invariant">
+        <h3>{t('coreInvariants.5.title')}</h3>
+        <p>{t('coreInvariants.5.description')}</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .section {
+    padding-top: var(--spacing-section);
+    padding-bottom: var(--spacing-section);
+  }
+
+  h2 {
+    font-family: var(--font-heading);
+    font-size: var(--text-h2);
+    font-weight: var(--weight-heading);
+    margin-bottom: var(--spacing-element);
+  }
+
+  .intro {
+    margin-bottom: var(--spacing-block);
+    max-width: 720px;
+  }
+
+  .invariants {
+    display: grid;
+    gap: var(--spacing-block);
+    max-width: 720px;
+  }
+
+  .invariant {
+    padding: var(--spacing-element);
+    border-left: 2px solid var(--color-accent);
+  }
+
+  .invariant h3 {
+    font-family: var(--font-heading);
+    font-size: var(--text-h3);
+    font-weight: var(--weight-heading);
+    margin-bottom: var(--spacing-tight);
+  }
+
+  .invariant p {
+    margin-bottom: 0;
+  }
+</style>

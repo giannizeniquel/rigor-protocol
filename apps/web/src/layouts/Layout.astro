@@ -1,0 +1,50 @@
+---
+import { getLangFromUrl } from '../i18n/utils';
+
+interface Props {
+  title: string;
+  description?: string;
+}
+
+const { title, description } = Astro.props;
+const lang = getLangFromUrl(Astro.url);
+const t = await import('../i18n/ui').then(m => m.ui[lang as keyof typeof m.ui] || m.ui.en);
+---
+
+<!DOCTYPE html>
+<html lang={lang}>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content={description || t['hero.tertiary']} />
+    <meta name="generator" content={Astro.generator} />
+    
+    <link rel="canonical" href={`https://rigor.dev${lang === 'en' ? '' : '/' + lang}`} />
+    <link rel="alternate" hreflang="en" href="https://rigor.dev/" />
+    <link rel="alternate" hreflang="es" href="https://rigor.dev/es/" />
+    
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description || t['hero.tertiary']} />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={`https://rigor.dev${lang === 'en' ? '' : '/' + lang}`} />
+    
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description || t['hero.tertiary']} />
+    
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Serif:wght@400;600&family=Inter:wght@400;500&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet" />
+    
+    <title>{title}</title>
+  </head>
+  <body>
+    <slot />
+  </body>
+</html>
+
+<style is:global>
+  @import '../../../../packages/design-tokens/css/variables.css';
+</style>

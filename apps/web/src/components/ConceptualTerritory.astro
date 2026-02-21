@@ -1,0 +1,61 @@
+---
+import { getLangFromUrl, useTranslations } from '../i18n/utils';
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+---
+
+<section class="section">
+  <div class="container">
+    <h2>{t('conceptualTerritory.title')}</h2>
+    <p class="intro">{t('conceptualTerritory.intro')}</p>
+    
+    <ul class="territory-list">
+      <li>{t('conceptualTerritory.list.1')}</li>
+      <li>{t('conceptualTerritory.list.2')}</li>
+      <li>{t('conceptualTerritory.list.3')}</li>
+      <li>{t('conceptualTerritory.list.4')}</li>
+      <li>{t('conceptualTerritory.list.5')}</li>
+    </ul>
+    
+    <p class="closing">{t('conceptualTerritory.closing')}</p>
+  </div>
+</section>
+
+<style>
+  .section {
+    padding-top: var(--spacing-section);
+    padding-bottom: var(--spacing-section);
+  }
+
+  h2 {
+    font-family: var(--font-heading);
+    font-size: var(--text-h2);
+    font-weight: var(--weight-heading);
+    margin-bottom: var(--spacing-element);
+  }
+
+  .intro {
+    margin-bottom: var(--spacing-element);
+    max-width: 720px;
+  }
+
+  .territory-list {
+    list-style: none;
+    padding: 0;
+    margin-bottom: var(--spacing-block);
+    max-width: 720px;
+  }
+
+  .territory-list li {
+    padding: var(--spacing-tight) 0;
+    padding-left: var(--spacing-element);
+    border-left: 2px solid var(--color-accent);
+    margin-bottom: var(--spacing-tight);
+  }
+
+  .closing {
+    font-weight: var(--weight-heading);
+    max-width: 720px;
+  }
+</style>

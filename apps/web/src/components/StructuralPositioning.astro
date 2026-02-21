@@ -1,0 +1,100 @@
+---
+import { getLangFromUrl, useTranslations } from '../i18n/utils';
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+---
+
+<section class="section">
+  <div class="container">
+    <h2>{t('structuralPositioning.title')}</h2>
+    <p class="intro">{t('structuralPositioning.intro')}</p>
+    
+    <div class="table-container">
+      <table>
+        <thead>
+          <tr>
+            <th>{t('structuralPositioning.table.head.system')}</th>
+            <th>{t('structuralPositioning.table.head.whatItDoes')}</th>
+            <th>{t('structuralPositioning.table.head.rigorDoes')}</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>{t('structuralPositioning.table.workflow.name')}</strong><br/>{t('structuralPositioning.table.workflow.alt')}</td>
+            <td>{t('structuralPositioning.table.workflow.what')}</td>
+            <td>{t('structuralPositioning.table.workflow.rigor')}</td>
+          </tr>
+          <tr>
+            <td><strong>{t('structuralPositioning.table.iac.name')}</strong><br/>{t('structuralPositioning.table.iac.alt')}</td>
+            <td>{t('structuralPositioning.table.iac.what')}</td>
+            <td>{t('structuralPositioning.table.iac.rigor')}</td>
+          </tr>
+          <tr>
+            <td><strong>{t('structuralPositioning.table.static.name')}</strong><br/>{t('structuralPositioning.table.static.alt')}</td>
+            <td>{t('structuralPositioning.table.static.what')}</td>
+            <td>{t('structuralPositioning.table.static.rigor')}</td>
+          </tr>
+          <tr>
+            <td><strong>{t('structuralPositioning.table.dsl.name')}</strong></td>
+            <td>{t('structuralPositioning.table.dsl.what')}</td>
+            <td>{t('structuralPositioning.table.dsl.rigor')}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    
+    <p class="positioning-statement">{t('structuralPositioning.statement')}</p>
+  </div>
+</section>
+
+<style>
+  .section {
+    padding-top: var(--spacing-section);
+    padding-bottom: var(--spacing-section);
+  }
+
+  h2 {
+    font-family: var(--font-heading);
+    font-size: var(--text-h2);
+    font-weight: var(--weight-heading);
+    margin-bottom: var(--spacing-element);
+  }
+
+  .intro {
+    margin-bottom: var(--spacing-block);
+    max-width: 720px;
+  }
+
+  .table-container {
+    overflow-x: auto;
+    margin-bottom: var(--spacing-block);
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: var(--text-caption);
+  }
+
+  th, td {
+    padding: var(--spacing-element);
+    text-align: left;
+    border: 1px solid var(--color-bg-tertiary);
+  }
+
+  th {
+    font-family: var(--font-heading);
+    font-weight: var(--weight-heading);
+    background-color: var(--color-bg-secondary);
+  }
+
+  td {
+    vertical-align: top;
+  }
+
+  .positioning-statement {
+    font-weight: var(--weight-heading);
+    max-width: 720px;
+  }
+</style>

@@ -1,0 +1,30 @@
+{
+  "name": "rigor-monorepo",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "packageManager": "npm@10.0.0",
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "dev": "turbo run dev",
+    "build": "turbo run build",
+    "test": "playwright test",
+    "test:e2e": "playwright test tests/e2e",
+    "test:visual": "playwright test tests/visual",
+    "test:accessibility": "playwright test tests/accessibility",
+    "test:visual:update": "playwright test tests/visual --update-snapshots",
+    "lighthouse": "lighthouse http://localhost:4321 --output json --output html --output-path ./lighthouse-report.html",
+    "lighthouse:ci": "lhci autorun"
+  },
+  "devDependencies": {
+    "@axe-core/playwright": "^4.11.1",
+    "@playwright/test": "^1.58.2",
+    "axe-core": "^4.11.1",
+    "lighthouse": "^12.8.2",
+    "playwright": "^1.58.2",
+    "turbo": "^2.8.9"
+  }
+}
