@@ -20,14 +20,14 @@ const t = await import('../i18n/ui').then(m => m.ui[lang as keyof typeof m.ui] |
     <meta name="description" content={description || t['hero.tertiary']} />
     <meta name="generator" content={Astro.generator} />
     
-    <link rel="canonical" href={`https://rigor.dev${lang === 'en' ? '' : '/' + lang}`} />
-    <link rel="alternate" hreflang="en" href="https://rigor.dev/" />
-    <link rel="alternate" hreflang="es" href="https://rigor.dev/es/" />
+    <link rel="canonical" href={`https://rigor-protocol.pages.dev${lang === 'en' ? '' : '/' + lang}`} />
+    <link rel="alternate" hreflang="en" href="https://rigor-protocol.pages.dev/" />
+    <link rel="alternate" hreflang="es" href="https://rigor-protocol.pages.dev/es/" />
     
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description || t['hero.tertiary']} />
     <meta property="og:type" content="website" />
-    <meta property="og:url" content={`https://rigor.dev${lang === 'en' ? '' : '/' + lang}`} />
+    <meta property="og:url" content={`https://rigor-protocol.pages.dev${lang === 'en' ? '' : '/' + lang}`} />
     
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content={title} />
