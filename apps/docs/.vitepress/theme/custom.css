@@ -6,8 +6,8 @@
   --color-text-muted: #A3A3A3;
   --color-accent: #1E3A8A;
 
-  --font-heading: 'IBM Plex Serif', Georgia, serif;
-  --font-body: Inter, -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-heading: 'Space Grotesk', sans-serif;
+  --font-body: 'IBM Plex Sans', Inter, -apple-system, BlinkMacSystemFont, sans-serif;
   --font-mono: 'JetBrains Mono', monospace;
 }
 
