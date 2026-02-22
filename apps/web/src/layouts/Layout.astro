@@ -1,5 +1,6 @@
 ---
 import { getLangFromUrl } from '../i18n/utils';
+import Header from '../components/Header.astro';
 
 interface Props {
   title: string;
@@ -41,10 +42,17 @@ const t = await import('../i18n/ui').then(m => m.ui[lang as keyof typeof m.ui] |
     <title>{title}</title>
   </head>
   <body>
-    <slot />
+    <Header />
+    <main>
+      <slot />
+    </main>
   </body>
 </html>
 
 <style is:global>
   @import '../../../../packages/design-tokens/css/variables.css';
+  
+  body {
+    padding-top: 70px;
+  }
 </style>
