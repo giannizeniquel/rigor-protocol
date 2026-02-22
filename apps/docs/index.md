@@ -2,4 +2,4 @@
 
 AI Constraint Protocol — Formal boundaries for AI-generated systems.
 
-[Go to Landing →](https://rigor.dev)
+[Go to Landing →](https://rigor-protocol.pages.dev)

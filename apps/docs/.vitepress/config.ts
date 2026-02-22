@@ -24,7 +24,7 @@ export default defineConfig({
         nav: [
           { 
             text: 'rigor.dev', 
-            link: 'https://rigor.dev' 
+            link: 'https://rigor-protocol.pages.dev' 
           },
           { 
             text: 'Specification', 
@@ -122,7 +122,7 @@ export default defineConfig({
         socialLinks: [
           { 
             icon: 'github', 
-            link: 'https://github.com/rigor' 
+            link: 'https://github.com/giannizeniquel/rigor-protocol' 
           }
         ],
         
@@ -144,7 +144,7 @@ export default defineConfig({
         nav: [
           { 
             text: 'rigor.dev', 
-            link: 'https://rigor.dev/es/' 
+            link: 'https://rigor-protocol.pages.dev/es/' 
           },
           { 
             text: 'Especificación', 
@@ -242,7 +242,7 @@ export default defineConfig({
         socialLinks: [
           { 
             icon: 'github', 
-            link: 'https://github.com/rigor' 
+            link: 'https://github.com/giannizeniquel/rigor-protocol' 
           }
         ],
         
