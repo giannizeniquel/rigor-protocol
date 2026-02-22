@@ -35,14 +35,18 @@ body {
   align-items: center;
 }
 
-.VPNavBarTitle.has-sidebar .title {
+.VPNavBarTitle .title {
+  display: flex;
+  align-items: center;
+}
+
+.VPNavBarTitle .title span {
   display: none;
 }
 
-.VPNavBarTitle.has-sidebar img,
-.VPNavBarTitle.has-sidebar svg {
-  height: 32px;
-  width: auto;
+.VPNavBarTitle .title img {
+  height: 63px !important;
+  width: auto !important;
 }
 
 .VPSidebar {
