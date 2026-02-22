@@ -5,6 +5,10 @@ export default defineConfig({
   description: 'AI Constraint Protocol — Normative Specification',
   appearance: 'dark',
 
+  head: [
+    ['link', { rel: 'icon', type: 'image/svg+xml', href: '/favicon.svg' }]
+  ],
+
   locales: {
     root: {
       label: 'English',
