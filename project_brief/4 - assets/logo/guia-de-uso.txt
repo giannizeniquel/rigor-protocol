@@ -1,0 +1,23 @@
+Guía de Uso
+Variantes
+Default: Logo animado con efectos hover
+Minimal: Versión limpia y simple
+Bold: Brackets rellenos con acento estructural
+Tamaños
+sm: Pequeño (text-3xl)
+md: Mediano (text-5xl)
+lg: Grande (text-7xl)
+xl: Extra grande (text-8xl)
+Elemento Distintivo
+La letra "O" está representada por dos corchetes [ ] que simbolizan precisión, estructura y rigor técnico.
+
+Tipografía
+Font: Space Grotesk - Una tipografía geométrica moderna que combina precisión técnica con claridad institucional.
+
+Sistema de Color
+Deep Black: #0A0A0A (fondo principal)
+Structural Gray: #1C1C1C (superficie secundaria)
+Technical Gray: #2A2A2A (superficie terciaria)
+Controlled White: #F2F2F2 (texto principal)
+Muted Gray: #A3A3A3 (texto muted)
+Deep Blue: #1E3A8A (acento estructural singular)

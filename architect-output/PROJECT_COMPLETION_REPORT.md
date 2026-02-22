@@ -21,10 +21,16 @@
 - Restauración de "Precisión Quirúrgica" en especificaciones técnicas (Reference, Core, Events, CLI).
 - **Logro Clave:** Traducción técnica completa al español manteniendo la integridad normativa.
 
-### ✅ Fase 4: Organización y Publicación
+### ✅ Fase 4: Identidad Visual v1 (Branding & Typography)
+- Implementación de logos oficiales v1.1 (Space Grotesk + Brackets `[ ]`).
+- Sistema de iconos y favicon unificado (Landing + Docs).
+- Configuración de tipografía híbrida: Space Grotesk (Landing/Brand) + IBM Plex Sans (Docs/Content).
+
+### ✅ Fase 5: Organización, Publicación y Despliegue
 - Estructura Monorepo limpia con Turborepo.
 - Higiene de Git (`.gitignore` exhaustivo).
 - Inicialización de repositorio y publicación en GitHub.
+- **Despliegue Exitoso:** Hosting en Cloudflare Pages para `rigor.dev` y `docs.rigor.dev`.
 
 ---
 
@@ -33,9 +39,12 @@ El proyecto se encuentra en un estado estable `v1.1`.
 - **Ramas:** `main` (Producción).
 - **Cobertura:** Landing + Docs + Design System.
 - **Idiomas:** EN / ES.
+- **URLs:**
+  - Landing: https://rigor-protocol.pages.dev
+  - Docs: https://rigor-docs.pages.dev
 
 ## 3. Próximos Pasos Recomendados (Post-Lanzamiento)
-1. **CI/CD:** Configurar GitHub Actions para deploy automático de `apps/web` y `apps/docs`.
+1. **Dominios:** Conectar `rigor.dev` y `docs.rigor.dev` en el panel de Cloudflare.
 2. **Community:** Crear templates de issues en GitHub para propuestas de cambios (RFCs).
 3. **Release:** Etiquetar la versión `v0.1.0` en GitHub Releases.
 

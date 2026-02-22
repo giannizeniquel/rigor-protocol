@@ -5,6 +5,13 @@ export default defineConfig({
   description: 'AI Constraint Protocol — Normative Specification',
   appearance: 'dark',
 
+  head: [
+    ['link', { rel: 'icon', type: 'image/svg+xml', href: '/favicon.svg' }],
+    ['link', { rel: 'preconnect', href: 'https://fonts.googleapis.com' }],
+    ['link', { rel: 'preconnect', href: 'https://fonts.gstatic.com', crossorigin: '' }],
+    ['link', { rel: 'stylesheet', href: 'https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400&family=Space+Grotesk:wght@400;600&display=swap' }]
+  ],
+
   locales: {
     root: {
       label: 'English',
@@ -17,7 +24,7 @@ export default defineConfig({
         nav: [
           { 
             text: 'rigor.dev', 
-            link: 'https://rigor.dev' 
+            link: 'https://rigor-protocol.pages.dev' 
           },
           { 
             text: 'Specification', 
@@ -115,7 +122,7 @@ export default defineConfig({
         socialLinks: [
           { 
             icon: 'github', 
-            link: 'https://github.com/rigor' 
+            link: 'https://github.com/giannizeniquel/rigor-protocol' 
           }
         ],
         
@@ -137,7 +144,7 @@ export default defineConfig({
         nav: [
           { 
             text: 'rigor.dev', 
-            link: 'https://rigor.dev/es/' 
+            link: 'https://rigor-protocol.pages.dev/es/' 
           },
           { 
             text: 'Especificación', 
@@ -235,7 +242,7 @@ export default defineConfig({
         socialLinks: [
           { 
             icon: 'github', 
-            link: 'https://github.com/rigor' 
+            link: 'https://github.com/giannizeniquel/rigor-protocol' 
           }
         ],
         

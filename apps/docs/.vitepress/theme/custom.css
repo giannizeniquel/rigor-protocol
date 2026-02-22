@@ -6,8 +6,8 @@
   --color-text-muted: #A3A3A3;
   --color-accent: #1E3A8A;
 
-  --font-heading: 'IBM Plex Serif', Georgia, serif;
-  --font-body: Inter, -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-heading: 'Space Grotesk', sans-serif;
+  --font-body: 'IBM Plex Sans', Inter, -apple-system, BlinkMacSystemFont, sans-serif;
   --font-mono: 'JetBrains Mono', monospace;
 }
 
@@ -28,6 +28,25 @@ body {
 .VPNavBar {
   background-color: var(--color-bg-secondary) !important;
   border-bottom: 1px solid var(--color-bg-tertiary) !important;
+}
+
+.VPNavBarTitle {
+  display: flex;
+  align-items: center;
+}
+
+.VPNavBarTitle .title {
+  display: flex;
+  align-items: center;
+}
+
+.VPNavBarTitle .title span {
+  display: none;
+}
+
+.VPNavBarTitle .title img {
+  height: 63px !important;
+  width: auto !important;
 }
 
 .VPSidebar {
