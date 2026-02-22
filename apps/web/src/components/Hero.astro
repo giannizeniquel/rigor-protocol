@@ -7,7 +7,15 @@ const t = useTranslations(lang);
 
 <section class="hero">
   <div class="container">
-    <h1 class="wordmark">{t('hero.title')}</h1>
+    <h1 class="hero-logo-container">
+      <img 
+        src="/assets/logo/rigor-logo-default-lg.svg" 
+        alt="RIGOR Protocol" 
+        class="hero-logo"
+        width="304" 
+        height="144"
+      />
+    </h1>
     <h2>{t('hero.subtitle')}</h2>
     <p class="tertiary">{t('hero.tertiary')}</p>
     <p class="optional muted">{t('hero.optional')}</p>
@@ -23,13 +31,13 @@ const t = useTranslations(lang);
     align-items: center;
   }
 
-  .wordmark {
-    font-family: var(--font-heading);
-    font-weight: var(--weight-heading);
-    font-size: 4rem;
-    letter-spacing: var(--tracking-wordmark);
-    text-transform: uppercase;
+  .hero-logo-container {
     margin-bottom: var(--spacing-element);
+  }
+
+  .hero-logo {
+    max-width: 100%;
+    height: auto;
   }
 
   h2 {

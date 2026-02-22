@@ -18,7 +18,7 @@ export default {
       current: 'currentColor',
     },
     fontFamily: {
-      heading: ['IBM Plex Serif', 'Georgia', 'serif'],
+      heading: ['Space Grotesk', 'Inter', 'sans-serif'],
       body: ['Inter', '-apple-system', 'BlinkMacSystemFont', 'sans-serif'],
       mono: ['JetBrains Mono', 'Fira Code', 'Consolas', 'monospace'],
     },

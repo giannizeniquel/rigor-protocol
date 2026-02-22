@@ -1,0 +1,15 @@
+Guía de Uso
+Variantes
+Default: Logo animado con efectos hover
+Minimal: Versión limpia y simple
+Bold: Con gradiente azul-púrpura
+Tamaños
+sm: Pequeño (text-4xl)
+md: Mediano (text-6xl)
+lg: Grande (text-8xl)
+xl: Extra grande (text-9xl)
+Elemento Distintivo
+La letra "O" está representada por dos corchetes [ ] que simbolizan precisión, estructura y rigor técnico.
+
+Tipografía
+Font: Space Grotesk - Una tipografía geométrica moderna que combina precisión técnica con claridad institucional.
