@@ -30,6 +30,21 @@ body {
   border-bottom: 1px solid var(--color-bg-tertiary) !important;
 }
 
+.VPNavBarTitle {
+  display: flex;
+  align-items: center;
+}
+
+.VPNavBarTitle.has-sidebar .title {
+  display: none;
+}
+
+.VPNavBarTitle.has-sidebar img,
+.VPNavBarTitle.has-sidebar svg {
+  height: 32px;
+  width: auto;
+}
+
 .VPSidebar {
   background-color: var(--color-bg-secondary) !important;
   border-right: 1px solid var(--color-bg-tertiary) !important;
