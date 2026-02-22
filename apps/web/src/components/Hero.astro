@@ -19,14 +19,6 @@ const t = useTranslations(lang);
     <h2>{t('hero.subtitle')}</h2>
     <p class="tertiary">{t('hero.tertiary')}</p>
     <p class="optional muted">{t('hero.optional')}</p>
-    <div class="hero-icon">
-      <img 
-        src="/assets/icons/rigor-icon-brackets.png" 
-        alt="RIGOR" 
-        width="48" 
-        height="48"
-      />
-    </div>
     <a href="https://docs.rigor.dev" class="cta">{t('hero.cta')}</a>
   </div>
 </section>
@@ -79,14 +71,5 @@ const t = useTranslations(lang);
 
   .cta:hover {
     opacity: 0.8;
-  }
-
-  .hero-icon {
-    margin-bottom: var(--spacing-block);
-  }
-
-  .hero-icon img {
-    width: 48px;
-    height: 48px;
   }
 </style>
