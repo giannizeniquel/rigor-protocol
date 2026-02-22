@@ -19,7 +19,7 @@ const t = useTranslations(lang);
     <h2>{t('hero.subtitle')}</h2>
     <p class="tertiary">{t('hero.tertiary')}</p>
     <p class="optional muted">{t('hero.optional')}</p>
-    <a href={lang === 'es' ? 'https://rigor-docs.pages.dev/es/' : 'https://rigor-docs.pages.dev/'} class="cta">{t('hero.cta')}</a>
+    <a href={lang === 'es' ? 'https://rigor-docs.pages.dev/es/' : 'https://rigor-docs.pages.dev/'} class="cta" target="_blank" rel="noopener noreferrer">{t('hero.cta')}</a>
   </div>
 </section>
 
@@ -32,7 +32,10 @@ const t = useTranslations(lang);
   }
 
   .hero-logo-container {
-    margin-bottom: var(--spacing-element);
+    /* margin-bottom: var(--spacing-element); */
+    align-items: center;
+    justify-content: center;
+    display: flex;
   }
 
   .hero-logo {
