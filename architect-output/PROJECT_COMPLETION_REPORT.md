@@ -32,10 +32,15 @@
 - Inicialización de repositorio y publicación en GitHub.
 - **Despliegue Exitoso:** Hosting en Cloudflare Pages para `rigor.dev` y `docs.rigor.dev`.
 
+### ✅ Fase 7: Rediseño UX/UI v1.1 (Structural Boundedness)
+- Implementación de estética industrial: Monocromía, bordes `0px` y acento `Deep Blue`.
+- Creación de diagramas técnicos SVG integrados en el Hero.
+- Unificación visual entre Landing (Astro) y Docs (VitePress) mediante tokens compartidos.
+
 ---
 
 ## 2. Estado del Repositorio
-El proyecto se encuentra en un estado estable `v1.1`.
+El proyecto se encuentra en un estado estable `v1.1` (Fase de Identidad y Presencia Web Finalizada).
 - **Ramas:** `main` (Producción).
 - **Cobertura:** Landing + Docs + Design System.
 - **Idiomas:** EN / ES.
@@ -43,12 +48,13 @@ El proyecto se encuentra en un estado estable `v1.1`.
   - Landing: https://rigor-protocol.pages.dev
   - Docs: https://rigor-docs.pages.dev
 
-## 3. Próximos Pasos Recomendados (Post-Lanzamiento)
+## 3. Próximos Pasos & Roadmap Futuro
 1. **Dominios:** Conectar `rigor.dev` y `docs.rigor.dev` en el panel de Cloudflare.
-2. **Community:** Crear templates de issues en GitHub para propuestas de cambios (RFCs).
-3. **Release:** Etiquetar la versión `v0.1.0` en GitHub Releases.
+2. **Desarrollo del Core (Fase 2):** Diseño e implementación de la herramienta **CLI de RIGOR** desde cero (Ver especificación en `docs/specification/cli.md`).
+3. **Engine:** Implementación del Motor de Validación de Restricciones.
 
 ---
 
 **Firma:** Gemini CLI (Arquitecto de Planeamiento)
-**Proyecto RIGOR: Cerrado.**
+**Fase de Identidad Web: FINALIZADA.**
+**Estado General del Proyecto: EN DESARROLLO (Pendiente Fase Core/CLI).**

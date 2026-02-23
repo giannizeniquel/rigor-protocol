@@ -3,79 +3,177 @@ import { getLangFromUrl, useTranslations } from '../i18n/utils';
 
 const lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
+
+const invariants = [
+  { num: '01', key: '1' },
+  { num: '02', key: '2' },
+  { num: '03', key: '3' },
+  { num: '04', key: '4' },
+  { num: '05', key: '5' },
+];
 ---
 
-<section class="section">
+<section class="section section--ruled">
   <div class="container">
+    <div class="section-header">
+      <span class="section-num">04</span>
+      <span class="section-rule"></span>
+    </div>
     <h2>{t('coreInvariants.title')}</h2>
     <p class="intro">{t('coreInvariants.intro')}</p>
-    
-    <div class="invariants">
-      <div class="invariant">
-        <h3>{t('coreInvariants.1.title')}</h3>
-        <p>{t('coreInvariants.1.description')}</p>
-      </div>
-      
-      <div class="invariant">
-        <h3>{t('coreInvariants.2.title')}</h3>
-        <p>{t('coreInvariants.2.description')}</p>
-      </div>
-      
-      <div class="invariant">
-        <h3>{t('coreInvariants.3.title')}</h3>
-        <p>{t('coreInvariants.3.description')}</p>
-      </div>
-      
-      <div class="invariant">
-        <h3>{t('coreInvariants.4.title')}</h3>
-        <p>{t('coreInvariants.4.description')}</p>
-      </div>
-      
-      <div class="invariant">
-        <h3>{t('coreInvariants.5.title')}</h3>
-        <p>{t('coreInvariants.5.description')}</p>
-      </div>
+
+    <div class="invariants-grid">
+      {invariants.map(({ num, key }) => (
+        <div class="invariant">
+          <span class="invariant-bg-num" aria-hidden="true">{num}</span>
+          <div class="invariant-content">
+            <p class="invariant-index">{num}</p>
+            <h3>{t(`coreInvariants.${key}.title` as any)}</h3>
+            <p class="invariant-desc">{t(`coreInvariants.${key}.description` as any)}</p>
+          </div>
+        </div>
+      ))}
     </div>
   </div>
 </section>
 
 <style>
-  .section {
+  .section--ruled {
     padding-top: var(--spacing-section);
     padding-bottom: var(--spacing-section);
+  }
+
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-inline);
+    margin-bottom: var(--spacing-block);
+  }
+
+  .section-num {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    color: var(--color-text-muted);
+    letter-spacing: 0.14em;
+    flex-shrink: 0;
+    line-height: 1;
+  }
+
+  .section-rule {
+    display: block;
+    width: 100%;
+    height: 1px;
+    background-color: var(--color-bg-tertiary);
   }
 
   h2 {
     font-family: var(--font-heading);
     font-size: var(--text-h2);
     font-weight: var(--weight-heading);
+    letter-spacing: var(--tracking-heading);
     margin-bottom: var(--spacing-element);
   }
 
   .intro {
-    margin-bottom: var(--spacing-block);
+    color: var(--color-text-muted);
+    font-size: var(--text-body);
     max-width: 720px;
+    margin-bottom: var(--spacing-block);
   }
 
-  .invariants {
+  .invariants-grid {
     display: grid;
-    gap: var(--spacing-block);
-    max-width: 720px;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0;
+    border: 1px solid var(--color-bg-tertiary);
+  }
+
+  /* The 5th item spans full width on a 2-col grid */
+  .invariant:nth-child(5) {
+    grid-column: 1 / -1;
+    border-bottom: none;
   }
 
   .invariant {
-    padding: var(--spacing-element);
+    position: relative;
+    overflow: hidden;
     border-left: 2px solid var(--color-accent);
+    border-bottom: 1px solid var(--color-bg-tertiary);
+    padding: var(--spacing-block) var(--spacing-element);
+    transition: background-color var(--duration-fast) var(--easing-linear);
   }
 
-  .invariant h3 {
+  /* Separate items in the same row with a right border */
+  .invariant:nth-child(odd):not(:last-child) {
+    border-right: 1px solid var(--color-bg-tertiary);
+  }
+
+  .invariant:hover {
+    background-color: var(--color-bg-secondary);
+  }
+
+  /* Large ghost number behind content */
+  .invariant-bg-num {
+    position: absolute;
+    top: -0.15em;
+    right: var(--spacing-inline);
+    font-family: var(--font-heading);
+    font-size: 7rem;
+    font-weight: 600;
+    color: var(--color-bg-tertiary);
+    line-height: 1;
+    user-select: none;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .invariant-content {
+    position: relative;
+    z-index: 1;
+  }
+
+  .invariant-index {
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    color: var(--color-accent);
+    letter-spacing: 0.14em;
+    margin-bottom: var(--spacing-tight);
+    line-height: 1;
+  }
+
+  h3 {
     font-family: var(--font-heading);
     font-size: var(--text-h3);
     font-weight: var(--weight-heading);
+    letter-spacing: var(--tracking-heading);
     margin-bottom: var(--spacing-tight);
   }
 
-  .invariant p {
+  .invariant-desc {
+    font-size: var(--text-caption);
+    color: var(--color-text-muted);
+    line-height: var(--leading-body);
+    max-width: 420px;
     margin-bottom: 0;
+  }
+
+  /* Mobile */
+  @media (max-width: 768px) {
+    .invariants-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .invariant:nth-child(5) {
+      grid-column: auto;
+      border-bottom: 1px solid var(--color-bg-tertiary);
+    }
+
+    .invariant:nth-child(odd):not(:last-child) {
+      border-right: none;
+    }
+
+    .invariant:last-child {
+      border-bottom: none;
+    }
   }
 </style>

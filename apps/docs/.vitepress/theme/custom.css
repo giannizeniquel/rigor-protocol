@@ -1,17 +1,76 @@
-:root {
-  --color-bg-primary: #0A0A0A;
-  --color-bg-secondary: #1C1C1C;
-  --color-bg-tertiary: #2A2A2A;
-  --color-text-primary: #F2F2F2;
-  --color-text-muted: #A3A3A3;
-  --color-accent: #1E3A8A;
+/* ============================================================
+   RIGOR — VitePress Theme
+   Aligned with landing page visual language
+   ============================================================ */
 
-  --font-heading: 'Space Grotesk', sans-serif;
-  --font-body: 'IBM Plex Sans', Inter, -apple-system, BlinkMacSystemFont, sans-serif;
-  --font-mono: 'JetBrains Mono', monospace;
+/* ------------------------------------------------------------
+   1. VitePress CSS Variable Overrides
+   Map VP's internal vars to our design tokens
+   ------------------------------------------------------------ */
+:root {
+  /* Backgrounds */
+  --vp-c-bg:           #0A0A0A;
+  --vp-c-bg-soft:      #1C1C1C;
+  --vp-c-bg-mute:      #2A2A2A;
+  --vp-c-bg-alt:       #0A0A0A;
+  --vp-c-bg-elv:       #1C1C1C;
+
+  /* Text */
+  --vp-c-text-1:       #F2F2F2;
+  --vp-c-text-2:       #A3A3A3;
+  --vp-c-text-3:       #6B6B6B;
+
+  /* Brand / Accent */
+  --vp-c-brand-1:      #1E3A8A;
+  --vp-c-brand-2:      #1E3A8A;
+  --vp-c-brand-3:      #1E3A8A;
+  --vp-c-brand-soft:   rgba(30, 58, 138, 0.12);
+
+  /* Dividers */
+  --vp-c-divider:      #2A2A2A;
+  --vp-c-gutter:       #0A0A0A;
+  --vp-c-border:       #2A2A2A;
+
+  /* Fonts */
+  --vp-font-family-base:  'Space Grotesk', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  --vp-font-family-mono:  'JetBrains Mono', 'Fira Code', Consolas, monospace;
+
+  /* Shadows — none, per design spec */
+  --vp-shadow-1: none;
+  --vp-shadow-2: none;
+  --vp-shadow-3: none;
+  --vp-shadow-4: none;
+  --vp-shadow-5: none;
+
+  /* Border radius — structural restraint */
+  --vp-border-radius: 0px;
+
+  /* Code block */
+  --vp-code-block-bg:   #1C1C1C;
+  --vp-code-bg:         #2A2A2A;
+  --vp-code-color:      #F2F2F2;
+
+  /* Input */
+  --vp-c-gray-1: #2A2A2A;
+  --vp-c-gray-2: #1C1C1C;
+  --vp-c-gray-3: #0A0A0A;
+
+  /* Our design tokens (local reference) */
+  --color-bg-primary:    #0A0A0A;
+  --color-bg-secondary:  #1C1C1C;
+  --color-bg-tertiary:   #2A2A2A;
+  --color-text-primary:  #F2F2F2;
+  --color-text-muted:    #A3A3A3;
+  --color-accent:        #1E3A8A;
+  --font-heading:        'Space Grotesk', sans-serif;
+  --font-body:           'Space Grotesk', 'Inter', sans-serif;
+  --font-mono:           'JetBrains Mono', monospace;
 }
 
-* {
+/* ------------------------------------------------------------
+   2. Global Reset Alignment
+   ------------------------------------------------------------ */
+*, ::before, ::after {
   box-sizing: border-box;
 }
 
@@ -19,59 +78,577 @@ body {
   background-color: var(--color-bg-primary);
   color: var(--color-text-primary);
   font-family: var(--font-body);
+  -webkit-font-smoothing: antialiased;
 }
 
-.VPNav, .VPSidebar, .VPFooter {
-  background-color: var(--color-bg-primary) !important;
-}
-
-.VPNavBar {
-  background-color: var(--color-bg-secondary) !important;
+/* ------------------------------------------------------------
+   3. Navigation Bar
+   ------------------------------------------------------------ */
+.VPNav {
+  background-color: rgba(10, 10, 10, 0.92) !important;
+  backdrop-filter: none !important;
   border-bottom: 1px solid var(--color-bg-tertiary) !important;
 }
 
-.VPNavBarTitle {
-  display: flex;
-  align-items: center;
+.VPNavBar {
+  background-color: transparent !important;
+  border-bottom: none !important;
 }
 
-.VPNavBarTitle .title {
-  display: flex;
-  align-items: center;
-}
-
-.VPNavBarTitle .title span {
-  display: none;
-}
-
+/* Logo sizing */
 .VPNavBarTitle .title img {
-  height: 63px !important;
+  height: 48px !important;
   width: auto !important;
 }
 
+.VPNavBarTitle .title span {
+  display: none !important;
+}
+
+/* Nav links */
+.VPNavBarMenu .VPNavBarMenuLink,
+.VPNavBarMenu .VPNavBarMenuGroup .button {
+  font-family: var(--font-mono) !important;
+  font-size: 0.72rem !important;
+  letter-spacing: 0.08em !important;
+  color: var(--color-text-muted) !important;
+  text-transform: uppercase;
+  transition: color 150ms linear !important;
+}
+
+.VPNavBarMenu .VPNavBarMenuLink:hover,
+.VPNavBarMenu .VPNavBarMenuLink.active {
+  color: var(--color-text-primary) !important;
+}
+
+/* Search */
+.VPNavBarSearch .DocSearch-Button {
+  background-color: var(--color-bg-secondary) !important;
+  border: 1px solid var(--color-bg-tertiary) !important;
+  border-radius: 0 !important;
+  color: var(--color-text-muted) !important;
+  font-family: var(--font-mono) !important;
+  font-size: 0.72rem !important;
+}
+
+/* Social icons */
+.VPNavBarExtra .VPSocialLink svg {
+  fill: var(--color-text-muted);
+}
+
+.VPNavBarExtra .VPSocialLink:hover svg {
+  fill: var(--color-text-primary);
+}
+
+/* ------------------------------------------------------------
+   4. Sidebar
+   ------------------------------------------------------------ */
 .VPSidebar {
   background-color: var(--color-bg-secondary) !important;
   border-right: 1px solid var(--color-bg-tertiary) !important;
+  padding-top: 24px !important;
 }
 
+/* Section group titles */
+.VPSidebarItem.level-0 > .item > .text {
+  font-family: var(--font-mono) !important;
+  font-size: 0.65rem !important;
+  letter-spacing: 0.14em !important;
+  text-transform: uppercase !important;
+  color: var(--color-text-muted) !important;
+  font-weight: 400 !important;
+  padding-top: 8px !important;
+}
+
+/* All sidebar links */
+.VPSidebarItem .item .link .text {
+  font-family: var(--font-body) !important;
+  font-size: 0.8125rem !important;
+  color: var(--color-text-muted) !important;
+  letter-spacing: 0.01em;
+  transition: color 150ms linear;
+}
+
+.VPSidebarItem .item .link:hover .text {
+  color: var(--color-text-primary) !important;
+}
+
+/* Active sidebar item */
+.VPSidebarItem.is-active > .item > .link {
+  border-left: 2px solid var(--color-accent) !important;
+  padding-left: 10px !important;
+}
+
+.VPSidebarItem.is-active > .item > .link .text {
+  color: var(--color-text-primary) !important;
+  font-weight: 600 !important;
+}
+
+/* Remove default VP active indicator */
+.VPSidebarItem.is-active > .item > .indicator {
+  background-color: transparent !important;
+}
+
+/* Sidebar item caret */
+.VPSidebarItem .caret-icon {
+  color: var(--color-text-muted) !important;
+}
+
+/* ------------------------------------------------------------
+   5. Content Area
+   ------------------------------------------------------------ */
 .VPContent {
-  background-color: var(--color-bg-primary);
+  background-color: var(--color-bg-primary) !important;
 }
 
-a {
-  color: var(--color-accent);
+.VPDoc {
+  padding-top: 40px;
 }
 
-h1, h2, h3, h4, h5, h6 {
+.vp-doc {
+  max-width: 720px;
+}
+
+/* H1 */
+.vp-doc h1 {
   font-family: var(--font-heading);
+  font-size: 2.25rem;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  line-height: 1.2;
+  color: var(--color-text-primary);
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--color-bg-tertiary);
+  margin-bottom: 32px;
+}
+
+/* H2 */
+.vp-doc h2 {
+  font-family: var(--font-heading);
+  font-size: 1.5rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  line-height: 1.3;
+  color: var(--color-text-primary);
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--color-bg-tertiary);
+  margin-top: 56px;
+  margin-bottom: 24px;
+}
+
+/* H3 */
+.vp-doc h3 {
+  font-family: var(--font-heading);
+  font-size: 1.0625rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  color: var(--color-text-primary);
+  margin-top: 32px;
+  margin-bottom: 12px;
+}
+
+/* H4 */
+.vp-doc h4 {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  font-weight: 400;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+  margin-top: 24px;
+  margin-bottom: 8px;
+}
+
+/* Body paragraphs */
+.vp-doc p {
+  font-size: 0.9375rem;
+  line-height: 1.7;
+  color: var(--color-text-primary);
+  margin-bottom: 16px;
+}
+
+/* Links */
+.vp-doc a {
+  color: var(--color-text-primary);
+  text-decoration: none;
+  border-bottom: 1px solid var(--color-accent);
+  padding-bottom: 1px;
+  transition: opacity 150ms linear;
+}
+
+.vp-doc a:hover {
+  opacity: 0.75;
+}
+
+/* Blockquotes */
+.vp-doc blockquote {
+  border-left: 2px solid var(--color-accent);
+  background-color: var(--color-bg-secondary);
+  margin: 24px 0;
+  padding: 16px 20px;
+  border-radius: 0;
+}
+
+.vp-doc blockquote p {
+  font-style: normal;
+  color: var(--color-text-muted);
+  margin-bottom: 0;
+}
+
+/* Lists */
+.vp-doc ul,
+.vp-doc ol {
+  padding-left: 20px;
+  margin-bottom: 16px;
+}
+
+.vp-doc li {
+  font-size: 0.9375rem;
+  line-height: 1.7;
+  color: var(--color-text-primary);
+  margin-bottom: 6px;
+}
+
+/* Strong */
+.vp-doc strong {
+  color: var(--color-text-primary);
+  font-weight: 600;
+}
+
+/* ------------------------------------------------------------
+   6. Tables
+   ------------------------------------------------------------ */
+.vp-doc table {
+  width: 100%;
+  border-collapse: collapse;
+  border: 1px solid var(--color-bg-tertiary);
+  margin: 24px 0;
+  border-radius: 0;
+  font-size: 0.875rem;
+}
+
+.vp-doc thead tr {
+  background-color: var(--color-bg-secondary);
+  border-bottom: 1px solid var(--color-bg-tertiary);
+}
+
+.vp-doc th {
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  font-weight: 400;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+  padding: 12px 16px;
+  text-align: left;
+  background-color: var(--color-bg-secondary);
+}
+
+.vp-doc td {
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--color-bg-tertiary);
+  vertical-align: top;
+  line-height: 1.6;
+  color: var(--color-text-muted);
+}
+
+.vp-doc tr:last-child td {
+  border-bottom: none;
+}
+
+/* First column: structural label */
+.vp-doc td:first-child {
+  font-weight: 600;
   color: var(--color-text-primary);
 }
 
-.VPButton {
-  background-color: var(--color-accent) !important;
-  border: none !important;
+/* Override VP default table zebra/blue styles */
+.vp-doc tr:nth-child(2n) {
+  background-color: transparent;
 }
 
-.VPLink.active .link-text {
-  color: var(--color-accent) !important;
+/* ------------------------------------------------------------
+   7. Code Blocks
+   ------------------------------------------------------------ */
+.vp-doc div[class*='language-'] {
+  background-color: var(--color-bg-secondary) !important;
+  border: 1px solid var(--color-bg-tertiary);
+  border-left: 2px solid var(--color-accent);
+  border-radius: 0 !important;
+  margin: 24px 0;
+}
+
+/* Code block toolbar (filename, copy btn) */
+.vp-doc div[class*='language-'] > span.lang {
+  font-family: var(--font-mono) !important;
+  font-size: 0.65rem !important;
+  letter-spacing: 0.1em !important;
+  text-transform: uppercase;
+  color: var(--color-text-muted) !important;
+  top: 10px !important;
+  right: 44px !important;
+}
+
+/* Copy button */
+.vp-doc div[class*='language-'] > button.copy {
+  border-radius: 0 !important;
+  background-color: var(--color-bg-tertiary) !important;
+  border: none !important;
+  opacity: 1 !important;
+}
+
+/* Inline code */
+.vp-doc code:not([class*='language-']) {
+  font-family: var(--font-mono) !important;
+  font-size: 0.8125rem !important;
+  background-color: var(--color-bg-tertiary) !important;
+  color: var(--color-text-primary) !important;
+  border-radius: 0 !important;
+  padding: 2px 5px !important;
+  border: 1px solid var(--color-bg-tertiary);
+}
+
+/* ------------------------------------------------------------
+   8. Aside / "On this page" outline panel
+   ------------------------------------------------------------ */
+.VPDocAside {
+  border-left: 1px solid var(--color-bg-tertiary);
+  padding-left: 24px;
+}
+
+.VPDocAsideOutline .title {
+  font-family: var(--font-mono) !important;
+  font-size: 0.65rem !important;
+  letter-spacing: 0.12em !important;
+  text-transform: uppercase !important;
+  color: var(--color-text-muted) !important;
+  font-weight: 400 !important;
+}
+
+.VPDocOutlineItem a {
+  font-size: 0.8125rem !important;
+  color: var(--color-text-muted) !important;
+  border-bottom: none !important;
+  padding-bottom: 0 !important;
+  transition: color 150ms linear;
+}
+
+.VPDocOutlineItem a:hover {
+  color: var(--color-text-primary) !important;
+  opacity: 1;
+}
+
+.VPDocOutlineItem.active > a {
+  color: var(--color-text-primary) !important;
+  border-left: 2px solid var(--color-accent);
+  padding-left: 8px;
+}
+
+/* ------------------------------------------------------------
+   9. Footer
+   ------------------------------------------------------------ */
+.VPFooter {
+  background-color: var(--color-bg-primary) !important;
+  border-top: 1px solid var(--color-bg-tertiary) !important;
+}
+
+.VPFooter .message,
+.VPFooter .copyright {
+  font-family: var(--font-mono) !important;
+  font-size: 0.7rem !important;
+  letter-spacing: 0.08em !important;
+  color: var(--color-text-muted) !important;
+}
+
+/* ------------------------------------------------------------
+   10. Prev / Next page navigation
+   ------------------------------------------------------------ */
+.VPDocFooter {
+  border-top: 1px solid var(--color-bg-tertiary);
+  margin-top: 48px;
+  padding-top: 24px;
+}
+
+.VPDocFooter .pager a {
+  border: 1px solid var(--color-bg-tertiary);
+  border-radius: 0 !important;
+  background-color: transparent !important;
+  transition: border-color 150ms linear, background-color 150ms linear;
+}
+
+.VPDocFooter .pager a:hover {
+  background-color: var(--color-bg-secondary) !important;
+  border-color: var(--color-text-muted);
+  opacity: 1;
+}
+
+.VPDocFooter .pager-link .title {
+  font-family: var(--font-heading);
+  font-size: 0.875rem;
+  color: var(--color-text-primary);
+  border-bottom: none !important;
+  padding-bottom: 0 !important;
+}
+
+.VPDocFooter .pager-link .desc {
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+}
+
+/* ------------------------------------------------------------
+   11. Home Page (layout: home)
+   ------------------------------------------------------------ */
+.VPHome {
+  padding-bottom: 96px !important;
+}
+
+/* Hero section */
+.VPHero {
+  padding-top: 96px !important;
+  padding-bottom: 96px !important;
+  border-bottom: 1px solid var(--color-bg-tertiary);
+}
+
+.VPHero .name {
+  font-family: var(--font-heading) !important;
+  font-size: clamp(3.5rem, 8vw, 6rem) !important;
+  font-weight: 600 !important;
+  letter-spacing: 0.1em !important;
+  line-height: 1 !important;
+  background: none !important;
+  -webkit-background-clip: unset !important;
+  -webkit-text-fill-color: var(--color-text-primary) !important;
+  color: var(--color-text-primary) !important;
+}
+
+.VPHero .tagline {
+  font-family: var(--font-body) !important;
+  font-size: 1.0625rem !important;
+  color: var(--color-text-muted) !important;
+  line-height: 1.6 !important;
+  max-width: 480px !important;
+  margin-top: 16px !important;
+}
+
+.VPHero .text {
+  display: none !important;
+}
+
+/* Hero CTA buttons */
+.VPHero .actions {
+  margin-top: 40px !important;
+}
+
+.VPButton {
+  border-radius: 0 !important;
+  font-family: var(--font-heading) !important;
+  font-size: 0.875rem !important;
+  letter-spacing: 0.04em !important;
+  transition: opacity 150ms linear !important;
+}
+
+.VPButton.medium.brand {
+  background-color: transparent !important;
+  border: 1px solid var(--color-text-primary) !important;
+  color: var(--color-text-primary) !important;
+  border-bottom: 1px solid var(--color-accent) !important;
+}
+
+.VPButton.medium.brand:hover {
+  opacity: 0.75 !important;
+}
+
+.VPButton.medium.alt {
+  background-color: transparent !important;
+  border: 1px solid var(--color-bg-tertiary) !important;
+  color: var(--color-text-muted) !important;
+}
+
+.VPButton.medium.alt:hover {
+  border-color: var(--color-text-muted) !important;
+  color: var(--color-text-primary) !important;
+}
+
+/* Features section */
+.VPFeatures {
+  padding-top: 64px !important;
+  border-bottom: none !important;
+}
+
+.VPFeatures .container {
+  max-width: 1280px;
+}
+
+.VPFeature {
+  background-color: var(--color-bg-secondary) !important;
+  border: 1px solid var(--color-bg-tertiary) !important;
+  border-left: 2px solid var(--color-accent) !important;
+  border-radius: 0 !important;
+  padding: 24px !important;
+  transition: background-color 150ms linear;
+}
+
+.VPFeature:hover {
+  background-color: var(--color-bg-tertiary) !important;
+}
+
+.VPFeature .icon {
+  display: none !important;
+}
+
+.VPFeature .title {
+  font-family: var(--font-heading) !important;
+  font-size: 1rem !important;
+  font-weight: 600 !important;
+  letter-spacing: 0.02em !important;
+  color: var(--color-text-primary) !important;
+  margin-bottom: 8px !important;
+}
+
+.VPFeature .details {
+  font-family: var(--font-body) !important;
+  font-size: 0.875rem !important;
+  color: var(--color-text-muted) !important;
+  line-height: 1.6 !important;
+}
+
+/* ------------------------------------------------------------
+   12. Search Modal
+   ------------------------------------------------------------ */
+.DocSearch-Container {
+  background-color: rgba(10, 10, 10, 0.85) !important;
+}
+
+.DocSearch-Modal {
+  background-color: var(--color-bg-secondary) !important;
+  border: 1px solid var(--color-bg-tertiary) !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+}
+
+.DocSearch-SearchBar {
+  border-bottom: 1px solid var(--color-bg-tertiary) !important;
+}
+
+.DocSearch-Form {
+  background-color: transparent !important;
+  border-radius: 0 !important;
+}
+
+.DocSearch-Input {
+  font-family: var(--font-body) !important;
+  color: var(--color-text-primary) !important;
+  background-color: transparent !important;
+}
+
+.DocSearch-Hit a {
+  border-radius: 0 !important;
+  border-bottom: none !important;
+}
+
+.DocSearch-Hit[aria-selected=true] a {
+  background-color: var(--color-bg-tertiary) !important;
 }

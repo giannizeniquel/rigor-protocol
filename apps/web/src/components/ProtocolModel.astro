@@ -5,120 +5,254 @@ const lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
 ---
 
-<section class="section">
+<section class="section section--ruled">
   <div class="container">
-    <h2>{t('protocolModel.title')}</h2>
-    
-    <div class="diagram-container">
-      <h3>{t('protocolModel.diagramTitle')}</h3>
-      <p class="diagram-description">{t('protocolModel.diagramDescription')}</p>
-      
-      <div class="diagram">
-        <svg viewBox="0 0 400 320" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <rect x="100" y="10" width="200" height="36" stroke="#F2F2F2" stroke-width="1.5"/>
-          <text x="200" y="33" fill="#F2F2F2" font-family="Inter, sans-serif" font-size="12" text-anchor="middle">{t('protocolModel.flow.humanIntent')}</text>
-          
-          <path d="M200 46 L200 64" stroke="#F2F2F2" stroke-width="1"/>
-          <polygon points="200,64 196,58 204,58" fill="#F2F2F2"/>
-          
-          <rect x="80" y="68" width="240" height="36" stroke="#1E3A8A" stroke-width="1.5"/>
-          <text x="200" y="91" fill="#F2F2F2" font-family="Inter, sans-serif" font-size="12" text-anchor="middle">{t('protocolModel.flow.specification')}</text>
-          
-          <path d="M200 104 L200 122" stroke="#F2F2F2" stroke-width="1"/>
-          <polygon points="200,122 196,116 204,116" fill="#F2F2F2"/>
-          
-          <rect x="120" y="126" width="160" height="36" stroke="#F2F2F2" stroke-width="1.5"/>
-          <text x="200" y="149" fill="#F2F2F2" font-family="Inter, sans-serif" font-size="12" text-anchor="middle">{t('protocolModel.flow.generation')}</text>
-          
-          <path d="M200 162 L200 180" stroke="#F2F2F2" stroke-width="1"/>
-          <polygon points="200,180 196,174 204,174" fill="#F2F2F2"/>
-          
-          <rect x="100" y="184" width="200" height="36" stroke="#1E3A8A" stroke-width="1.5"/>
-          <text x="200" y="207" fill="#F2F2F2" font-family="Inter, sans-serif" font-size="12" text-anchor="middle">{t('protocolModel.flow.validation')}</text>
-          
-          <path d="M200 220 L200 238" stroke="#F2F2F2" stroke-width="1"/>
-          <polygon points="200,238 196,232 204,232" fill="#F2F2F2"/>
-          
-          <rect x="120" y="242" width="160" height="36" stroke="#F2F2F2" stroke-width="1.5"/>
-          <text x="200" y="265" fill="#F2F2F2" font-family="Inter, sans-serif" font-size="12" text-anchor="middle">{t('protocolModel.flow.execution')}</text>
-        </svg>
-      </div>
+    <div class="section-header">
+      <span class="section-num">03</span>
+      <span class="section-rule"></span>
     </div>
-    
-    <div class="component-list">
-      <p>{t('protocolModel.componentsTitle')}</p>
-      <ul>
-        <li><strong>Intent Domain</strong> — {lang === 'en' ? 'Defines the formally allowed structural space.' : 'Define el espacio estructural formalmente permitido.'}</li>
-        <li><strong>Constraint Contract</strong> — {lang === 'en' ? 'Machine-verifiable specification instance.' : 'Instancia de especificación verificable por máquina.'}</li>
-        <li><strong>Generation Boundary</strong> — {lang === 'en' ? 'Interface between AI output and validation.' : 'Interfaz entre salida de IA y validación.'}</li>
-        <li><strong>Validation Engine</strong> — {lang === 'en' ? 'Evaluates structural compliance.' : 'Evalúa el cumplimiento estructural.'}</li>
-        <li><strong>Evolution Layer</strong> — {lang === 'en' ? 'Classifies all structural changes.' : 'Clasifica todos los cambios estructurales.'}</li>
-      </ul>
+    <h2>{t('protocolModel.title')}</h2>
+
+    <div class="protocol-layout">
+
+      <!-- Component list: left column -->
+      <div class="components">
+        <p class="components-intro">{t('protocolModel.componentsTitle')}</p>
+        <ul>
+          <li>
+            <span class="comp-index">01</span>
+            <div class="comp-body">
+              <span>{t('protocolModel.components.1' as any)}</span>
+            </div>
+          </li>
+          <li>
+            <span class="comp-index">02</span>
+            <div class="comp-body">
+              <span>{t('protocolModel.components.2' as any)}</span>
+            </div>
+          </li>
+          <li>
+            <span class="comp-index">03</span>
+            <div class="comp-body">
+              <span>{t('protocolModel.components.3' as any)}</span>
+            </div>
+          </li>
+          <li>
+            <span class="comp-index">04</span>
+            <div class="comp-body">
+              <span>{t('protocolModel.components.4' as any)}</span>
+            </div>
+          </li>
+          <li>
+            <span class="comp-index">05</span>
+            <div class="comp-body">
+              <span>{t('protocolModel.components.5' as any)}</span>
+            </div>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Diagram: right column -->
+      <div class="diagram-col" aria-hidden="true">
+        <p class="diagram-fig">FIG. 02 — {t('protocolModel.diagramTitle')}</p>
+        <div class="diagram-box">
+          <svg viewBox="0 0 300 340" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect x="30" y="10" width="240" height="40" stroke="#F2F2F2" stroke-width="1.5"/>
+            <text x="150" y="35" fill="#F2F2F2" font-family="'Space Grotesk', sans-serif" font-size="11" text-anchor="middle" letter-spacing="0.04em">
+              {t('protocolModel.flow.humanIntent')}
+            </text>
+
+            <path d="M150 50 L150 68" stroke="#A3A3A3" stroke-width="1"/>
+            <polygon points="150,68 145,60 155,60" fill="#A3A3A3"/>
+
+            <rect x="10" y="72" width="280" height="40" stroke="#1E3A8A" stroke-width="2"/>
+            <rect x="10" y="72" width="4" height="40" fill="#1E3A8A"/>
+            <text x="158" y="97" fill="#F2F2F2" font-family="'Space Grotesk', sans-serif" font-size="11" text-anchor="middle" letter-spacing="0.04em">
+              {t('protocolModel.flow.specification')}
+            </text>
+
+            <path d="M150 112 L150 130" stroke="#A3A3A3" stroke-width="1"/>
+            <polygon points="150,130 145,122 155,122" fill="#A3A3A3"/>
+
+            <rect x="50" y="134" width="200" height="40" stroke="#F2F2F2" stroke-width="1.5"/>
+            <text x="150" y="159" fill="#F2F2F2" font-family="'Space Grotesk', sans-serif" font-size="11" text-anchor="middle" letter-spacing="0.04em">
+              {t('protocolModel.flow.generation')}
+            </text>
+
+            <path d="M150 174 L150 192" stroke="#A3A3A3" stroke-width="1"/>
+            <polygon points="150,192 145,184 155,184" fill="#A3A3A3"/>
+
+            <rect x="30" y="196" width="240" height="40" stroke="#1E3A8A" stroke-width="2"/>
+            <rect x="30" y="196" width="4" height="40" fill="#1E3A8A"/>
+            <text x="158" y="221" fill="#F2F2F2" font-family="'Space Grotesk', sans-serif" font-size="11" text-anchor="middle" letter-spacing="0.04em">
+              {t('protocolModel.flow.validation')}
+            </text>
+
+            <path d="M150 236 L150 254" stroke="#A3A3A3" stroke-width="1"/>
+            <polygon points="150,254 145,246 155,246" fill="#A3A3A3"/>
+
+            <rect x="50" y="258" width="200" height="40" stroke="#F2F2F2" stroke-width="1.5"/>
+            <text x="150" y="283" fill="#F2F2F2" font-family="'Space Grotesk', sans-serif" font-size="11" text-anchor="middle" letter-spacing="0.04em">
+              {t('protocolModel.flow.execution')}
+            </text>
+          </svg>
+        </div>
+        <p class="diagram-caption">{t('protocolModel.diagramDescription')}</p>
+      </div>
+
     </div>
   </div>
 </section>
 
 <style>
-  .section {
+  .section--ruled {
     padding-top: var(--spacing-section);
     padding-bottom: var(--spacing-section);
+  }
+
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-inline);
+    margin-bottom: var(--spacing-block);
+  }
+
+  .section-num {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    color: var(--color-text-muted);
+    letter-spacing: 0.14em;
+    flex-shrink: 0;
+    line-height: 1;
+  }
+
+  .section-rule {
+    display: block;
+    width: 100%;
+    height: 1px;
+    background-color: var(--color-bg-tertiary);
   }
 
   h2 {
     font-family: var(--font-heading);
     font-size: var(--text-h2);
     font-weight: var(--weight-heading);
+    letter-spacing: var(--tracking-heading);
     margin-bottom: var(--spacing-block);
   }
 
-  h3 {
-    font-family: var(--font-heading);
-    font-size: var(--text-h3);
-    font-weight: var(--weight-heading);
-    margin-bottom: var(--spacing-tight);
+  .protocol-layout {
+    display: grid;
+    grid-template-columns: 1fr 360px;
+    gap: var(--spacing-section);
+    align-items: start;
   }
 
-  .diagram-container {
-    margin-bottom: var(--spacing-block);
-  }
-
-  .diagram-description {
-    color: var(--color-text-muted);
+  /* Component list */
+  .components-intro {
     font-size: var(--text-caption);
+    color: var(--color-text-muted);
+    letter-spacing: 0.04em;
     margin-bottom: var(--spacing-element);
   }
 
-  .diagram {
-    padding: var(--spacing-block);
+  .components ul {
+    list-style: none;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .components li {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--spacing-element);
+    border-left: 2px solid var(--color-accent);
+    padding: var(--spacing-element) var(--spacing-element);
+    border-bottom: 1px solid var(--color-bg-tertiary);
+  }
+
+  .components li:last-child {
+    border-bottom: none;
+  }
+
+  .comp-index {
+    font-family: var(--font-mono);
+    font-size: var(--text-caption);
+    color: var(--color-text-muted);
+    flex-shrink: 0;
+    line-height: 1.6;
+  }
+
+  .comp-body {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .comp-body strong {
+    font-family: var(--font-heading);
+    font-weight: var(--weight-heading);
+    font-size: var(--text-body);
+    color: var(--color-text-primary);
+    letter-spacing: 0.02em;
+  }
+
+  .comp-body span {
+    font-size: var(--text-caption);
+    color: var(--color-text-muted);
+    line-height: var(--leading-caption);
+  }
+
+  /* Diagram column */
+  .diagram-col {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .diagram-fig {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    color: var(--color-text-muted);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: var(--spacing-inline);
+  }
+
+  .diagram-box {
+    border: 1px solid var(--color-bg-tertiary);
     background-color: var(--color-bg-secondary);
-    border: 1.5px solid var(--color-text-primary);
+    padding: var(--spacing-element);
     display: flex;
     justify-content: center;
     align-items: center;
   }
 
-  .diagram svg {
-    max-width: 100%;
+  .diagram-box svg {
+    width: 100%;
+    max-width: 300px;
     height: auto;
   }
 
-  .component-list ul {
-    list-style: none;
-    padding: 0;
+  .diagram-caption {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    color: var(--color-text-muted);
+    margin-top: var(--spacing-inline);
+    line-height: var(--leading-caption);
+    margin-bottom: 0;
   }
 
-  .component-list li {
-    margin-bottom: var(--spacing-element);
-    padding-left: var(--spacing-element);
-    border-left: 2px solid var(--color-accent);
-  }
+  /* Mobile */
+  @media (max-width: 900px) {
+    .protocol-layout {
+      grid-template-columns: 1fr;
+      gap: var(--spacing-block);
+    }
 
-  .component-list strong {
-    font-weight: var(--weight-heading);
-  }
-
-  p {
-    margin-bottom: var(--spacing-element);
-    max-width: 720px;
+    .diagram-col {
+      order: -1;
+    }
   }
 </style>
