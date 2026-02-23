@@ -5,34 +5,81 @@ const lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
 ---
 
-<section class="section">
+<section class="section section--ruled">
   <div class="container">
+    <div class="section-header">
+      <span class="section-num">01</span>
+      <span class="section-rule"></span>
+    </div>
     <h2>{t('structuralCondition.title')}</h2>
-    <p>{t('structuralCondition.p1')}</p>
-    <p>{t('structuralCondition.p2')}</p>
-    <p>{t('structuralCondition.p3')}</p>
-    <p>{t('structuralCondition.p4')}</p>
+    <div class="content">
+      <p>{t('structuralCondition.p1')}</p>
+      <p>{t('structuralCondition.p2')}</p>
+      <p class="emphasis">{t('structuralCondition.p3')}</p>
+      <p class="conclusion">{t('structuralCondition.p4')}</p>
+    </div>
   </div>
 </section>
 
 <style>
-  .section {
+  .section--ruled {
     padding-top: var(--spacing-section);
     padding-bottom: var(--spacing-section);
+  }
+
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-inline);
+    margin-bottom: var(--spacing-block);
+  }
+
+  .section-num {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    color: var(--color-text-muted);
+    letter-spacing: 0.14em;
+    flex-shrink: 0;
+    line-height: 1;
+  }
+
+  .section-rule {
+    display: block;
+    width: 100%;
+    height: 1px;
+    background-color: var(--color-bg-tertiary);
   }
 
   h2 {
     font-family: var(--font-heading);
     font-size: var(--text-h2);
     font-weight: var(--weight-heading);
+    letter-spacing: var(--tracking-heading);
     margin-bottom: var(--spacing-element);
+  }
+
+  .content {
+    max-width: 720px;
   }
 
   p {
     font-family: var(--font-body);
     font-size: var(--text-body);
     color: var(--color-text-primary);
+    line-height: var(--leading-body);
     margin-bottom: var(--spacing-element);
-    max-width: 720px;
+  }
+
+  .emphasis {
+    color: var(--color-text-muted);
+    font-size: 0.9375rem;
+  }
+
+  .conclusion {
+    font-weight: var(--weight-heading);
+    color: var(--color-text-primary);
+    border-left: 2px solid var(--color-accent);
+    padding-left: var(--spacing-inline);
+    margin-bottom: 0;
   }
 </style>
