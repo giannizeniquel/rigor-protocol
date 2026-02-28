@@ -14,6 +14,17 @@ export const ui = {
     'hero.maturityDesc': 'RIGOR Core v0.1 defines the formal semantics of the language and is now frozen. This guarantees determinism, structural consistency, and long-term compatibility for future implementations.',
     'hero.cta': 'Access Specification →',
     
+    // Why RIGOR? (NEW)
+    'whyRigor.title': 'Why RIGOR?',
+    'whyRigor.p1': 'Modern software increasingly relies on AI-assisted generation. Narrative prompts are expressive but ambiguous. As systems grow in complexity, ambiguity increases, drift becomes inevitable, and regeneration becomes unpredictable.',
+    'whyRigor.p2': 'RIGOR exists to introduce structure where narrative fails. It is not a framework or an engine—it is a formal protocol designed to make AI-assisted system generation reliable.',
+    'whyRigor.list.1': 'Deterministic execution semantics',
+    'whyRigor.list.2': 'Explicit state mutation boundaries',
+    'whyRigor.list.3': 'Typed context validation',
+    'whyRigor.list.4': 'Replayable event processing',
+    'whyRigor.list.5': 'Specification-level invariants',
+    'whyRigor.outro': 'RIGOR turns architectural intent into a verifiable contract.',
+    
     // Structural Condition
     'structuralCondition.title': 'Structural Acceleration',
     'structuralCondition.p1': 'AI-native systems increase implementation velocity beyond human structural oversight capacity.',
@@ -59,24 +70,14 @@ export const ui = {
     'whatIsRigor.list.5': 'Validation before execution',
     'whatIsRigor.outro': 'RIGOR separates specification from implementation. The specification defines what is allowed. Implementations execute under those constraints.',
     
-    // Semantic Guarantees (NEW)
-    'semanticGuarantees.title': 'Semantic Guarantees',
-    'semanticGuarantees.intro': 'RIGOR enforces strict semantic rules at the language level:',
-    'semanticGuarantees.list.1': 'Explicit state transitions only',
-    'semanticGuarantees.list.2': 'No implicit mutation',
-    'semanticGuarantees.list.3': 'Deterministic event processing',
-    'semanticGuarantees.list.4': 'Typed and validated context schema',
-    'semanticGuarantees.list.5': 'One event → one transaction',
-    'semanticGuarantees.outro': 'All state changes must occur inside declared transitions triggered by events. No mutation is permitted outside this boundary.',
+    // Deterministic Mutation (NEW/Refinement)
+    'deterministicMutation.title': 'Deterministic Event-Driven Mutation',
+    'deterministicMutation.body': 'In RIGOR, state cannot be modified arbitrarily. All mutations must occur inside explicitly declared transitions triggered by events. No state change is allowed outside the transition model.',
+    'deterministicMutation.guarantees': 'This guarantees deterministic execution, traceable behavior, predictable regeneration, and strong consistency boundaries.',
     
-    // Typed Context Model (NEW)
-    'typedContext.title': 'Typed Context & Structural Validation',
-    'typedContext.intro': 'Every RIGOR Process declares an explicit context schema.',
-    'typedContext.list.1': 'Strongly typed fields',
-    'typedContext.list.2': 'Explicitly declared mutable fields',
-    'typedContext.list.3': 'Structural validation before execution',
-    'typedContext.list.4': 'JSON-schema compatible',
-    'typedContext.outro': 'The Engine validates structure and types before processing events. Invalid specifications are rejected before runtime.',
+    // Typed Context Model (Refinement)
+    'typedContext.title': 'Typed Context & Schema Validation',
+    'typedContext.body': 'RIGOR specifications define an explicit and typed context schema. Every process declares the structure of its persistent state, allowed data types, and required fields. RIGOR eliminates runtime ambiguity by enforcing compile-time structural validation.',
     
     // Specification vs Implementation (NEW)
     'specVsEngine.title': 'Specification First. Engine Second.',
@@ -101,15 +102,9 @@ export const ui = {
     'coreInvariants.6.title': 'Specification / Implementation Separation',
     'coreInvariants.6.description': 'RIGOR defines a protocol. Engines implement it. The language is independent of any runtime.',
     
-    // RIGOR Core v0.1 (NEW)
-    'coreVersion.title': 'RIGOR Core v0.1 — Frozen Semantic Model',
-    'coreVersion.intro': 'The semantic core of RIGOR v0.1 is formally defined and frozen.',
-    'coreVersion.list.1': 'Event-driven state machine',
-    'coreVersion.list.2': 'Typed and validated context schema',
-    'coreVersion.list.3': 'Explicit mutation declaration',
-    'coreVersion.list.4': 'No external mutation allowed',
-    'coreVersion.list.5': 'Terminal state irreversibility',
-    'coreVersion.outro': 'This version establishes the minimal invariant foundation of the protocol.',
+    // RIGOR Core v0.1 (Refinement)
+    'coreVersion.title': 'Stable Core, Classified Evolution',
+    'coreVersion.body': 'RIGOR Core v0.1 defines the minimal invariant semantics of the protocol. Core invariants are frozen and versioned. Future evolution follows a classified model (Patch, Minor, Major) to ensure safe long-term adoption.',
     
     // Backend-First Strategy (NEW)
     'backendFirst.title': 'Backend-First Strategy',
@@ -120,15 +115,9 @@ export const ui = {
     'backendFirst.list.4': 'API contract governance',
     'backendFirst.outro': 'Frontend and contract derivations may emerge from the backend specification layer.',
     
-    // Transaction Model (UPDATED)
-    'transactionModel.title': 'Transactional Event Processing',
-    'transactionModel.intro': 'RIGOR processes events sequentially and transactionally.',
-    'transactionModel.list.1': '1. Load process state',
-    'transactionModel.list.2': '2. Validate transition',
-    'transactionModel.list.3': '3. Apply declared mutations',
-    'transactionModel.list.4': '4. Persist atomically',
-    'transactionModel.list.5': '5. Emit resulting commands or events',
-    'transactionModel.outro': 'Failure at any step aborts the transaction.',
+    // Transaction Model (Refinement)
+    'transactionModel.title': 'Transactional Execution Model',
+    'transactionModel.body': 'Every event processed by a RIGOR Engine is handled in isolation, produces at most one state transition, and persists its effects atomically. Failure during processing results in no partial state mutation or ambiguous intermediate states.',
     
     // Project Status (UPDATED)
     'projectStatus.title': 'Project Status',
@@ -224,6 +213,17 @@ export const ui = {
     'hero.maturityDesc': 'RIGOR Core v0.1 define la semántica formal del lenguaje y ahora está congelado. Esto garantiza el determinismo, la consistencia estructural y la compatibilidad a largo plazo para futuras implementaciones.',
     'hero.cta': 'Acceder a la Especificación →',
     
+    // Why RIGOR? (NEW)
+    'whyRigor.title': '¿Por qué RIGOR?',
+    'whyRigor.p1': 'El software moderno depende cada vez más de la generación asistida por IA. Los prompts narrativos son expresivos pero ambiguos. A medida que los sistemas crecen en complejidad, la ambigüedad aumenta, el desvío se vuelve inevitable y la regeneración se vuelve impredecible.',
+    'whyRigor.p2': 'RIGOR existe para introducir estructura donde la narrativa falla. No es un framework ni un motor; es un protocolo formal diseñado para hacer que la generación de sistemas asistida por IA sea confiable.',
+    'whyRigor.list.1': 'Semántica de ejecución determinista',
+    'whyRigor.list.2': 'Límites explícitos de mutación de estado',
+    'whyRigor.list.3': 'Validación de contexto tipada',
+    'whyRigor.list.4': 'Procesamiento de eventos reproducible',
+    'whyRigor.list.5': 'Invariantes a nivel de especificación',
+    'whyRigor.outro': 'RIGOR convierte la intención arquitectónica en un contrato verificable.',
+    
     // Structural Condition
     'structuralCondition.title': 'Aceleración Estructural',
     'structuralCondition.p1': 'Los sistemas nativos de IA incrementan la velocidad de implementación más allá de la capacidad de supervisión estructural humana.',
@@ -285,24 +285,14 @@ export const ui = {
     'whatIsRigor.list.5': 'Validación antes de ejecución',
     'whatIsRigor.outro': 'RIGOR separa la especificación de la implementación. La especificación define qué está permitido. Las implementaciones se ejecutan bajo esas restricciones.',
     
-    // Semantic Guarantees (NEW)
-    'semanticGuarantees.title': 'Garantías Semánticas',
-    'semanticGuarantees.intro': 'RIGOR aplica reglas semánticas estrictas a nivel de lenguaje:',
-    'semanticGuarantees.list.1': 'Solo transiciones de estado explícitas',
-    'semanticGuarantees.list.2': 'Sin mutaciones implícitas',
-    'semanticGuarantees.list.3': 'Procesamiento de eventos determinista',
-    'semanticGuarantees.list.4': 'Esquema de contexto tipado y validado',
-    'semanticGuarantees.list.5': 'Un evento → una transacción',
-    'semanticGuarantees.outro': 'Todos los cambios de estado deben ocurrir dentro de transiciones declaradas activadas por eventos. No se permite ninguna mutación fuera de este límite.',
+    // Deterministic Mutation (NEW/Refinement)
+    'deterministicMutation.title': 'Mutación Determinista Dirigida por Eventos',
+    'deterministicMutation.body': 'En RIGOR, el estado no puede modificarse arbitrariamente. Todas las mutaciones deben ocurrir dentro de transiciones declaradas explícitamente activadas por eventos. No se permite ningún cambio de estado fuera del modelo de transición.',
+    'deterministicMutation.guarantees': 'Esto garantiza una ejecución determinista, un comportamiento rastreable, una regeneración predecible y límites de consistencia fuertes.',
     
-    // Typed Context Model (NEW)
-    'typedContext.title': 'Contexto Tipado y Validación Estructural',
-    'typedContext.intro': 'Cada proceso RIGOR declara un esquema de contexto explícito.',
-    'typedContext.list.1': 'Campos fuertemente tipados',
-    'typedContext.list.2': 'Campos mutables declarados explícitamente',
-    'typedContext.list.3': 'Validación estructural previa a la ejecución',
-    'typedContext.list.4': 'Compatible con JSON-schema',
-    'typedContext.outro': 'El Motor valida la estructura y los tipos antes de procesar los eventos. Las especificaciones no válidas se rechazan antes del tiempo de ejecución.',
+    // Typed Context Model (Refinement)
+    'typedContext.title': 'Contexto Tipado y Validación de Esquema',
+    'typedContext.body': 'Las especificaciones RIGOR definen un esquema de contexto explícito y tipado. Cada proceso declara la estructura de su estado persistente, los tipos de datos permitidos y los campos obligatorios. RIGOR elimina la ambigüedad en tiempo de ejecución al aplicar una validación estructural en tiempo de compilación.',
     
     // Specification vs Implementation (NEW)
     'specVsEngine.title': 'Primero la Especificación. Segundo el Motor.',
@@ -311,15 +301,9 @@ export const ui = {
     'specVsEngine.list.2': 'Cualquier motor compatible puede implementar la ejecución.',
     'specVsEngine.list.3': 'El motor de referencia oficial servirá como una implementación normativa, pero el lenguaje sigue siendo independiente de la implementación.',
     
-    // RIGOR Core v0.1 (NEW)
-    'coreVersion.title': 'RIGOR Core v0.1 — Modelo Semántico Congelado',
-    'coreVersion.intro': 'El núcleo semántico de RIGOR v0.1 está formalmente definido y congelado.',
-    'coreVersion.list.1': 'Máquina de estado dirigida por eventos',
-    'coreVersion.list.2': 'Esquema de contexto tipado y validado',
-    'coreVersion.list.3': 'Declaración de mutación explícita',
-    'coreVersion.list.4': 'No se permite mutación externa',
-    'coreVersion.list.5': 'Irreversibilidad del estado terminal',
-    'coreVersion.outro': 'Esta versión establece la base mínima invariante del protocolo.',
+    // RIGOR Core v0.1 (Refinement)
+    'coreVersion.title': 'Núcleo Estable, Evolución Clasificada',
+    'coreVersion.body': 'RIGOR Core v0.1 define la semántica invariante mínima del protocolo. Los invariantes del núcleo están congelados y versionados. La evolución futura sigue un modelo clasificado (Parche, Menor, Mayor) para garantizar una adopción segura a largo plazo.',
     
     // Backend-First Strategy (NEW)
     'backendFirst.title': 'Estrategia Backend-First',
@@ -330,15 +314,9 @@ export const ui = {
     'backendFirst.list.4': 'Gobernanza de contratos API',
     'backendFirst.outro': 'Las derivaciones de frontend y contratos pueden emerger de la capa de especificación del backend.',
     
-    // Transaction Model (UPDATED)
-    'transactionModel.title': 'Procesamiento de Eventos Transaccional',
-    'transactionModel.intro': 'RIGOR procesa los eventos de forma secuencial y transaccional.',
-    'transactionModel.list.1': '1. Cargar el estado del proceso',
-    'transactionModel.list.2': '2. Validar la transición',
-    'transactionModel.list.3': '3. Aplicar mutaciones declaradas',
-    'transactionModel.list.4': '4. Persistir atómicamente',
-    'transactionModel.list.5': '5. Emitir comandos o eventos resultantes',
-    'transactionModel.outro': 'Cualquier fallo en algún paso aborta la transacción.',
+    // Transaction Model (Refinement)
+    'transactionModel.title': 'Modelo de Ejecución Transaccional',
+    'transactionModel.body': 'Cada evento procesado por un Motor RIGOR se maneja de forma aislada, produce como máximo una transición de estado y persiste sus efectos de forma atómica. El fallo durante el procesamiento no produce mutaciones parciales de estado ni estados intermedios ambiguos.',
     
     // Project Status (UPDATED)
     'projectStatus.title': 'Estado del Proyecto',

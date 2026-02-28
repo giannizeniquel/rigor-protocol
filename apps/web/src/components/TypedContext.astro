@@ -13,14 +13,7 @@ const t = useTranslations(lang);
     </div>
     <h2>{t('typedContext.title')}</h2>
     <div class="content">
-      <p class="intro">{t('typedContext.intro')}</p>
-      <ul class="feature-list">
-        <li>{t('typedContext.list.1')}</li>
-        <li>{t('typedContext.list.2')}</li>
-        <li>{t('typedContext.list.3')}</li>
-        <li>{t('typedContext.list.4')}</li>
-      </ul>
-      <p class="outro">{t('typedContext.outro')}</p>
+      <p class="body">{t('typedContext.body')}</p>
     </div>
   </div>
 </section>
@@ -66,34 +59,10 @@ const t = useTranslations(lang);
     max-width: 720px;
   }
 
-  .intro {
+  .body {
     font-family: var(--font-body);
     font-size: var(--text-body);
     color: var(--color-text-primary);
-    line-height: var(--leading-body);
-    margin-bottom: var(--spacing-element);
-  }
-
-  .feature-list {
-    list-style: none;
-    padding: 0;
-    margin: var(--spacing-block) 0;
-  }
-
-  .feature-list li {
-    font-family: var(--font-mono);
-    font-size: 0.875rem;
-    color: var(--color-text-primary);
-    padding: var(--spacing-element) 0;
-    padding-left: var(--spacing-inline);
-    border-left: 2px solid var(--color-accent);
-    margin-bottom: var(--spacing-inline);
-  }
-
-  .outro {
-    font-family: var(--font-body);
-    font-size: var(--text-body);
-    color: var(--color-text-muted);
     line-height: var(--leading-body);
     margin-bottom: 0;
   }

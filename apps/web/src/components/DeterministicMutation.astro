@@ -8,12 +8,15 @@ const t = useTranslations(lang);
 <section class="section section--ruled">
   <div class="container">
     <div class="section-header">
-      <span class="section-num">07</span>
+      <span class="section-num">04</span>
       <span class="section-rule"></span>
     </div>
-    <h2>{t('coreVersion.title')}</h2>
+    <h2>{t('deterministicMutation.title')}</h2>
     <div class="content">
-      <p class="body">{t('coreVersion.body')}</p>
+      <p class="body">{t('deterministicMutation.body')}</p>
+      <div class="guarantees">
+        <p class="guarantees-label">{t('deterministicMutation.guarantees')}</p>
+      </div>
     </div>
   </div>
 </section>
@@ -63,6 +66,19 @@ const t = useTranslations(lang);
     font-family: var(--font-body);
     font-size: var(--text-body);
     color: var(--color-text-primary);
+    line-height: var(--leading-body);
+    margin-bottom: var(--spacing-block);
+  }
+
+  .guarantees {
+    border-left: 2px solid var(--color-accent);
+    padding-left: var(--spacing-inline);
+  }
+
+  .guarantees-label {
+    font-family: var(--font-mono);
+    font-size: var(--text-caption);
+    color: var(--color-text-muted);
     line-height: var(--leading-body);
     margin-bottom: 0;
   }
