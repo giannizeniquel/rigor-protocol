@@ -21,11 +21,20 @@
 
 ---
 
+### ✅ Fase 11: Actualización de la Página de Inicio de Documentación (v1.0)
+- **Alineación Normativa Profunda:** Inclusión de "Por qué RIGOR?" y formalización de 5 invariantes fundamentales.
+- **Clarificación Estándar vs Motor:** Definición de la naturaleza abierta e independiente de la especificación.
+- **Restricciones de Diseño Explícitas:** Definición clara del alcance (excluyendo UI, infra, etc.).
+- **Visión a Largo Plazo:** Hoja de ruta conservadora para capas derivadas (API, frontend, etc.).
+- **Sincronización i18n:** Traducción técnica completa al español manteniendo la integridad conceptual.
+
+---
+
 ## 2. Estado del Repositorio
-El proyecto se encuentra en su estado definitivo de lanzamiento `v3.0` (Lanzamiento de Estándar Formal).
+El proyecto se encuentra en su estado definitivo de lanzamiento `v3.1` (Lanzamiento de Estándar Web y Documentación Finalizados).
 - **Ramas:** `main` (Producción).
-- **Cobertura:** Landing v3 + Docs + Design System.
-- **Idiomas:** EN / ES (Máxima Precisión).
+- **Cobertura:** Landing v3 + Docs v1 + Design System.
+- **Idiomas:** EN / ES (Sincronizados y Técnicamente Precisos).
 - **URLs:**
   - Landing: https://rigor-protocol.pages.dev
   - Docs: https://rigor-docs.pages.dev
