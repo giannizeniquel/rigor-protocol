@@ -28,18 +28,19 @@
 - **Visión a Largo Plazo:** Hoja de ruta conservadora para capas derivadas (API, frontend, etc.).
 - **Sincronización i18n:** Traducción técnica completa al español manteniendo la integridad conceptual.
 
-### ✅ Fase 12: Actualización de la Especificación "Identity Core" (v1.0)
-- **Integración de Pilares Semánticos:** Inclusión de Contexto Tipado, Mutación Dirigida por Eventos y Semántica Transaccional.
-- **Congelación del Núcleo:** Formalización de la estabilidad del modelo semántico v0.1.
-- **Independencia del Motor:** Refuerzo de la distinción entre especificación formal e implementación de referencia.
-- **Consistencia en Inglés y Español:** Sincronización técnica total de la base conceptual del protocolo.
+### ✅ Fase 13: Actualización de la Especificación "Protocol Model" (v1.0)
+- **Formalización de Mutación y Contexto:** Inclusión de Esquema de Contexto Tipado y Modelo de Mutación Dirigido por Eventos.
+- **Garantías Transaccionales:** Definición de semántica de eventos atómica y modelo de cola para eventos internos.
+- **Invariantes Extendidos:** Ampliación a 8 invariantes normativos (Atomicidad, Replay, Localidad, etc.).
+- **Modelo de Consistencia Fuerte:** Formalización de la consistencia a nivel de proceso.
+- **Sincronización Multilingüe:** Actualización coordinada en inglés y español con renumeración estructural completa.
 
 ---
 
 ## 2. Estado del Repositorio
-El proyecto se encuentra en su estado definitivo de lanzamiento `v3.2` (Identidad y Especificación Core Alineadas).
+El proyecto se encuentra en su estado definitivo de lanzamiento `v3.3` (Especificación del Modelo de Protocolo Formalizada).
 - **Ramas:** `main` (Producción).
-- **Cobertura:** Landing v3 + Docs v1 + Identity Core v1.
+- **Cobertura:** Landing v3 + Docs v1 + Identity Core v1 + Protocol Model v1.
 - **Idiomas:** EN / ES (Sincronizados y Técnicamente Precisos).
 - **URLs:**
   - Landing: https://rigor-protocol.pages.dev

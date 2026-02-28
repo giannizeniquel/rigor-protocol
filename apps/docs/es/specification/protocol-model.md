@@ -40,16 +40,62 @@ El motor evalúa el cumplimiento estructural y confirma transiciones determinís
 ### 3.5 Capa de Evolución
 Define cómo se clasifican los cambios estructurales. Cada cambio debe categorizarse explícitamente como **Compatible**, **Condicional** o **Rompedor**. La evolución estructural silenciosa está prohibida.
 
-## 4. Invariantes del Protocolo
+### 3.6 Esquema de Contexto y Sistema de Tipos
+Cada proceso RIGOR DEBE declarar un `context_schema` tipado. El contexto representa los datos de estado persistentes propiedad de la instancia del proceso.
+
+**Requisitos:**
+* Todos los campos deben declararse explícitamente con un tipo estático.
+* No se permiten propiedades implícitas.
+* Las mutaciones de contexto deben ajustarse a los tipos declarados.
+* Los campos desconocidos se rechazan en el momento de la validación.
+
+Sin un esquema de contexto declarado, un proceso no es válido. Esto permite la validación estática, la legalidad de la mutación determinista y la compatibilidad entre motores.
+
+## 4. Modelo de Mutación Dirigido por Eventos
+
+RIGOR impone una arquitectura de mutación dirigida por eventos. El estado y el contexto solo pueden cambiar dentro de transiciones declaradas explícitamente activadas por eventos.
+
+Una transición válida debe:
+1. Declarar el evento activador.
+2. Declarar el estado de destino.
+3. Declarar explícitamente qué campos del contexto mutan.
+
+El protocolo prohíbe las mutaciones fuera de las transiciones. Esta restricción garantiza la trazabilidad estructural, la evolución predecible del estado y la eliminación de efectos secundarios ocultos.
+
+## 5. Invariantes Extendidos del Protocolo
 
 Las siguientes propiedades son obligatorias para cualquier sistema compatible con RIGOR:
 
-- **Transición Determinística**: Dado un Estado + Evento + Versión, el resultado debe ser una única transición válida o una violación estructural tipificada. No se permite ambigüedad.
-- **Explicidad**: Todas las transiciones deben ser declaradas. El comportamiento implícito viola el protocolo.
-- **Precedencia de Validación**: La validación siempre debe preceder a la ejecución. Si la validación falla, la ejecución no debe ocurrir.
-- **Clasificación de Evolución**: Todos los cambios estructurales deben estar tipificados por versión. La evolución no clasificada invalida las garantías de compatibilidad.
+1. **Invariante de Tipado Explícito**: Todos los datos del contexto deben estar declarados en el esquema. No se permiten propiedades dinámicas.
+2. **Invariante de Localidad de Mutación**: La mutación del contexto solo puede ocurrir dentro de transiciones declaradas activadas por eventos.
+3. **Invariante de Atomicidad de Eventos**: Cada evento se procesa como una unidad transaccional independiente (Todo o Nada).
+4. **Transición Determinística**: Dado un Estado + Evento, la transición resultante está definida de forma única.
+5. **Invariante de Reproducción Determinista**: Dado el mismo estado inicial y una secuencia de eventos ordenada, el resultado debe ser idéntico.
+6. **Precedencia de Validación**: La validación estructural siempre debe preceder a la ejecución.
+7. **Invariante de Ausencia de Efectos Secundarios Implícitos**: El protocolo no permite mutaciones de estado ocultas o no declaradas.
+8. **Invariante de Estabilidad Terminal**: Los estados terminales no pueden emitir más transiciones.
 
-## 5. Flujo de Validación Estructural
+## 6. Semántica de Eventos Transaccionales
+
+Cada evento procesado constituye una única unidad transaccional atómica. El manejo de eventos debe ejecutar los siguientes pasos:
+1. Validar que el evento es aplicable en el estado actual.
+2. Evaluar guards opcionales (que deben ser puros).
+3. Aplicar mutaciones de contexto declaradas.
+4. Transicionar al nuevo estado.
+5. Persistir el nuevo estado y el contexto de forma atómica.
+
+Si falla algún paso, no se persiste ninguna mutación y el proceso permanece en su estado anterior. Esto garantiza una consistencia fuerte a nivel de proceso.
+
+## 7. Emisión y Cola de Eventos Internos
+
+RIGOR permite la emisión de eventos internos. Sin embargo:
+* Los eventos emitidos DEBEN ponerse en cola.
+* NO DEBEN procesarse dentro del mismo límite transaccional.
+* DEBEN procesarse como eventos posteriores independientes.
+
+Esto preserva la semántica de eventos atómicos y el comportamiento de reproducción determinista.
+
+## 8. Flujo de Validación Estructural
 
 El protocolo requiere un ciclo de vida de validación en dos pasos:
 
@@ -58,11 +104,24 @@ El protocolo requiere un ciclo de vida de validación en dos pasos:
 
 El fallo en cualquier etapa invalida el proceso.
 
-## 6. Delimitación Estructural
+## 9. Delimitación Estructural
 
 RIGOR introduce la propiedad de **Delimitación Estructural**: un sistema no puede evolucionar más allá de su dominio estructural declarado sin una ruptura de versión explícita. Esto asegura evolución trazable, migración predecible y compatibilidad determinística.
 
-## 7. Separación de Responsabilidades
+## 10. Modelo de Consistencia
+
+RIGOR garantiza una **consistencia fuerte** a nivel de proceso. No requiere transacciones distribuidas globales. En su lugar, la consistencia se logra mediante el procesamiento atómico por evento, la lógica de transición determinista y los contratos de eventos explícitos. Los sistemas externos deben integrarse a través de límites de eventos.
+
+## 11. Estabilidad y Evolución del Núcleo
+
+RIGOR Core v0.1 se considera semánticamente congelado. Los cambios deben clasificarse explícitamente como:
+* **Compatible** (aditivo)
+* **Condicionalmente Compatible**
+* **Rompedor** (Breaking - requiere un incremento de versión mayor)
+
+Esta política protege la estabilidad del ecosistema y garantiza que los cambios rompedores sean intencionales y manejables.
+
+## 12. Separación de Responsabilidades
 
 El protocolo enforceza separación formal entre cuatro capas distintas:
 1. **Definición de Lenguaje** (El DSL de RIGOR).
