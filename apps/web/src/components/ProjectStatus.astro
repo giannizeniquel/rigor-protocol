@@ -8,7 +8,7 @@ const t = useTranslations(lang);
 <section class="section section--ruled">
   <div class="container">
     <div class="section-header">
-      <span class="section-num">13</span>
+      <span class="section-num">16</span>
       <span class="section-rule"></span>
     </div>
     <h2>{t('projectStatus.title')}</h2>
@@ -16,8 +16,9 @@ const t = useTranslations(lang);
       <ul class="status-list">
         <li><span class="status-indicator frozen"></span>{t('projectStatus.list.1')}</li>
         <li><span class="status-indicator defined"></span>{t('projectStatus.list.2')}</li>
-        <li><span class="status-indicator defined"></span>{t('projectStatus.list.3')}</li>
-        <li><span class="status-indicator in-progress"></span>{t('projectStatus.list.4')}</li>
+        <li><span class="status-indicator in-progress"></span>{t('projectStatus.list.3')}</li>
+        <li><span class="status-indicator planned"></span>{t('projectStatus.list.4')}</li>
+        <li><span class="status-indicator target"></span>{t('projectStatus.list.5')}</li>
       </ul>
       <p class="outro">{t('projectStatus.outro')}</p>
     </div>
@@ -99,6 +100,16 @@ const t = useTranslations(lang);
   .status-indicator.in-progress {
     background-color: var(--color-text-primary);
     animation: pulse 2s infinite;
+  }
+
+  .status-indicator.planned {
+    background-color: var(--color-text-muted);
+    opacity: 0.6;
+  }
+
+  .status-indicator.target {
+    background-color: var(--color-accent);
+    opacity: 0.6;
   }
 
   @keyframes pulse {

@@ -10,6 +10,8 @@ export const ui = {
     'hero.subtitle': 'A typed, event-driven constraint protocol for AI-generated systems.',
     'hero.tertiary': 'RIGOR is a formal specification language designed to constrain, validate and govern AI-generated backend systems.',
     'hero.optional': 'It defines explicit state transitions, typed context mutation rules, and deterministic execution boundaries.',
+    'hero.maturity': 'Core Semantic Version v0.1 — Frozen and Normative',
+    'hero.maturityDesc': 'RIGOR Core v0.1 defines the formal semantics of the language and is now frozen. This guarantees determinism, structural consistency, and long-term compatibility for future implementations.',
     'hero.cta': 'Access Specification →',
     
     // Structural Condition
@@ -57,6 +59,32 @@ export const ui = {
     'whatIsRigor.list.5': 'Validation before execution',
     'whatIsRigor.outro': 'RIGOR separates specification from implementation. The specification defines what is allowed. Implementations execute under those constraints.',
     
+    // Semantic Guarantees (NEW)
+    'semanticGuarantees.title': 'Semantic Guarantees',
+    'semanticGuarantees.intro': 'RIGOR enforces strict semantic rules at the language level:',
+    'semanticGuarantees.list.1': 'Explicit state transitions only',
+    'semanticGuarantees.list.2': 'No implicit mutation',
+    'semanticGuarantees.list.3': 'Deterministic event processing',
+    'semanticGuarantees.list.4': 'Typed and validated context schema',
+    'semanticGuarantees.list.5': 'One event → one transaction',
+    'semanticGuarantees.outro': 'All state changes must occur inside declared transitions triggered by events. No mutation is permitted outside this boundary.',
+    
+    // Typed Context Model (NEW)
+    'typedContext.title': 'Typed Context & Structural Validation',
+    'typedContext.intro': 'Every RIGOR Process declares an explicit context schema.',
+    'typedContext.list.1': 'Strongly typed fields',
+    'typedContext.list.2': 'Explicitly declared mutable fields',
+    'typedContext.list.3': 'Structural validation before execution',
+    'typedContext.list.4': 'JSON-schema compatible',
+    'typedContext.outro': 'The Engine validates structure and types before processing events. Invalid specifications are rejected before runtime.',
+    
+    // Specification vs Implementation (NEW)
+    'specVsEngine.title': 'Specification First. Engine Second.',
+    'specVsEngine.intro': 'RIGOR is a specification, not an engine.',
+    'specVsEngine.list.1': 'The Core defines the semantics.',
+    'specVsEngine.list.2': 'Any compliant engine may implement execution.',
+    'specVsEngine.list.3': 'The official reference engine will serve as a normative implementation, but the language remains implementation-independent.',
+    
     // Core Invariants
     'coreInvariants.title': 'Core Invariants',
     'coreInvariants.intro': 'The following properties are non-negotiable across all RIGOR-compliant systems:',
@@ -92,20 +120,24 @@ export const ui = {
     'backendFirst.list.4': 'API contract governance',
     'backendFirst.outro': 'Frontend and contract derivations may emerge from the backend specification layer.',
     
-    // Transaction Model (NEW)
-    'transactionModel.title': 'Transaction Model',
-    'transactionModel.intro': 'Each processed event represents an isolated transactional unit.',
-    'transactionModel.list.1': 'Context mutation occurs only during event transitions.',
-    'transactionModel.list.2': 'No partial state application is allowed.',
-    'transactionModel.list.3': 'Strong consistency with external systems is enforced through controlled invocation patterns.',
+    // Transaction Model (UPDATED)
+    'transactionModel.title': 'Transactional Event Processing',
+    'transactionModel.intro': 'RIGOR processes events sequentially and transactionally.',
+    'transactionModel.list.1': '1. Load process state',
+    'transactionModel.list.2': '2. Validate transition',
+    'transactionModel.list.3': '3. Apply declared mutations',
+    'transactionModel.list.4': '4. Persist atomically',
+    'transactionModel.list.5': '5. Emit resulting commands or events',
+    'transactionModel.outro': 'Failure at any step aborts the transaction.',
     
-    // Project Status (NEW)
+    // Project Status (UPDATED)
     'projectStatus.title': 'Project Status',
-    'projectStatus.list.1': 'Specification Core v0.1 — Frozen',
-    'projectStatus.list.2': 'Reference Specification (YAML/JSON) — Defined',
-    'projectStatus.list.3': 'Validation Rules — Defined',
-    'projectStatus.list.4': 'Official Engine — In development',
-    'projectStatus.outro': 'RIGOR is evolving as an open standard intended for community governance.',
+    'projectStatus.list.1': 'RIGOR Core v0.1 — Formal Specification Complete',
+    'projectStatus.list.2': 'Specification Documents — Public',
+    'projectStatus.list.3': 'Validator CLI — In development',
+    'projectStatus.list.4': 'Reference Engine (MVP) — Planned',
+    'projectStatus.list.5': 'Community Governance — Target Phase',
+    'projectStatus.outro': 'RIGOR aims to become an open, implementable standard for deterministic AI-constrained systems.',
     
     // Open Standard (NEW)
     'openStandard.title': 'Open Standard',
@@ -166,9 +198,9 @@ export const ui = {
     'protocolVsPrompt.table.output.protocol': 'Bounded execution',
     'protocolVsPrompt.statement': 'Prompt engineering attempts to guide probabilistic behavior. AI Constraint Protocol constrains structural possibility.',
     
-    // Specification Access
-    'specificationAccess.title': 'Normative Documentation',
-    'specificationAccess.body': 'Complete protocol specification, process definitions, and implementation guidance available in formal documentation.',
+    // Specification Access (UPDATED)
+    'specificationAccess.title': 'Contribute on GitHub',
+    'specificationAccess.body': 'Help refine the specification. Build compatible engines. Participate in future governance.',
     'specificationAccess.cta': 'Access Specification →',
     'specificationAccess.secondary': 'View on GitHub →',
     
@@ -188,6 +220,8 @@ export const ui = {
     'hero.subtitle': 'Un protocolo de restricciones tipado y dirigido por eventos para sistemas generados por IA.',
     'hero.tertiary': 'RIGOR es un lenguaje de especificación formal diseñado para restringir, validar y governar sistemas de backend generados por IA.',
     'hero.optional': 'Define transiciones de estado explícitas, reglas de mutación de contexto tipadas y límites de ejecución deterministas.',
+    'hero.maturity': 'Versión Semántica Core v0.1 — Congelada y Normativa',
+    'hero.maturityDesc': 'RIGOR Core v0.1 define la semántica formal del lenguaje y ahora está congelado. Esto garantiza el determinismo, la consistencia estructural y la compatibilidad a largo plazo para futuras implementaciones.',
     'hero.cta': 'Acceder a la Especificación →',
     
     // Structural Condition
@@ -251,6 +285,32 @@ export const ui = {
     'whatIsRigor.list.5': 'Validación antes de ejecución',
     'whatIsRigor.outro': 'RIGOR separa la especificación de la implementación. La especificación define qué está permitido. Las implementaciones se ejecutan bajo esas restricciones.',
     
+    // Semantic Guarantees (NEW)
+    'semanticGuarantees.title': 'Garantías Semánticas',
+    'semanticGuarantees.intro': 'RIGOR aplica reglas semánticas estrictas a nivel de lenguaje:',
+    'semanticGuarantees.list.1': 'Solo transiciones de estado explícitas',
+    'semanticGuarantees.list.2': 'Sin mutaciones implícitas',
+    'semanticGuarantees.list.3': 'Procesamiento de eventos determinista',
+    'semanticGuarantees.list.4': 'Esquema de contexto tipado y validado',
+    'semanticGuarantees.list.5': 'Un evento → una transacción',
+    'semanticGuarantees.outro': 'Todos los cambios de estado deben ocurrir dentro de transiciones declaradas activadas por eventos. No se permite ninguna mutación fuera de este límite.',
+    
+    // Typed Context Model (NEW)
+    'typedContext.title': 'Contexto Tipado y Validación Estructural',
+    'typedContext.intro': 'Cada proceso RIGOR declara un esquema de contexto explícito.',
+    'typedContext.list.1': 'Campos fuertemente tipados',
+    'typedContext.list.2': 'Campos mutables declarados explícitamente',
+    'typedContext.list.3': 'Validación estructural previa a la ejecución',
+    'typedContext.list.4': 'Compatible con JSON-schema',
+    'typedContext.outro': 'El Motor valida la estructura y los tipos antes de procesar los eventos. Las especificaciones no válidas se rechazan antes del tiempo de ejecución.',
+    
+    // Specification vs Implementation (NEW)
+    'specVsEngine.title': 'Primero la Especificación. Segundo el Motor.',
+    'specVsEngine.intro': 'RIGOR es una especificación, no un motor.',
+    'specVsEngine.list.1': 'El Core define la semántica.',
+    'specVsEngine.list.2': 'Cualquier motor compatible puede implementar la ejecución.',
+    'specVsEngine.list.3': 'El motor de referencia oficial servirá como una implementación normativa, pero el lenguaje sigue siendo independiente de la implementación.',
+    
     // RIGOR Core v0.1 (NEW)
     'coreVersion.title': 'RIGOR Core v0.1 — Modelo Semántico Congelado',
     'coreVersion.intro': 'El núcleo semántico de RIGOR v0.1 está formalmente definido y congelado.',
@@ -270,20 +330,24 @@ export const ui = {
     'backendFirst.list.4': 'Gobernanza de contratos API',
     'backendFirst.outro': 'Las derivaciones de frontend y contratos pueden emerger de la capa de especificación del backend.',
     
-    // Transaction Model (NEW)
-    'transactionModel.title': 'Modelo de Transacciones',
-    'transactionModel.intro': 'Cada evento procesado representa una unidad transaccional aislada.',
-    'transactionModel.list.1': 'La mutación de contexto ocurre solo durante las transiciones de eventos.',
-    'transactionModel.list.2': 'No se permite la aplicación parcial del estado.',
-    'transactionModel.list.3': 'La consistencia fuerte con sistemas externos se aplica a través de patrones de invocación controlados.',
+    // Transaction Model (UPDATED)
+    'transactionModel.title': 'Procesamiento de Eventos Transaccional',
+    'transactionModel.intro': 'RIGOR procesa los eventos de forma secuencial y transaccional.',
+    'transactionModel.list.1': '1. Cargar el estado del proceso',
+    'transactionModel.list.2': '2. Validar la transición',
+    'transactionModel.list.3': '3. Aplicar mutaciones declaradas',
+    'transactionModel.list.4': '4. Persistir atómicamente',
+    'transactionModel.list.5': '5. Emitir comandos o eventos resultantes',
+    'transactionModel.outro': 'Cualquier fallo en algún paso aborta la transacción.',
     
-    // Project Status (NEW)
+    // Project Status (UPDATED)
     'projectStatus.title': 'Estado del Proyecto',
-    'projectStatus.list.1': 'Núcleo de Especificación v0.1 — Congelado',
-    'projectStatus.list.2': 'Especificación de Referencia (YAML/JSON) — Definida',
-    'projectStatus.list.3': 'Reglas de Validación — Definidas',
-    'projectStatus.list.4': 'Motor Oficial — En desarrollo',
-    'projectStatus.outro': 'RIGOR está evolucionando como un estándar abierto destinado a la gobernanza comunitaria.',
+    'projectStatus.list.1': 'RIGOR Core v0.1 — Especificación Formal Completa',
+    'projectStatus.list.2': 'Documentos de Especificación — Públicos',
+    'projectStatus.list.3': 'CLI de Validación — En desarrollo',
+    'projectStatus.list.4': 'Motor de Referencia (MVP) — Planificado',
+    'projectStatus.list.5': 'Gobernanza Comunitaria — Fase Objetivo',
+    'projectStatus.outro': 'RIGOR aspira a convertirse en un estándar abierto e implementable para sistemas deterministas restringidos por IA.',
     
     // Open Standard (NEW)
     'openStandard.title': 'Estándar Abierto',
@@ -344,9 +408,9 @@ export const ui = {
     'protocolVsPrompt.table.output.protocol': 'Ejecución delimitada',
     'protocolVsPrompt.statement': 'La ingeniería de intentos guiar el comportamiento probabilístico. El Protocolo de Restricción de IA restringe la posibilidad estructural.',
     
-    // Specification Access
-    'specificationAccess.title': 'Documentación Normativa',
-    'specificationAccess.body': 'Especificación completa del protocolo, definiciones de procesos y guía de implementación disponibles en documentación formal.',
+    // Specification Access (UPDATED)
+    'specificationAccess.title': 'Contribuye en GitHub',
+    'specificationAccess.body': 'Ayuda a refinar la especificación. Construye motores compatibles. Participa en la futura gobernanza.',
     'specificationAccess.cta': 'Acceder a la Especificación →',
     'specificationAccess.secondary': 'Ver en GitHub →',
     
