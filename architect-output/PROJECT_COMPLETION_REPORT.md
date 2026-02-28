@@ -28,20 +28,19 @@
 - **Visión a Largo Plazo:** Hoja de ruta conservadora para capas derivadas (API, frontend, etc.).
 - **Sincronización i18n:** Traducción técnica completa al español manteniendo la integridad conceptual.
 
-### ✅ Fase 15: Actualización de la Especificación "CLI" (v2.0)
-- **Redefinición Normativa:** El CLI pasa de ser herramienta auxiliar a componente constitutivo del protocolo.
-- **Arquitectura Modular:** Formalización de los módulos Validador, Generador y Formateador.
-- **Gramática Formal (EBNF):** Definición sintáctica estricta para asegurar parsing no ambiguo.
-- **Contrato de Exit Codes:** Unificación de códigos de salida (0-3) para integración en CI/CD.
-- **Reglas Sintácticas:** Obligatoriedad de flags largas y asignación con `=` para eliminar variabilidad.
-- **Flujo IA-Humano:** Definición del rol del CLI como guardián de la integridad en el ciclo de desarrollo.
+### ✅ Fase 16: Especificación de la "Matriz de Validación" (v0.1)
+- **Niveles de Validación Normativa:** Definición de los modos *Standard* (Corrección Estructural) y *Strict* (Cumplimiento de Protocolo).
+- **Codificación de Reglas (V1-V22):** Formalización de 22 reglas de validación en 6 categorías (Estructural, Referencial, Semántica, Invariantes, Evolución y Mejores Prácticas).
+- **Modelo de Escalada de Severidad:** Los avisos (WARNINGS) de semántica e invariantes escalan a errores (ERRORS) en modo estricto.
+- **Expectativas Algorítmicas:** Requisitos obligatorios de análisis de alcanzabilidad y detección de ciclos infinitos.
+- **Certificación de Cumplimiento:** Definición formal de que solo el modo `--strict` con exit code `0` certifica el cumplimiento del estándar.
 
 ---
 
 ## 2. Estado del Repositorio
-El proyecto se encuentra en su estado definitivo de lanzamiento `v3.5` (Especificación CLI Formalizada).
+El proyecto se encuentra en su estado definitivo de lanzamiento `v3.6` (Matriz de Validación Formalizada).
 - **Ramas:** `main` (Producción).
-- **Cobertura:** Landing v3 + Docs v1 + Identity Core v1 + Protocol Model v1 + Protocol Overview v1 + CLI v2.
+- **Cobertura:** Landing v3 + Docs v1 + Identity Core v1 + Protocol Model v1 + Protocol Overview v1 + CLI v2 + Validation Matrix v1.
 - **Idiomas:** EN / ES (Sincronizados y Técnicamente Precisos).
 - **URLs:**
   - Landing: https://rigor-protocol.pages.dev

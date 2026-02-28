@@ -59,6 +59,19 @@ The CLI uses a stable, frozen set of exit codes for automation and CI/CD integra
 | `2` | CLI Misuse | Invalid command syntax, unknown flags, or missing arguments. |
 | `3` | Internal Error | Unexpected failure within the RIGOR engine or CLI tool. |
 
+### 3.4 Validation Modes and Compliance
+
+The `validate` command operates in two modes defined by the [Validation Matrix](./validation-matrix):
+
+1. **Standard Mode**: Default behavior. Verifies structural and referential integrity.
+2. **Strict Mode (`--strict`)**: Verifies full protocol compliance, including semantic invariants and evolution safety.
+
+### Severity Model
+- **ERROR**: Results in exit code `1`. The specification is non-compliant.
+- **WARNING**: In Standard mode, these are advisory. In Strict mode, semantic and invariant warnings escalate to **ERROR**.
+
+Formal protocol compliance is only certified when `rigor validate --strict` returns code `0`.
+
 ---
 
 ## 4. Module 2: Generator

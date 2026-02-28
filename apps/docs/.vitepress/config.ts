@@ -58,6 +58,10 @@ export default defineConfig({
                   link: '/specification/cli' 
                 },
                 { 
+                  text: 'Validation Matrix', 
+                  link: '/specification/validation-matrix' 
+                },
+                { 
                   text: 'Differentiation', 
                   link: '/specification/differentiation' 
                 }
@@ -176,6 +180,10 @@ export default defineConfig({
                 { 
                   text: 'CLI', 
                   link: '/es/specification/cli' 
+                },
+                { 
+                  text: 'Matriz de Validación', 
+                  link: '/es/specification/validation-matrix' 
                 },
                 { 
                   text: 'Diferenciación', 

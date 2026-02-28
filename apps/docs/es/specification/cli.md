@@ -59,6 +59,19 @@ El CLI utiliza un conjunto estable y congelado de códigos de salida para la aut
 | `2` | Uso Incorrecto (CLI) | Sintaxis de comando inválida, flags desconocidas o argumentos faltantes. |
 | `3` | Error Interno | Fallo inesperado dentro del motor de RIGOR o la herramienta CLI. |
 
+### 3.4 Modos de Validación y Cumplimiento
+
+El comando `validate` opera en dos modos definidos por la [Matriz de Validación](./validation-matrix):
+
+1. **Modo Estándar**: Comportamiento por defecto. Verifica integridad estructural y referencial.
+2. **Modo Estricto (`--strict`)**: Verifica cumplimiento completo del protocolo, incluyendo invariantes semánticos y seguridad de evolución.
+
+### Modelo de Severidad
+- **ERROR**: Resulta en código de salida `1`. La especificación no es conforme.
+- **WARNING**: En Modo Estándar, son informativos. En Modo Estricto, los warnings semánticos y de invariantes escalan a **ERROR**.
+
+El cumplimiento formal del protocolo solo se certifica cuando `rigor validate --strict` retorna código `0`.
+
 ---
 
 ## 4. Módulo 2: Generador
