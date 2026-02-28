@@ -28,20 +28,20 @@
 - **Visión a Largo Plazo:** Hoja de ruta conservadora para capas derivadas (API, frontend, etc.).
 - **Sincronización i18n:** Traducción técnica completa al español manteniendo la integridad conceptual.
 
-### ✅ Fase 14: Actualización de la Especificación "Protocol Overview" (v1.0)
-- **Reescritura Arquitectónica Completa:** Transformación de la vista filosófica en una referencia técnica normativa.
-- **Formalización de la Entropía Estructural:** Definición técnica de las condiciones que generan entropía y la respuesta del protocolo.
-- **Mapeo de Invariantes:** Vinculación explícita de los 5 pilares de RIGOR con garantías operativas.
-- **Diagrama de Ciclo Transaccional:** Visualización del límite atómico del procesamiento de eventos.
-- **Contraste de Sistema (Antes vs Después):** Tabla comparativa de propiedades operativas con y sin el protocolo.
-- **Sincronización EN/ES:** Sincronización completa de la narrativa técnica en ambos idiomas.
+### ✅ Fase 15: Actualización de la Especificación "CLI" (v2.0)
+- **Redefinición Normativa:** El CLI pasa de ser herramienta auxiliar a componente constitutivo del protocolo.
+- **Arquitectura Modular:** Formalización de los módulos Validador, Generador y Formateador.
+- **Gramática Formal (EBNF):** Definición sintáctica estricta para asegurar parsing no ambiguo.
+- **Contrato de Exit Codes:** Unificación de códigos de salida (0-3) para integración en CI/CD.
+- **Reglas Sintácticas:** Obligatoriedad de flags largas y asignación con `=` para eliminar variabilidad.
+- **Flujo IA-Humano:** Definición del rol del CLI como guardián de la integridad en el ciclo de desarrollo.
 
 ---
 
 ## 2. Estado del Repositorio
-El proyecto se encuentra en su estado definitivo de lanzamiento `v3.4` (Vista General del Protocolo Formalizada).
+El proyecto se encuentra en su estado definitivo de lanzamiento `v3.5` (Especificación CLI Formalizada).
 - **Ramas:** `main` (Producción).
-- **Cobertura:** Landing v3 + Docs v1 + Identity Core v1 + Protocol Model v1 + Protocol Overview v1.
+- **Cobertura:** Landing v3 + Docs v1 + Identity Core v1 + Protocol Model v1 + Protocol Overview v1 + CLI v2.
 - **Idiomas:** EN / ES (Sincronizados y Técnicamente Precisos).
 - **URLs:**
   - Landing: https://rigor-protocol.pages.dev

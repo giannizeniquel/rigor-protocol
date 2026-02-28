@@ -7,8 +7,9 @@ The RIGOR Command Line Interface (CLI) is a normative, constituent component of 
 The RIGOR CLI is designed for **deterministic automation** and **formal enforcement**.
 
 ### Core Principles:
-- **Deterministic**: Identical inputs must yield identical outputs and exit codes.
+- **Deterministic**: Mismo input → mismo output. Exit codes are stable.
 - **Idempotent**: Re-running operations on the same input produces no additional side effects.
+- **No Implicit State**: The CLI does not rely on hidden configuration or global environment state unless explicitly declared.
 - **Offline-First**: All core operations must function without external network access.
 - **Implementation-Independent**: It does not execute business logic, generated code, or resolve external runtime dependencies.
 - **Machine-Readable**: Supports structured output (JSON) for all commands.
@@ -47,14 +48,16 @@ rigor validate <file|directory> [options]
 - `--fail-on-warning`: Returns a non-zero exit code if warnings are found.
 - `--no-color`: Disables terminal color output.
 
-### 3.3 Exit Codes
+### 3.3 Exit Codes (v0.1 Contractual)
+
+The CLI uses a stable, frozen set of exit codes for automation and CI/CD integration.
+
 | Code | Meaning | Description |
 | :--- | :--- | :--- |
-| `0` | Valid | The specification is fully compliant. |
-| `1` | Validation Error | Structural or semantic violations detected. |
-| `2` | Internal Error | Unexpected failure within the CLI tool. |
-| `3` | IO Error | File or directory not found. |
-| `4` | Parse Error | Syntactic failure (invalid grammar). |
+| `0` | Success | Operation completed successfully. |
+| `1` | Validation Error | The specification violates structural or semantic rules. |
+| `2` | CLI Misuse | Invalid command syntax, unknown flags, or missing arguments. |
+| `3` | Internal Error | Unexpected failure within the RIGOR engine or CLI tool. |
 
 ---
 
@@ -106,7 +109,59 @@ rigor format <file|directory> [options]
 
 ---
 
-## 6. AI Integration Flow
+## 6. Formal Grammar (CLI v0.1)
+
+The CLI command structure is governed by the following EBNF grammar to ensure non-ambiguous parsing by both humans and machines.
+
+```ebnf
+cli             ::= "rigor" SP action
+
+action          ::= validate
+                  | format
+                  | generate
+
+validate        ::= "validate" SP path validate_opts?
+format          ::= "format" SP path format_opts?
+generate        ::= "generate" SP target SP path generate_opts?
+
+validate_opts   ::= (SP validate_opt)*
+format_opts     ::= (SP format_opt)*
+generate_opts   ::= (SP generate_opt)*
+
+validate_opt    ::= "--strict"
+                  | format_option
+
+format_opt      ::= "--write"
+                  | "--check"
+
+generate_opt    ::= output_option
+                  | "--dry-run"
+
+format_option   ::= "--format=" format_type
+output_option   ::= "--output=" path
+
+format_type     ::= "json"
+                  | "text"
+
+target          ::= "schema"
+                  | "types"
+                  | "json-schema"
+                  | "openapi"
+
+path            ::= STRING
+SP              ::= " "
+```
+
+### 6.1 Syntactic Rules (Normative)
+- **Mandatory Order**: `rigor` → action → arguments → flags.
+- **Flag Format**: All flags must use the `--long-name` format. No short aliases (e.g., `-s`) are supported.
+- **Value Assignment**: Flags with values must use the equals sign (e.g., `--format=json`). Spaces (e.g., `--format json`) are invalid.
+- **Exclusivity**: Certain flags may be mutually exclusive (e.g., `--write` and `--check` for formatting).
+- **Error Handling**: Unknown flags or missing arguments result in an immediate exit with code `2`.
+
+---
+
+## 7. AI Integration Flow
 
 The CLI is the formal gatekeeper in the AI-assisted development lifecycle:
 
@@ -118,7 +173,7 @@ The CLI is the formal gatekeeper in the AI-assisted development lifecycle:
 
 ---
 
-## 7. Machine-Readable Mode (`--json`)
+## 8. Machine-Readable Mode (`--json`)
 
 For IDE integration, CI/CD, and AI agents, the CLI must emit structured errors:
 
@@ -135,15 +190,15 @@ For IDE integration, CI/CD, and AI agents, the CLI must emit structured errors:
 
 ---
 
-## 8. Configuration and Versioning
+## 9. Configuration and Versioning
 
-### 8.1 Configuration (`rigor.config.json`)
+### 9.1 Configuration (`rigor.config.json`)
 Allows defining project-wide defaults:
 - Default generation targets.
 - Strictness levels.
 - Output paths.
 
-### 8.2 Versioning
+### 9.2 Versioning
 The CLI must report the supported protocol version.
 ```bash
 rigor version
@@ -151,5 +206,5 @@ rigor version
 
 ---
 
-## 9. Future Extensibility (Fase 2)
+## 10. Future Extensibility (Fase 2)
 Future iterations may include support for custom plugins, generators, and hooks. These are not part of the v0.1 normative specification.

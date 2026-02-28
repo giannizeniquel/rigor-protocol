@@ -7,8 +7,9 @@ La Interfaz de Línea de Comandos (CLI) de RIGOR es un componente normativo y co
 El CLI de RIGOR está diseñado para la **automatización determinística** y el **cumplimiento formal**.
 
 ### Principios Fundamentales:
-- **Determinístico**: Entradas idénticas deben producir salidas y códigos de salida idénticos.
+- **Determinístico**: Mismo input → mismo output. Los códigos de salida son estables.
 - **Idempotente**: Re-ejecutar operaciones sobre la misma entrada no produce efectos secundarios adicionales.
+- **Sin Estado Implícito**: El CLI no depende de configuración oculta o estado global del entorno a menos que se declare explícitamente.
 - **Offline-First**: Todas las operaciones centrales deben funcionar sin acceso a la red externa.
 - **Independiente de la Implementación**: No ejecuta lógica de negocio, código generado ni resuelve dependencias de tiempo de ejecución externas.
 - **Legible por Máquina**: Soporta salida estructurada (JSON) para todos los comandos.
@@ -47,14 +48,16 @@ rigor validate <archivo|directorio> [opciones]
 - `--fail-on-warning`: Retorna un código de salida no nulo si se encuentran advertencias.
 - `--no-color`: Desactiva la salida de color en la terminal.
 
-### 3.3 Códigos de Salida
+### 3.3 Códigos de Salida (v0.1 Contractuales)
+
+El CLI utiliza un conjunto estable y congelado de códigos de salida para la automatización e integración CI/CD.
+
 | Código | Significado | Descripción |
 | :--- | :--- | :--- |
-| `0` | Válido | La especificación cumple totalmente con el estándar. |
-| `1` | Error de Validación | Se detectaron violaciones estructurales o semánticas. |
-| `2` | Error Interno | Fallo inesperado dentro de la herramienta CLI. |
-| `3` | Error de E/S | Archivo o directorio no encontrado. |
-| `4` | Error de Parsing | Fallo sintáctico (gramática inválida). |
+| `0` | Éxito | La operación se completó exitosamente. |
+| `1` | Error de Validación | La especificación viola reglas estructurales o semánticas. |
+| `2` | Uso Incorrecto (CLI) | Sintaxis de comando inválida, flags desconocidas o argumentos faltantes. |
+| `3` | Error Interno | Fallo inesperado dentro del motor de RIGOR o la herramienta CLI. |
 
 ---
 
@@ -106,7 +109,59 @@ rigor format <archivo|directorio> [opciones]
 
 ---
 
-## 6. Flujo de Integración con IA
+## 6. Gramática Formal (CLI v0.1)
+
+La estructura de comandos del CLI se rige por la siguiente gramática EBNF para asegurar un análisis no ambiguo por parte de humanos y máquinas.
+
+```ebnf
+cli             ::= "rigor" SP action
+
+action          ::= validate
+                  | format
+                  | generate
+
+validate        ::= "validate" SP path validate_opts?
+format          ::= "format" SP path format_opts?
+generate        ::= "generate" SP target SP path generate_opts?
+
+validate_opts   ::= (SP validate_opt)*
+format_opts     ::= (SP format_opt)*
+generate_opts   ::= (SP generate_opt)*
+
+validate_opt    ::= "--strict"
+                  | format_option
+
+format_opt      ::= "--write"
+                  | "--check"
+
+generate_opt    ::= output_option
+                  | "--dry-run"
+
+format_option   ::= "--format=" format_type
+output_option   ::= "--output=" path
+
+format_type     ::= "json"
+                  | "text"
+
+target          ::= "schema"
+                  | "types"
+                  | "json-schema"
+                  | "openapi"
+
+path            ::= STRING
+SP              ::= " "
+```
+
+### 6.1 Reglas Sintácticas (Normativas)
+- **Orden Obligatorio**: `rigor` → acción → argumentos → flags.
+- **Formato de Flags**: Todas las flags deben usar el formato `--nombre-largo`. No se admiten alias cortos (ej., `-s`).
+- **Asignación de Valores**: Las flags con valores deben usar el signo igual (ej., `--format=json`). El uso de espacios (ej., `--format json`) es inválido.
+- **Exclusividad**: Ciertas flags pueden ser mutuamente excluyentes (ej., `--write` y `--check`).
+- **Manejo de Errores**: Flags desconocidas o argumentos faltantes resultan en una salida inmediata con código `2`.
+
+---
+
+## 7. Flujo de Integración con IA
 
 El CLI es el guardián formal en el ciclo de vida del desarrollo asistido por IA:
 
@@ -118,7 +173,7 @@ El CLI es el guardián formal en el ciclo de vida del desarrollo asistido por IA
 
 ---
 
-## 7. Modo Legible por Máquina (`--json`)
+## 8. Modo Legible por Máquina (`--json`)
 
 Para la integración con IDEs, CI/CD y agentes de IA, el CLI debe emitir errores estructurados:
 
@@ -135,15 +190,15 @@ Para la integración con IDEs, CI/CD y agentes de IA, el CLI debe emitir errores
 
 ---
 
-## 8. Configuración y Versionado
+## 9. Configuración y Versionado
 
-### 8.1 Configuración (`rigor.config.json`)
+### 9.1 Configuración (`rigor.config.json`)
 Permite definir valores predeterminados para el proyecto:
 - Objetivos de generación predeterminados.
 - Niveles de estrictez.
 - Rutas de salida.
 
-### 8.2 Versionado
+### 9.2 Versionado
 El CLI debe informar la versión del protocolo que soporta.
 ```bash
 rigor version
@@ -151,5 +206,5 @@ rigor version
 
 ---
 
-## 9. Extensibilidad Futura (Fase 2)
+## 10. Extensibilidad Futura (Fase 2)
 Las iteraciones futuras pueden incluir soporte para complementos (plugins), generadores y hooks personalizados. Estos no forman parte de la especificación normativa v0.1.
