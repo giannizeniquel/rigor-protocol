@@ -28,19 +28,20 @@
 - **Visión a Largo Plazo:** Hoja de ruta conservadora para capas derivadas (API, frontend, etc.).
 - **Sincronización i18n:** Traducción técnica completa al español manteniendo la integridad conceptual.
 
-### ✅ Fase 13: Actualización de la Especificación "Protocol Model" (v1.0)
-- **Formalización de Mutación y Contexto:** Inclusión de Esquema de Contexto Tipado y Modelo de Mutación Dirigido por Eventos.
-- **Garantías Transaccionales:** Definición de semántica de eventos atómica y modelo de cola para eventos internos.
-- **Invariantes Extendidos:** Ampliación a 8 invariantes normativos (Atomicidad, Replay, Localidad, etc.).
-- **Modelo de Consistencia Fuerte:** Formalización de la consistencia a nivel de proceso.
-- **Sincronización Multilingüe:** Actualización coordinada en inglés y español con renumeración estructural completa.
+### ✅ Fase 14: Actualización de la Especificación "Protocol Overview" (v1.0)
+- **Reescritura Arquitectónica Completa:** Transformación de la vista filosófica en una referencia técnica normativa.
+- **Formalización de la Entropía Estructural:** Definición técnica de las condiciones que generan entropía y la respuesta del protocolo.
+- **Mapeo de Invariantes:** Vinculación explícita de los 5 pilares de RIGOR con garantías operativas.
+- **Diagrama de Ciclo Transaccional:** Visualización del límite atómico del procesamiento de eventos.
+- **Contraste de Sistema (Antes vs Después):** Tabla comparativa de propiedades operativas con y sin el protocolo.
+- **Sincronización EN/ES:** Sincronización completa de la narrativa técnica en ambos idiomas.
 
 ---
 
 ## 2. Estado del Repositorio
-El proyecto se encuentra en su estado definitivo de lanzamiento `v3.3` (Especificación del Modelo de Protocolo Formalizada).
+El proyecto se encuentra en su estado definitivo de lanzamiento `v3.4` (Vista General del Protocolo Formalizada).
 - **Ramas:** `main` (Producción).
-- **Cobertura:** Landing v3 + Docs v1 + Identity Core v1 + Protocol Model v1.
+- **Cobertura:** Landing v3 + Docs v1 + Identity Core v1 + Protocol Model v1 + Protocol Overview v1.
 - **Idiomas:** EN / ES (Sincronizados y Técnicamente Precisos).
 - **URLs:**
   - Landing: https://rigor-protocol.pages.dev
