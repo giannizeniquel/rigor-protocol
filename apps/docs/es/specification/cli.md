@@ -1,159 +1,155 @@
 # Especificación CLI (v0.1)
 
-## 1. Propósito
+La Interfaz de Línea de Comandos (CLI) de RIGOR es un componente normativo y constitutivo del protocolo. Actúa como el guardián oficial del estándar, asegurando la integridad estructural, el formateo canónico y la generación determinística de artefactos.
 
-La Interfaz de Línea de Comandos (CLI) de RIGOR es la interfaz normativa primaria para interactuar con los componentes centrales del protocolo. Sirve como la superficie operativa estable para:
-- **Validación de Especificaciones**: Asegurar corrección estructural y semántica.
-- **Generación de Código**: Traducir especificaciones a implementaciones objetivo.
-- **Gobernanza de Evolución**: Comparar versiones y detectar cambios rompedores.
-- **Ejecución del Motor**: Ejecutar el entorno de tiempo de ejecución para especificaciones válidas.
-- **Gestión de Migraciones**: Manejar actualizaciones estructurales para instancias persistidas.
+## 1. Naturaleza y Principios
 
-## 2. Principios de Diseño
+El CLI de RIGOR está diseñado para la **automatización determinística** y el **cumplimiento formal**.
 
-El CLI de RIGOR está construido para **automatización determinística**. Debe adherirse a los siguientes principios:
+### Principios Fundamentales:
 - **Determinístico**: Entradas idénticas deben producir salidas y códigos de salida idénticos.
-- **Scriptable**: Totalmente compatible con pipelines CI/CD y scripting de shell.
-- **No Interactivo**: Sin avisos obligatorios al usuario; todas las operaciones deben soportar flags para ejecución automatizada.
-- **Códigos de Salida Estables**: Los códigos de salida son parte del contrato formal y no cambian entre versiones menores.
-- **Legible por Máquina**: Soporta salida JSON para todos los comandos.
+- **Idempotente**: Re-ejecutar operaciones sobre la misma entrada no produce efectos secundarios adicionales.
+- **Offline-First**: Todas las operaciones centrales deben funcionar sin acceso a la red externa.
+- **Independiente de la Implementación**: No ejecuta lógica de negocio, código generado ni resuelve dependencias de tiempo de ejecución externas.
+- **Legible por Máquina**: Soporta salida estructurada (JSON) para todos los comandos.
 
-## 3. Comando: `validate`
+## 2. Arquitectura Modular
 
-Valida un archivo de especificación sin ejecución.
+ El CLI se compone de tres módulos formales e independientes:
 
-### Uso
-```bash
-rigor validate <spec.yaml> [options]
+```
+CLI
+ ├── Validador (Cumplimiento Estructural y Semántico)
+ ├── Generador (Derivación de Artefactos e Implementación)
+ └── Formateador (Representación Canónica)
 ```
 
-### Acciones
-1. Ejecuta el pipeline completo de cuatro fases definido en el [Motor de Validación](../implementation/validation-engine).
-2. Reporta errores estructurados, advertencias y mensajes de información.
+---
 
-### Códigos de Salida
-- `0`: Validación exitosa (valid: true).
-- `1`: Validación fallida (uno o más ERRORES encontrados).
+## 3. Módulo 1: Validador
 
-### Opciones
-- `--format json`: Salida del [Reporte de Cumplimiento](../implementation/validation-engine#5-compliance-report-format) como un objeto JSON.
+El Validador asegura que un documento del protocolo se adhiera estrictamente a la gramática, tipos, reglas semánticas e invariantes de RIGOR Core v0.1.
 
-## 4. Comando: `generate`
+### 3.1 Niveles de Validación
+1. **Sintáctico**: Estructura correcta, tokens válidos y secciones obligatorias.
+2. **Semántico**: Resolución de referencias, compatibilidad de tipos y ausencia de ambigüedad.
+3. **Estructural**: Jerarquía correcta y cardinalidad válida.
+4. **Reglas de Dominio**: Adhesión a restricciones explícitas e invariantes del protocolo.
 
-Genera artefactos de implementación o adaptadores a partir de una especificación válida.
-
-### Uso
+### 3.2 Comandos
 ```bash
-rigor generate <spec.yaml> <target> [options]
+rigor validate <archivo|directorio> [opciones]
 ```
 
-### Objetivos Soportados (v0.1)
-- `typescript`: Genera interfaces tipadas y esqueletos de máquina de estados.
-- `openapi`: Genera una definición OpenAPI/Swagger para el proceso.
-- `symfony`: Genera definiciones de proceso compatibles con PHP/Symfony.
-- `node`: Genera lógica compatible con Node.js.
+**Opciones:**
+- `--strict`: Trata las advertencias como errores.
+- `--json`: Emite un informe de validación legible por máquina.
+- `--fail-on-warning`: Retorna un código de salida no nulo si se encuentran advertencias.
+- `--no-color`: Desactiva la salida de color en la terminal.
 
-### Reglas
-- **Precedencia de Validación**: Debe fallar inmediatamente si `validate` retorna errores.
-- **Salida Determinística**: La misma especificación y versión de objetivo debe producir estructura de código idéntica.
-
-## 5. Comando: `diff`
-
-Compara dos versiones de una especificación para determinar compatibilidad estructural.
-
-### Uso
-```bash
-rigor diff <old_spec.yaml> <new_spec.yaml> [options]
-```
-
-### Acciones
-1. Detecta todas las diferencias estructurales entre las dos versiones.
-2. Clasifica el nivel de cambio como `PATCH`, `MINOR` o `MAJOR` según las reglas de [Versionado](./versioning).
-3. Identifica **cambios rompedores** específicos.
-
-### Códigos de Salida
-- `0`: Los cambios son compatibles (PATCH o MINOR).
-- `1`: Cambios rompedores detectados (MAJOR) y `--fail-on-breaking` está establecido.
-
-### Opciones
-- `--format json`: Salida de un reporte de diff estructurado.
-- `--fail-on-breaking`: Retorna código de salida 1 si se detecta un cambio MAJOR.
-
-## 6. Comando: `run`
-
-Inicializa y ejecuta el Motor de RIGOR para una especificación dada.
-
-### Uso
-```bash
-rigor run <spec.yaml> [options]
-```
-
-### Acciones
-1. Carga la especificación y verifica compatibilidad de `rigor_spec_version`.
-2. Inicializa el [Motor de Validación](../implementation/validation-engine).
-3. Inicia el proceso de tiempo de ejecución, exponiendo endpoints o listeners definidos.
-
-### Opciones
-- `--port <number>`: Establece el puerto de ejecución.
-- `--persistence <driver>`: Define el adaptador de persistencia (ej., `postgresql`).
-- `--config <path>`: Ruta a la configuración del motor.
-
-## 7. Comando: `migrate`
-
-Ejecuta migraciones estructurales para instancias persistidas entre versiones MAJOR.
-
-### Uso
-```bash
-rigor migrate from <v_old> to <v_new> [options]
-```
-
-### Estrategias
-- `offline`: Detiene el motor para migrar todas las instancias de una vez.
-- `lazy`: Migra instancias individualmente al ser leídas por el motor.
-
-### Códigos de Salida
-- `0`: Migración exitosa.
-- `3`: Migración fallida (corrupción estructural o error del transformador).
-
-### Opciones
-- `--strategy <offline|lazy>`: Selecciona la estrategia de migración.
-- `--dry-run`: Simula la migración sin persistir cambios.
-- `--spec <spec.yaml>`: Ruta a la nueva especificación.
-
-## 8. Comando: `inspect`
-
-Inspecciona una instancia de proceso persistida para propósitos de depuración o auditoría.
-
-### Uso
-```bash
-rigor inspect <instance_id> [options]
-```
-
-### Datos Proveídos
-- `spec_version`: La versión que la instancia adher actualmente.
-- `process_name`: Identificador formal del proceso.
-- `current_state`: Fase estable actual.
-- `context`: Datos persistidos serializados completos.
-- `version`: Contador de transiciones incremental.
-- `updated_at`: Marca de tiempo de la última transición.
-
-## 9. Códigos de Salida Globales
-
-El CLI usa un conjunto estable de códigos de salida globales:
-
+### 3.3 Códigos de Salida
 | Código | Significado | Descripción |
 | :--- | :--- | :--- |
-| `0` | Éxito | Operación completada exitosamente. |
-| `1` | Error de Validación | La especificación viola reglas estructurales o semánticas. |
-| `2` | Error de Ejecución | Fallo en tiempo de ejecución dentro del motor. |
-| `3` | Error de Migración | Fallo durante actualización o transformación de instancia. |
-| `4` | Error Interno | Fallo dentro de la herramienta CLI misma. |
+| `0` | Válido | La especificación cumple totalmente con el estándar. |
+| `1` | Error de Validación | Se detectaron violaciones estructurales o semánticas. |
+| `2` | Error Interno | Fallo inesperado dentro de la herramienta CLI. |
+| `3` | Error de E/S | Archivo o directorio no encontrado. |
+| `4` | Error de Parsing | Fallo sintáctico (gramática inválida). |
 
-## 10. Extensibilidad
+---
 
-El CLI de RIGOR está diseñado para ser extensible a través de:
-- **Objetivos de Generación Personalizados**: Registrar nuevos generadores de implementación.
-- **Adaptadores de Persistencia**: Añadir soporte para diferentes motores de base de datos.
-- **Integración CI/CD**: Fácil embedding como binario en pipelines automatizados.
+## 4. Módulo 2: Generador
 
-La extensión no debe romper la compatibilidad de comandos existentes o códigos de salida estables.
+El Generador transforma un documento de protocolo válido en artefactos concretos y determinísticos.
+
+### 4.1 Principios Fundamentales
+- **Sin Comportamiento Implícito**: El generador no debe "inventar" comportamiento que no esté definido explícitamente en el protocolo.
+- **Reproducibilidad**: La misma especificación y versión de objetivo deben producir archivos idénticos.
+- **Salida Atómica**: La generación de artefactos debe tratarse como una única unidad de trabajo.
+
+### 4.2 Comandos
+```bash
+rigor generate <objetivo> --from <archivo|directorio> [opciones]
+```
+
+**Objetivos (Targets):**
+- `schema`: Genera esquemas JSON para el contexto.
+- `typescript`: Genera interfaces tipadas y esqueletos de procesos.
+- `openapi`: Genera contratos de API.
+- `migrations`: Genera scripts de migración estructural entre versiones.
+
+**Opciones:**
+- `--out <dir>`: Directorio de salida objetivo.
+- `--stdout`: Emite el contenido a la salida estándar.
+- `--overwrite`: Permite sobrescribir archivos existentes.
+- `--dry-run`: Simula la generación sin escribir en el disco.
+
+---
+
+## 5. Módulo 3: Formateador
+
+El Formateador garantiza una representación única y canónica de los documentos RIGOR.
+
+### 5.1 Objetivos
+- **Normalización**: Reordena claves, estandariza la sangría y elimina la ambigüedad de los espacios en blanco.
+- **Determinismo**: Asegura que cualquier especificación válida tenga exactamente una representación textual válida.
+- **Puente IA-Humano**: Permite que el código generado por IA (potencialmente desordenado) se normalice instantáneamente para la revisión humana.
+
+### 5.2 Comandos
+```bash
+rigor format <archivo|directorio> [opciones]
+```
+
+**Opciones:**
+- `--check`: Retorna el código de salida 1 si el archivo no tiene el formato canónico.
+- `--write`: Sobrescribe el archivo con el formato canónico.
+
+---
+
+## 6. Flujo de Integración con IA
+
+El CLI es el guardián formal en el ciclo de vida del desarrollo asistido por IA:
+
+1. **Generación por IA**: Un agente de IA produce un archivo `.rigor`.
+2. **Revisión Humana**: Un arquitecto humano revisa las reglas de negocio y restricciones.
+3. **Validación**: `rigor validate` asegura que el documento sea técnicamente sólido.
+4. **Formateo**: `rigor format --write` normaliza la representación.
+5. **Generación**: `rigor generate` produce los artefactos de implementación.
+
+---
+
+## 7. Modo Legible por Máquina (`--json`)
+
+Para la integración con IDEs, CI/CD y agentes de IA, el CLI debe emitir errores estructurados:
+
+```json
+{
+  "file": "user.rigor",
+  "line": 12,
+  "column": 5,
+  "code": "E_TYPE_MISMATCH",
+  "message": "Expected integer but got string",
+  "severity": "ERROR"
+}
+```
+
+---
+
+## 8. Configuración y Versionado
+
+### 8.1 Configuración (`rigor.config.json`)
+Permite definir valores predeterminados para el proyecto:
+- Objetivos de generación predeterminados.
+- Niveles de estrictez.
+- Rutas de salida.
+
+### 8.2 Versionado
+El CLI debe informar la versión del protocolo que soporta.
+```bash
+rigor version
+```
+
+---
+
+## 9. Extensibilidad Futura (Fase 2)
+Las iteraciones futuras pueden incluir soporte para complementos (plugins), generadores y hooks personalizados. Estos no forman parte de la especificación normativa v0.1.
