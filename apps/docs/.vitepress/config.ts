@@ -62,6 +62,10 @@ export default defineConfig({
                   link: '/specification/validation-matrix' 
                 },
                 { 
+                  text: 'Graph Model', 
+                  link: '/specification/graph-model' 
+                },
+                { 
                   text: 'Differentiation', 
                   link: '/specification/differentiation' 
                 }
@@ -184,6 +188,10 @@ export default defineConfig({
                 { 
                   text: 'Matriz de Validación', 
                   link: '/es/specification/validation-matrix' 
+                },
+                { 
+                  text: 'Modelo de Grafo', 
+                  link: '/es/specification/graph-model' 
                 },
                 { 
                   text: 'Diferenciación', 

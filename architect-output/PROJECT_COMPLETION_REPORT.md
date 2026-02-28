@@ -28,19 +28,19 @@
 - **Visión a Largo Plazo:** Hoja de ruta conservadora para capas derivadas (API, frontend, etc.).
 - **Sincronización i18n:** Traducción técnica completa al español manteniendo la integridad conceptual.
 
-### ✅ Fase 16: Especificación de la "Matriz de Validación" (v0.1)
-- **Niveles de Validación Normativa:** Definición de los modos *Standard* (Corrección Estructural) y *Strict* (Cumplimiento de Protocolo).
-- **Codificación de Reglas (V1-V22):** Formalización de 22 reglas de validación en 6 categorías (Estructural, Referencial, Semántica, Invariantes, Evolución y Mejores Prácticas).
-- **Modelo de Escalada de Severidad:** Los avisos (WARNINGS) de semántica e invariantes escalan a errores (ERRORS) en modo estricto.
-- **Expectativas Algorítmicas:** Requisitos obligatorios de análisis de alcanzabilidad y detección de ciclos infinitos.
-- **Certificación de Cumplimiento:** Definición formal de que solo el modo `--strict` con exit code `0` certifica el cumplimiento del estándar.
+### ✅ Fase 17: Especificación del "Modelo de Grafo" (v0.1)
+- **Abstracción de Grafo Dirigido y Tipado:** Definición formal de la representación interna de artefactos (`G = (N, E, Tn, Te, C)`).
+- **Tipología de Nodos y Aristas:** Clasificación de 8 tipos de nodos y 7 tipos de aristas para modelar semántica y relaciones.
+- **Políticas de Ciclos (DAG):** Prohibición de ciclos en dependencias y validaciones para asegurar determinismo.
+- **Pipeline de Construcción:** Formalización de las 5 etapas desde el parseo hasta el congelamiento del grafo.
+- **Integración de Navegación:** Inclusión en el menú lateral de la documentación en inglés y español.
 
 ---
 
 ## 2. Estado del Repositorio
-El proyecto se encuentra en su estado definitivo de lanzamiento `v3.6` (Matriz de Validación Formalizada).
+El proyecto se encuentra en su estado definitivo de lanzamiento `v3.7` (Infraestructura de Validación Formalizada).
 - **Ramas:** `main` (Producción).
-- **Cobertura:** Landing v3 + Docs v1 + Identity Core v1 + Protocol Model v1 + Protocol Overview v1 + CLI v2 + Validation Matrix v1.
+- **Cobertura:** Landing v3 + Docs v1 + Identity Core v1 + Protocol Model v1 + CLI v2 + Validation Matrix v1 + Graph Model v1.
 - **Idiomas:** EN / ES (Sincronizados y Técnicamente Precisos).
 - **URLs:**
   - Landing: https://rigor-protocol.pages.dev
