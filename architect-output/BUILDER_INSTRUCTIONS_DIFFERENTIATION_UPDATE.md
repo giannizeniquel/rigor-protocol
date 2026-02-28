@@ -1,3 +1,25 @@
+# BUILDER INSTRUCTIONS: Differentiation Specification Rewrite (v1)
+
+**Status:** Ready for Implementation  
+**Context:** Transform the Differentiation page from a conceptual overview into a normative technical specification for the RIGOR Diff Engine.  
+**Reference:** `project_brief/06 - CHANGES/DOCS-PAGE/DOCS_CHANGES_DIFFERENTATION.md`
+
+---
+
+## 🎯 Objectives
+1.  **Full Rewrite**: Replace the current `differentiation.md` (EN and ES) with the technical specification of the `rigor diff` command.
+2.  **Graph-Based Comparison**: Define how the protocol compares two specifications using the normalized Graph Model.
+3.  **Classification Rules**: Document the normative rules for `breaking` vs `non-breaking` changes.
+4.  **CLI Grammar Integration**: Add the formal EBNF for the `diff` command.
+5.  **Output Schema**: Define the normative JSON result format for machine readability.
+
+---
+
+## 🛠️ Step 1: Update `apps/docs/specification/differentiation.md`
+
+Replace the entire content with the following:
+
+```markdown
 # Differentiation (v0.1)
 
 Differentiation is the normative process of comparing two RIGOR specifications to identify structural changes and classify them as breaking or non-breaking. Unlike raw text diffs, RIGOR differentiation operates on the normalized **Graph Model**.
@@ -112,3 +134,21 @@ When requested, the output MUST conform to the following schema:
 4. **compare(Graph_A, Graph_B)** -> Identity-based node/edge comparison.
 5. **classify(diffs)** -> Apply rules from Section 4.
 6. **emit(result)** -> Return structured data and exit code.
+```
+
+---
+
+## 🧱 Step 2: Update `apps/docs/es/specification/differentiation.md`
+
+Replace with the Spanish translation.
+
+*(Builder: Ensure terms like "Breaking" and "Non-breaking" are translated consistently as "Rompedor" and "No rompedor" or "Compatible", but "Breaking" is often kept or paired with "Cambio de ruptura" in technical Spanish. Use "Diferenciación Semántica" and "Modelo de Grafo".)*
+
+---
+
+## ✅ Verification Checklist
+- [ ] Build succeeds: `npm run build:docs`.
+- [ ] The page correctly references the "Graph Model" and "Validation Matrix".
+- [ ] Tables in Section 4 are rendered correctly in both languages.
+- [ ] Exit codes match the normative contract (0, 1, 2, 3, 4).
+- [ ] Sidebar link "Differentiation / Diferenciación" remains functional.

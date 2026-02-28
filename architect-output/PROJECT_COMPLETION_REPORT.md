@@ -28,19 +28,19 @@
 - **Visión a Largo Plazo:** Hoja de ruta conservadora para capas derivadas (API, frontend, etc.).
 - **Sincronización i18n:** Traducción técnica completa al español manteniendo la integridad conceptual.
 
-### ✅ Fase 17: Especificación del "Modelo de Grafo" (v0.1)
-- **Abstracción de Grafo Dirigido y Tipado:** Definición formal de la representación interna de artefactos (`G = (N, E, Tn, Te, C)`).
-- **Tipología de Nodos y Aristas:** Clasificación de 8 tipos de nodos y 7 tipos de aristas para modelar semántica y relaciones.
-- **Políticas de Ciclos (DAG):** Prohibición de ciclos en dependencias y validaciones para asegurar determinismo.
-- **Pipeline de Construcción:** Formalización de las 5 etapas desde el parseo hasta el congelamiento del grafo.
-- **Integración de Navegación:** Inclusión en el menú lateral de la documentación en inglés y español.
+### ✅ Fase 18: Especificación de "Diferenciación Semántica" (v0.1)
+- **Comparación Basada en Grafos:** Definición del motor de diff que opera sobre el Modelo de Grafo normalizado.
+- **Reglas de Clasificación Normativas:** Codificación de cambios *breaking* y *non-breaking* en estados, transiciones, esquemas e identidad.
+- **Contrato de CLI para `diff`:** Extensión de la gramática EBNF y definición de códigos de salida (0-4).
+- **Esquema de Salida JSON:** Formalización de la estructura de reportes de diferencias para consumo por máquinas.
+- **Independencia de Formato:** El proceso ignora comentarios, espacios en blanco y orden de campos en el archivo fuente.
 
 ---
 
 ## 2. Estado del Repositorio
-El proyecto se encuentra en su estado definitivo de lanzamiento `v3.7` (Infraestructura de Validación Formalizada).
+El proyecto se encuentra en su estado definitivo de lanzamiento `v3.8` (Núcleo de Especificación Consistente).
 - **Ramas:** `main` (Producción).
-- **Cobertura:** Landing v3 + Docs v1 + Identity Core v1 + Protocol Model v1 + CLI v2 + Validation Matrix v1 + Graph Model v1.
+- **Cobertura:** Landing v3 + Docs v1 + Identity Core v1 + Protocol Model v1 + CLI v2 + Validation Matrix v1 + Graph Model v1 + Semantic Diff v1.
 - **Idiomas:** EN / ES (Sincronizados y Técnicamente Precisos).
 - **URLs:**
   - Landing: https://rigor-protocol.pages.dev
