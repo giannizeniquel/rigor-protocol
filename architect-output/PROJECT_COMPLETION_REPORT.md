@@ -28,20 +28,20 @@
 - **Visión a Largo Plazo:** Hoja de ruta conservadora para capas derivadas (API, frontend, etc.).
 - **Sincronización i18n:** Traducción técnica completa al español manteniendo la integridad conceptual.
 
-### ✅ Fase 19: Especificación del "Núcleo de la Spec" (v0.1)
-- **Lenguaje Normativo RFC 2119:** Reestructuración completa utilizando palabras clave (MUST, DEBE, MAY, etc.) para eliminar ambigüedad.
-- **Modelo de Declaración de Mutación:** Obligatoriedad de listar campos mutables (`mutate`) en las transiciones para garantizar inmutabilidad por defecto.
-- **Garantía de Determinismo Estricto:** Prohibición formal de mapeos ambiguos (un par `estado, evento` -> una transición).
-- **Semántica Transaccional Atómica:** Definición del límite de ejecución atómica por cada evento procesado.
-- **Estados Terminales:** Definición formal de la barrera final de procesamiento de eventos.
-- **Ejemplo Normativo Completo:** Inclusión de un esquema JSON real que demuestra todas las reglas semánticas.
+### ✅ Fase 20: Especificación de la "Referencia de la Spec" (v0.1)
+- **Fusión Normativa Definitiva:** Consolidación de la gramática EBNF formal con las restricciones arquitectónicas de RIGOR.
+- **Regla de Efecto Único:** Obligatoriedad de que cada estado declare exactamente un efecto (`emit_command`, `invoke` o `terminal`).
+- **Convenciones de Nombres Estrictas:** Codificación de formatos `PascalCase`, `snake_case` y `UPPER_SNAKE_CASE` con validación por Regex.
+- **Taxonomía de Errores DSL (001-008):** Definición de códigos de error contractuales para validación sintáctica y semántica.
+- **Declaración de Prohibiciones:** Listado explícito de características excluidas en v0.1 para asegurar el congelamiento semántico.
+- **Ejemplo de Referencia Canónico:** Implementación de un proceso de orden que sirve como estándar para implementadores de SDKs.
 
 ---
 
 ## 2. Estado del Repositorio
-El proyecto se encuentra en su estado definitivo de lanzamiento `v3.9` (Especificación de Proceso Formalizada).
+El proyecto se encuentra en su estado definitivo de lanzamiento `v4.0` (Especificación Normativa Completa).
 - **Ramas:** `main` (Producción).
-- **Cobertura:** Landing v3 + Docs v1 + Identity Core v1 + Protocol Model v1 + CLI v2 + Validation Matrix v1 + Graph Model v1 + Semantic Diff v1 + Spec Core v1.
+- **Cobertura:** Landing v3 + Docs v1 + Identity Core v1 + Protocol Model v1 + CLI v2 + Validation Matrix v1 + Graph Model v1 + Semantic Diff v1 + Spec Core v1 + Spec Reference v1.
 - **Idiomas:** EN / ES (Sincronizados y Técnicamente Precisos).
 - **URLs:**
   - Landing: https://rigor-protocol.pages.dev
