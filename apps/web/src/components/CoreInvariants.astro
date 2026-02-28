@@ -10,13 +10,14 @@ const invariants = [
   { num: '03', key: '3' },
   { num: '04', key: '4' },
   { num: '05', key: '5' },
+  { num: '06', key: '6' },
 ];
 ---
 
 <section class="section section--ruled">
   <div class="container">
     <div class="section-header">
-      <span class="section-num">04</span>
+      <span class="section-num">05</span>
       <span class="section-rule"></span>
     </div>
     <h2>{t('coreInvariants.title')}</h2>
@@ -88,8 +89,9 @@ const invariants = [
     border: 1px solid var(--color-bg-tertiary);
   }
 
-  /* The 5th item spans full width on a 2-col grid */
-  .invariant:nth-child(5) {
+  /* The 5th and 6th items span full width on a 2-col grid */
+  .invariant:nth-child(5),
+  .invariant:nth-child(6) {
     grid-column: 1 / -1;
     border-bottom: none;
   }
@@ -163,7 +165,8 @@ const invariants = [
       grid-template-columns: 1fr;
     }
 
-    .invariant:nth-child(5) {
+    .invariant:nth-child(5),
+    .invariant:nth-child(6) {
       grid-column: auto;
       border-bottom: 1px solid var(--color-bg-tertiary);
     }

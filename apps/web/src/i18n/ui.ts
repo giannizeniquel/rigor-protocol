@@ -7,9 +7,9 @@ export const ui = {
   en: {
     // Hero
     'hero.title': 'RIGOR',
-    'hero.subtitle': 'AI Constraint Protocol.',
-    'hero.tertiary': 'Formal boundaries for AI-generated systems.',
-    'hero.optional': 'Generation requires boundaries.',
+    'hero.subtitle': 'A typed, event-driven constraint protocol for AI-generated systems.',
+    'hero.tertiary': 'RIGOR is a formal specification language designed to constrain, validate and govern AI-generated backend systems.',
+    'hero.optional': 'It defines explicit state transitions, typed context mutation rules, and deterministic execution boundaries.',
     'hero.cta': 'Access Specification →',
     
     // Structural Condition
@@ -47,19 +47,69 @@ export const ui = {
     'protocolModel.components.4': 'Validation Engine — Evaluates structural compliance.',
     'protocolModel.components.5': 'Evolution Layer — Classifies all structural changes.',
     
+    // What is RIGOR? (NEW)
+    'whatIsRigor.title': 'What is RIGOR?',
+    'whatIsRigor.intro': 'RIGOR is an open specification that defines how AI-generated systems must behave.',
+    'whatIsRigor.list.1': 'Explicit state machines',
+    'whatIsRigor.list.2': 'Typed context schemas',
+    'whatIsRigor.list.3': 'Event-driven transitions',
+    'whatIsRigor.list.4': 'Deterministic mutation rules',
+    'whatIsRigor.list.5': 'Validation before execution',
+    'whatIsRigor.outro': 'RIGOR separates specification from implementation. The specification defines what is allowed. Implementations execute under those constraints.',
+    
     // Core Invariants
     'coreInvariants.title': 'Core Invariants',
     'coreInvariants.intro': 'The following properties are non-negotiable across all RIGOR-compliant systems:',
     'coreInvariants.1.title': 'Explicitness',
-    'coreInvariants.1.description': 'All transitions must be declared. No implicit behavior is permitted.',
+    'coreInvariants.1.description': 'No implicit mutations. No hidden state changes. All context mutations must be declared within event transitions.',
     'coreInvariants.2.title': 'Determinism',
-    'coreInvariants.2.description': 'Given state, event, and version, the resulting transition must be singular or explicitly rejected.',
+    'coreInvariants.2.description': 'For a given state and event, the resulting transition is uniquely defined. The pair (state, event) must be unambiguous.',
     'coreInvariants.3.title': 'Classified Evolution',
     'coreInvariants.3.description': 'All structural changes must be typed as compatible, conditional, or breaking. Silent evolution is invalid.',
     'coreInvariants.4.title': 'Validation Before Execution',
     'coreInvariants.4.description': 'Structural validation is a precondition of existence. Execution without validation violates the protocol.',
-    'coreInvariants.5.title': 'Separation of Layers',
-    'coreInvariants.5.description': 'RIGOR formally separates language definition, specification instance, and validation engine. No layer may implicitly assume another.',
+    'coreInvariants.5.title': 'Controlled Mutation',
+    'coreInvariants.5.description': 'Context can only mutate inside transitions triggered by declared events. Each event is processed as an independent transactional unit.',
+    'coreInvariants.6.title': 'Specification / Implementation Separation',
+    'coreInvariants.6.description': 'RIGOR defines a protocol. Engines implement it. The language is independent of any runtime.',
+    
+    // RIGOR Core v0.1 (NEW)
+    'coreVersion.title': 'RIGOR Core v0.1 — Frozen Semantic Model',
+    'coreVersion.intro': 'The semantic core of RIGOR v0.1 is formally defined and frozen.',
+    'coreVersion.list.1': 'Event-driven state machine',
+    'coreVersion.list.2': 'Typed and validated context schema',
+    'coreVersion.list.3': 'Explicit mutation declaration',
+    'coreVersion.list.4': 'No external mutation allowed',
+    'coreVersion.list.5': 'Terminal state irreversibility',
+    'coreVersion.outro': 'This version establishes the minimal invariant foundation of the protocol.',
+    
+    // Backend-First Strategy (NEW)
+    'backendFirst.title': 'Backend-First Strategy',
+    'backendFirst.intro': 'RIGOR begins as a backend-focused specification language.',
+    'backendFirst.list.1': 'Process orchestration',
+    'backendFirst.list.2': 'Domain state machines',
+    'backendFirst.list.3': 'External service invocation boundaries',
+    'backendFirst.list.4': 'API contract governance',
+    'backendFirst.outro': 'Frontend and contract derivations may emerge from the backend specification layer.',
+    
+    // Transaction Model (NEW)
+    'transactionModel.title': 'Transaction Model',
+    'transactionModel.intro': 'Each processed event represents an isolated transactional unit.',
+    'transactionModel.list.1': 'Context mutation occurs only during event transitions.',
+    'transactionModel.list.2': 'No partial state application is allowed.',
+    'transactionModel.list.3': 'Strong consistency with external systems is enforced through controlled invocation patterns.',
+    
+    // Project Status (NEW)
+    'projectStatus.title': 'Project Status',
+    'projectStatus.list.1': 'Specification Core v0.1 — Frozen',
+    'projectStatus.list.2': 'Reference Specification (YAML/JSON) — Defined',
+    'projectStatus.list.3': 'Validation Rules — Defined',
+    'projectStatus.list.4': 'Official Engine — In development',
+    'projectStatus.outro': 'RIGOR is evolving as an open standard intended for community governance.',
+    
+    // Open Standard (NEW)
+    'openStandard.title': 'Open Standard',
+    'openStandard.body': 'RIGOR is designed to be an open, implementable protocol. The specification is public. Any team may build a compatible engine. Long-term governance is intended to be community-driven.',
     
     // Structural Positioning
     'structuralPositioning.title': 'Structural Positioning',
@@ -135,9 +185,9 @@ export const ui = {
   es: {
     // Hero
     'hero.title': 'RIGOR',
-    'hero.subtitle': 'Protocolo de Restricción de IA.',
-    'hero.tertiary': 'Límites formales para sistemas generados por IA.',
-    'hero.optional': 'La generación requiere límites.',
+    'hero.subtitle': 'Un protocolo de restricciones tipado y dirigido por eventos para sistemas generados por IA.',
+    'hero.tertiary': 'RIGOR es un lenguaje de especificación formal diseñado para restringir, validar y governar sistemas de backend generados por IA.',
+    'hero.optional': 'Define transiciones de estado explícitas, reglas de mutación de contexto tipadas y límites de ejecución deterministas.',
     'hero.cta': 'Acceder a la Especificación →',
     
     // Structural Condition
@@ -178,16 +228,66 @@ export const ui = {
     // Core Invariants
     'coreInvariants.title': 'Invariantes Base',
     'coreInvariants.intro': 'Las siguientes propiedades son obligatorias para todos los sistemas compatibles con RIGOR:',
-    'coreInvariants.1.title': 'Explicidad',
-    'coreInvariants.1.description': 'Todas las transiciones deben ser declaradas. No se permite comportamiento implícito.',
+    'coreInvariants.1.title': 'Explicitud',
+    'coreInvariants.1.description': 'Sin mutaciones implícitas. Sin cambios de estado ocultos. Todas las mutaciones de contexto deben declararse dentro de las transiciones de eventos.',
     'coreInvariants.2.title': 'Determinismo',
-    'coreInvariants.2.description': 'Dado estado, evento y versión, la transición resultante debe ser singular o explícitamente rechazada.',
+    'coreInvariants.2.description': 'Para un estado y evento dados, la transición resultante está definida de forma única. El par (estado, evento) debe ser inequívoco.',
     'coreInvariants.3.title': 'Evolución Clasificada',
     'coreInvariants.3.description': 'Todos los cambios estructurales deben ser tipificados como compatibles, condicionales o rompedores. La evolución silenciosa es inválida.',
     'coreInvariants.4.title': 'Validación Previa a la Ejecución',
-    'coreInvariants.4.description': 'La validación estructural es una precondition de existencia. La ejecución sin validación viola el protocolo.',
-    'coreInvariants.5.title': 'Separación de Capas',
-    'coreInvariants.5.description': 'RIGOR separa formalmente la definición de lenguaje, instancia de especificación y motor de validación. Ninguna capa puede asumir implícitamente otra.',
+    'coreInvariants.4.description': 'La validación estructural es una precondición de existencia. La ejecución sin validación viola el protocolo.',
+    'coreInvariants.5.title': 'Mutación Controlada',
+    'coreInvariants.5.description': 'El contexto solo puede mutar dentro de las transiciones activadas por eventos declarados. Cada evento se procesa como una unidad transaccional independiente.',
+    'coreInvariants.6.title': 'Separación Especificación / Implementación',
+    'coreInvariants.6.description': 'RIGOR define un protocolo. Los motores lo implementan. El lenguaje es independiente de cualquier entorno de ejecución.',
+    
+    // What is RIGOR? (NEW)
+    'whatIsRigor.title': '¿Qué es RIGOR?',
+    'whatIsRigor.intro': 'RIGOR es una especificación abierta que define cómo deben comportarse los sistemas generados por IA.',
+    'whatIsRigor.list.1': 'Máquinas de estado explícitas',
+    'whatIsRigor.list.2': 'Esquemas de contexto tipados',
+    'whatIsRigor.list.3': 'Transiciones dirigidas por eventos',
+    'whatIsRigor.list.4': 'Reglas de mutación deterministas',
+    'whatIsRigor.list.5': 'Validación antes de ejecución',
+    'whatIsRigor.outro': 'RIGOR separa la especificación de la implementación. La especificación define qué está permitido. Las implementaciones se ejecutan bajo esas restricciones.',
+    
+    // RIGOR Core v0.1 (NEW)
+    'coreVersion.title': 'RIGOR Core v0.1 — Modelo Semántico Congelado',
+    'coreVersion.intro': 'El núcleo semántico de RIGOR v0.1 está formalmente definido y congelado.',
+    'coreVersion.list.1': 'Máquina de estado dirigida por eventos',
+    'coreVersion.list.2': 'Esquema de contexto tipado y validado',
+    'coreVersion.list.3': 'Declaración de mutación explícita',
+    'coreVersion.list.4': 'No se permite mutación externa',
+    'coreVersion.list.5': 'Irreversibilidad del estado terminal',
+    'coreVersion.outro': 'Esta versión establece la base mínima invariante del protocolo.',
+    
+    // Backend-First Strategy (NEW)
+    'backendFirst.title': 'Estrategia Backend-First',
+    'backendFirst.intro': 'RIGOR comienza como un lenguaje de especificación centrado en el backend.',
+    'backendFirst.list.1': 'Orquestación de procesos',
+    'backendFirst.list.2': 'Máquinas de estado de dominio',
+    'backendFirst.list.3': 'Límites de invocación de servicios externos',
+    'backendFirst.list.4': 'Gobernanza de contratos API',
+    'backendFirst.outro': 'Las derivaciones de frontend y contratos pueden emerger de la capa de especificación del backend.',
+    
+    // Transaction Model (NEW)
+    'transactionModel.title': 'Modelo de Transacciones',
+    'transactionModel.intro': 'Cada evento procesado representa una unidad transaccional aislada.',
+    'transactionModel.list.1': 'La mutación de contexto ocurre solo durante las transiciones de eventos.',
+    'transactionModel.list.2': 'No se permite la aplicación parcial del estado.',
+    'transactionModel.list.3': 'La consistencia fuerte con sistemas externos se aplica a través de patrones de invocación controlados.',
+    
+    // Project Status (NEW)
+    'projectStatus.title': 'Estado del Proyecto',
+    'projectStatus.list.1': 'Núcleo de Especificación v0.1 — Congelado',
+    'projectStatus.list.2': 'Especificación de Referencia (YAML/JSON) — Definida',
+    'projectStatus.list.3': 'Reglas de Validación — Definidas',
+    'projectStatus.list.4': 'Motor Oficial — En desarrollo',
+    'projectStatus.outro': 'RIGOR está evolucionando como un estándar abierto destinado a la gobernanza comunitaria.',
+    
+    // Open Standard (NEW)
+    'openStandard.title': 'Estándar Abierto',
+    'openStandard.body': 'RIGOR está diseñado para ser un protocolo abierto e implementable. La especificación es pública. Cualquier equipo puede construir un motor compatible. La gobernanza a largo plazo está destinada a ser dirigida por la comunidad.',
     
     // Structural Positioning
     'structuralPositioning.title': 'Posicionamiento Estructural',

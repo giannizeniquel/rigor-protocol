@@ -8,15 +8,12 @@ const t = useTranslations(lang);
 <section class="section section--ruled">
   <div class="container">
     <div class="section-header">
-      <span class="section-num">03</span>
+      <span class="section-num">14</span>
       <span class="section-rule"></span>
     </div>
-    <h2>{t('structuralCondition.title')}</h2>
+    <h2>{t('openStandard.title')}</h2>
     <div class="content">
-      <p>{t('structuralCondition.p1')}</p>
-      <p>{t('structuralCondition.p2')}</p>
-      <p class="emphasis">{t('structuralCondition.p3')}</p>
-      <p class="conclusion">{t('structuralCondition.p4')}</p>
+      <p class="body">{t('openStandard.body')}</p>
     </div>
   </div>
 </section>
@@ -62,24 +59,11 @@ const t = useTranslations(lang);
     max-width: 720px;
   }
 
-  p {
+  .body {
     font-family: var(--font-body);
     font-size: var(--text-body);
     color: var(--color-text-primary);
     line-height: var(--leading-body);
-    margin-bottom: var(--spacing-element);
-  }
-
-  .emphasis {
-    color: var(--color-text-muted);
-    font-size: 0.9375rem;
-  }
-
-  .conclusion {
-    font-weight: var(--weight-heading);
-    color: var(--color-text-primary);
-    border-left: 2px solid var(--color-accent);
-    padding-left: var(--spacing-inline);
     margin-bottom: 0;
   }
 </style>

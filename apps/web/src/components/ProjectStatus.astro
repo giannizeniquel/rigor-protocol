@@ -1,0 +1,116 @@
+---
+import { getLangFromUrl, useTranslations } from '../i18n/utils';
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+---
+
+<section class="section section--ruled">
+  <div class="container">
+    <div class="section-header">
+      <span class="section-num">13</span>
+      <span class="section-rule"></span>
+    </div>
+    <h2>{t('projectStatus.title')}</h2>
+    <div class="content">
+      <ul class="status-list">
+        <li><span class="status-indicator frozen"></span>{t('projectStatus.list.1')}</li>
+        <li><span class="status-indicator defined"></span>{t('projectStatus.list.2')}</li>
+        <li><span class="status-indicator defined"></span>{t('projectStatus.list.3')}</li>
+        <li><span class="status-indicator in-progress"></span>{t('projectStatus.list.4')}</li>
+      </ul>
+      <p class="outro">{t('projectStatus.outro')}</p>
+    </div>
+  </div>
+</section>
+
+<style>
+  .section--ruled {
+    padding-top: var(--spacing-section);
+    padding-bottom: var(--spacing-section);
+  }
+
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-inline);
+    margin-bottom: var(--spacing-block);
+  }
+
+  .section-num {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    color: var(--color-text-muted);
+    letter-spacing: 0.14em;
+    flex-shrink: 0;
+    line-height: 1;
+  }
+
+  .section-rule {
+    display: block;
+    width: 100%;
+    height: 1px;
+    background-color: var(--color-bg-tertiary);
+  }
+
+  h2 {
+    font-family: var(--font-heading);
+    font-size: var(--text-h2);
+    font-weight: var(--weight-heading);
+    letter-spacing: var(--tracking-heading);
+    margin-bottom: var(--spacing-element);
+  }
+
+  .content {
+    max-width: 720px;
+  }
+
+  .status-list {
+    list-style: none;
+    padding: 0;
+    margin: var(--spacing-block) 0;
+  }
+
+  .status-list li {
+    font-family: var(--font-body);
+    font-size: var(--text-body);
+    color: var(--color-text-primary);
+    padding: var(--spacing-inline) 0;
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-inline);
+  }
+
+  .status-indicator {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  .status-indicator.frozen {
+    background-color: var(--color-accent);
+  }
+
+  .status-indicator.defined {
+    background-color: var(--color-text-muted);
+  }
+
+  .status-indicator.in-progress {
+    background-color: var(--color-text-primary);
+    animation: pulse 2s infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.5; }
+  }
+
+  .outro {
+    font-family: var(--font-body);
+    font-size: var(--text-body);
+    color: var(--color-text-muted);
+    line-height: var(--leading-body);
+    margin-bottom: 0;
+  }
+</style>

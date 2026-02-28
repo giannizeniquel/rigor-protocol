@@ -8,15 +8,17 @@ const t = useTranslations(lang);
 <section class="section section--ruled">
   <div class="container">
     <div class="section-header">
-      <span class="section-num">03</span>
+      <span class="section-num">09</span>
       <span class="section-rule"></span>
     </div>
-    <h2>{t('structuralCondition.title')}</h2>
+    <h2>{t('transactionModel.title')}</h2>
     <div class="content">
-      <p>{t('structuralCondition.p1')}</p>
-      <p>{t('structuralCondition.p2')}</p>
-      <p class="emphasis">{t('structuralCondition.p3')}</p>
-      <p class="conclusion">{t('structuralCondition.p4')}</p>
+      <p class="intro">{t('transactionModel.intro')}</p>
+      <ul class="feature-list">
+        <li>{t('transactionModel.list.1')}</li>
+        <li>{t('transactionModel.list.2')}</li>
+        <li>{t('transactionModel.list.3')}</li>
+      </ul>
     </div>
   </div>
 </section>
@@ -62,7 +64,7 @@ const t = useTranslations(lang);
     max-width: 720px;
   }
 
-  p {
+  .intro {
     font-family: var(--font-body);
     font-size: var(--text-body);
     color: var(--color-text-primary);
@@ -70,16 +72,19 @@ const t = useTranslations(lang);
     margin-bottom: var(--spacing-element);
   }
 
-  .emphasis {
-    color: var(--color-text-muted);
-    font-size: 0.9375rem;
+  .feature-list {
+    list-style: none;
+    padding: 0;
+    margin: var(--spacing-block) 0;
   }
 
-  .conclusion {
-    font-weight: var(--weight-heading);
+  .feature-list li {
+    font-family: var(--font-mono);
+    font-size: 0.875rem;
     color: var(--color-text-primary);
-    border-left: 2px solid var(--color-accent);
+    padding: var(--spacing-element) 0;
     padding-left: var(--spacing-inline);
-    margin-bottom: 0;
+    border-left: 2px solid var(--color-accent);
+    margin-bottom: var(--spacing-inline);
   }
 </style>
