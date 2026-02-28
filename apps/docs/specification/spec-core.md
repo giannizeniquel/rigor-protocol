@@ -1,123 +1,101 @@
-# Spec Core
+# Spec Core (v0.1)
 
-## 1. Purpose
+## 1. Introduction
 
-The RIGOR Spec Core defines the **formal conceptual model** for a declarative specification system oriented toward precise AI-driven code generation.
+A RIGOR Process is a **deterministic, event-driven state machine** where all mutations are restricted to declared transitions and executed atomically per event.
 
-The objective is to establish:
-- Theoretical foundations.
-- Formal execution model.
-- Structural constraints.
-- Explicit contracts.
-- Non-negotiable structural invariants.
+## 2. Process Definition
 
-This document defines the conceptual architecture that any implementation must adhere to.
+A Process **MUST** define:
+- A unique identity
+- A finite set of states
+- An initial state (which **MUST** exist in the states set)
+- A finite set of transitions
+- A context schema
 
-## 2. Problem Statement
+## 3. Transition Model & Mutation Declaration (CRITICAL)
 
-AI-driven code generation requires specifications that are:
-- **Deterministic**: No probabilistic outcomes.
-- **Unambiguous**: Only one valid interpretation.
-- **Structurally Validated**: Pre-execution verification.
-- **Free of Implicit Logic**: No hidden behaviors.
+The formal mapping is: `(current_state, event) -> (next_state, mutations)`
 
-Traditional systems often mix technical orchestration, business rules, implicit state, and undeclared side effects. RIGOR strictly separates **Declaration** from **Execution, Persistence, and Effects**, allowing an AI to generate precise code without uncontrolled inferences.
+- A transition **MUST** define `from`, `on`, and `to`.
+- A transition **MAY** define a `mutate` list.
+- **Rule**: Transitions **MUST NOT** mutate context fields not explicitly declared in the `mutate` list. If `mutate` is omitted, the context is immutable for that transition.
 
-## 3. Core Principles
+## 4. Transactional Semantics
 
-### 3.1 Explicit Constraint Declaration
-All system behavior must be explicitly declared. RIGOR prohibits:
-- Implicit transaction references.
-- Hidden state mutations.
-- Undeclared side effects.
+Each event **MUST** be processed atomically.
 
-### 3.2 Explicit State Machine (FSM)
-A Process is a finite state machine defined by:
-- A closed set of states.
-- Explicit transitions.
-- Defined events.
-- Persistent state context.
+- Successful execution results in an atomic state transition and context update.
+- Failure results in no state change and no mutation (rollback).
 
-There are no implicit transitions.
+## 5. Determinism Guarantee
 
-### 3.3 Formal Persistence
-Every process instance must have:
-- A unique identifier (UUID).
-- A persisted current state.
-- A persistent typed context.
-- (Optional) Event history.
+For any given `(state, event)` pair, there **MUST** be at most one valid transition. Ambiguous mappings are prohibited and **MUST** be rejected at validation time.
 
-The process state cannot depend on volatile memory.
+## 6. Terminal States
 
-### 3.4 Determinism
-Given a current state, a persistent context, and a received event, the resulting transition must be completely deterministic.
+A terminal state is a state with no outgoing transitions. Once reached, the process **MUST NOT** accept further events.
 
-### 3.5 Controlled Flexibility
-Extension points are allowed only under explicit contract. Extending the model through ad-hoc code outside the specification is strictly prohibited.
+## 7. Invariants
 
-## 4. Formal Process Definition
+### 7.1 Structural Invariants
+- A Process **MUST** have a single initial state.
+- All transition targets **MUST** exist in the states set.
+- No duplicate transitions **(state, event)** pairs **MUST** exist.
 
-A Process is a logical entity defined as:
-**Process = (States, Initial State, Context, Transitions)**
+### 7.2 Runtime Invariants
+- The current state **MUST** always be a member of the declared states set.
+- The context **MUST** always conform to the declared schema.
 
-Where:
-- **States**: A finite set of possible stable phases.
-- **Initial State**: The starting node ($\in$ States).
-- **Context**: A set of typed variables.
-- **Transitions**: Mapping of (States $\times$ Event) $\to$ States.
+## 8. Normative Example
 
-## 5. Context Model
+```json
+{
+  "process": {
+    "id": "OrderProcess",
+    "version": "1.0.0",
+    "initial_state": "created",
+    "context_schema": {
+      "order_id": { "type": "uuid" },
+      "status": { "type": "string", "enum": ["created", "approved", "rejected", "shipped"] },
+      "approved_at": { "type": "datetime", "required": false },
+      "rejected_at": { "type": "datetime", "required": false }
+    },
+    "states": [
+      { "id": "created", "type": "default" },
+      { "id": "approved", "type": "default" },
+      { "id": "rejected", "type": "terminal" },
+      { "id": "shipped", "type": "terminal" }
+    ],
+    "transitions": [
+      {
+        "id": "approve",
+        "from": "created",
+        "on": "approve",
+        "to": "approved",
+        "mutate": ["status", "approved_at"]
+      },
+      {
+        "id": "reject",
+        "from": "created",
+        "on": "reject",
+        "to": "rejected",
+        "mutate": ["status", "rejected_at"]
+      },
+      {
+        "id": "ship",
+        "from": "approved",
+        "on": "ship",
+        "to": "shipped",
+        "mutate": ["status"]
+      }
+    ]
+  }
+}
+```
 
-The Context is the only mutable source within a Process. It is:
-- **Persistent**: Stored between transitions.
-- **Typed**: Strictly defined fields.
-- **Declarative**: Changes only through `update_context`.
-- **Closed**: No dynamic field creation or removal.
-
-### Supported Types (v0.1)
-- `uuid`, `string`, `integer`, `boolean`, `datetime`.
-
-Explicit nullability is supported using the `?` suffix.
-
-## 6. State Effects
-
-To ensure simplicity and determinism, each state must declare **exactly one** of the following effects:
-
-### 6.1 `emit_command` (Asynchronous)
-Represents an external action. It is non-blocking and produces effects outside the process boundary.
-
-### 6.2 `invoke` (Synchronous)
-Represents a technical invocation (e.g., an internal UseCase). It must be deterministic and idempotent.
-
-### 6.3 `terminal` (Conclusion)
-Marks the end of the process. No outgoing transitions are allowed.
-
-## 7. Execution Model
-
-The engine handles the process lifecycle through these stages:
-1. Reception of a `start_command`.
-2. Uniqueness validation (see Section 8).
-3. Creation of a persistent instance.
-4. Assignment of the `initial_state`.
-5. Execution of the state's effect.
-6. Event wait/reception.
-7. Transition evaluation and `update_context`.
-8. Persistence of the new state.
-
-The engine must guarantee atomicity per transition.
-
-## 8. Uniqueness Rule
-A process can optionally declare uniqueness by a context field. No two active instances can exist with the same value for the declared field. A terminal instance does not block new instances.
-
-## 9. Conceptual Proof
-A process must be executable as a pure state machine, independent of external infrastructure or real dependencies, by injecting events and observing the final state and updated context.
-
-## 10. Deliberate Limits (v0.1)
-To preserve generative precision, RIGOR v0.1 intentionally excludes:
-- Sub-processes.
-- Complex conditional transitions.
-- Parallelism.
-- Composite events.
-
-## 11. Architectural Goal
-RIGOR is designed to enable reliable automatic code generation, support future distributed execution, and scale in complexity without introducing structural ambiguity. It prioritizes verifiable stability over unlimited expressiveness.
+### Example Breakdown:
+- **Context Schema**: Defines `order_id`, `status`, `approved_at`, `rejected_at`.
+- **Transition with Mutation**: The `approve` transition explicitly declares `mutate: ["status", "approved_at"]`. Only these fields may change.
+- **Terminal States**: `rejected` and `shipped` have no outgoing transitions.
+- **Determinism**: Each `(state, event)` pair maps to exactly one transition.

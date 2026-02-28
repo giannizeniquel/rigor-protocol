@@ -28,19 +28,20 @@
 - **Visión a Largo Plazo:** Hoja de ruta conservadora para capas derivadas (API, frontend, etc.).
 - **Sincronización i18n:** Traducción técnica completa al español manteniendo la integridad conceptual.
 
-### ✅ Fase 18: Especificación de "Diferenciación Semántica" (v0.1)
-- **Comparación Basada en Grafos:** Definición del motor de diff que opera sobre el Modelo de Grafo normalizado.
-- **Reglas de Clasificación Normativas:** Codificación de cambios *breaking* y *non-breaking* en estados, transiciones, esquemas e identidad.
-- **Contrato de CLI para `diff`:** Extensión de la gramática EBNF y definición de códigos de salida (0-4).
-- **Esquema de Salida JSON:** Formalización de la estructura de reportes de diferencias para consumo por máquinas.
-- **Independencia de Formato:** El proceso ignora comentarios, espacios en blanco y orden de campos en el archivo fuente.
+### ✅ Fase 19: Especificación del "Núcleo de la Spec" (v0.1)
+- **Lenguaje Normativo RFC 2119:** Reestructuración completa utilizando palabras clave (MUST, DEBE, MAY, etc.) para eliminar ambigüedad.
+- **Modelo de Declaración de Mutación:** Obligatoriedad de listar campos mutables (`mutate`) en las transiciones para garantizar inmutabilidad por defecto.
+- **Garantía de Determinismo Estricto:** Prohibición formal de mapeos ambiguos (un par `estado, evento` -> una transición).
+- **Semántica Transaccional Atómica:** Definición del límite de ejecución atómica por cada evento procesado.
+- **Estados Terminales:** Definición formal de la barrera final de procesamiento de eventos.
+- **Ejemplo Normativo Completo:** Inclusión de un esquema JSON real que demuestra todas las reglas semánticas.
 
 ---
 
 ## 2. Estado del Repositorio
-El proyecto se encuentra en su estado definitivo de lanzamiento `v3.8` (Núcleo de Especificación Consistente).
+El proyecto se encuentra en su estado definitivo de lanzamiento `v3.9` (Especificación de Proceso Formalizada).
 - **Ramas:** `main` (Producción).
-- **Cobertura:** Landing v3 + Docs v1 + Identity Core v1 + Protocol Model v1 + CLI v2 + Validation Matrix v1 + Graph Model v1 + Semantic Diff v1.
+- **Cobertura:** Landing v3 + Docs v1 + Identity Core v1 + Protocol Model v1 + CLI v2 + Validation Matrix v1 + Graph Model v1 + Semantic Diff v1 + Spec Core v1.
 - **Idiomas:** EN / ES (Sincronizados y Técnicamente Precisos).
 - **URLs:**
   - Landing: https://rigor-protocol.pages.dev

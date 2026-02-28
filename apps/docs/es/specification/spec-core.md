@@ -1,123 +1,101 @@
-# Núcleo de la Spec
+# Núcleo de la Spec (v0.1)
 
-## 1. Propósito
+## 1. Introducción
 
-El Núcleo de Spec de RIGOR define el **modelo conceptual formal** para un sistema de especificación declarativa orientado hacia la generación de código precisa impulsada por IA.
+Un Proceso RIGOR es una **máquina de estados determinista y dirigida por eventos** donde todas las mutaciones están restringidas a transiciones declaradas y se ejecutan atómicamente por evento.
 
-El objetivo es establecer:
-- Fundamentos teóricos.
-- Modelo de ejecución formal.
-- Restricciones estructurales.
-- Contratos explícitos.
-- Invariantes estructurales no negociables.
+## 2. Definición de Proceso
 
-Este documento define la arquitectura conceptual que cualquier implementación debe adherir.
+Un Proceso **DEBE** definir:
+- Una identidad única
+- Un conjunto finito de estados
+- Un estado inicial (que **DEBE** existir en el conjunto de estados)
+- Un conjunto finito de transiciones
+- Un esquema de contexto
 
-## 2. Declaracion del Problema
+## 3. Modelo de Transición y Declaración de Mutación (CRÍTICO)
 
-La generación de código impulsada por IA requiere especificaciones que sean:
-- **Determinísticas**: Sin resultados probabilísticos.
-- **No ambiguas**: Solo una interpretación válida.
-- **Validadas estructuralmente**: Verificación pre-ejecución.
-- **Libres de Lógica Implícita**: Sin comportamientos ocultos.
+El mapeo formal es: `(estado_actual, evento) -> (estado_siguiente, mutaciones)`
 
-Los sistemas tradicionales a menudo mezclan orquestación técnica, reglas de negocio, estado implícito y efectos secundarios no declarados. RIGOR separa estrictamente **Declaración** de **Ejecución, Persistencia y Efectos**, permitiendo a la IA generar código preciso sin inferencias no controladas.
+- Una transición **DEBE** definir `from`, `on`, y `to`.
+- Una transición **PUEDE** definir una lista de `mutate`.
+- **Regla**: Las transiciones **NO DEBEN** mutar campos de contexto no declarados explícitamente en la lista `mutate`. Si `mutate` se omite, el contexto es inmutable para esa transición.
 
-## 3. Principios Fundamentales
+## 4. Semántica Transaccional
 
-### 3.1 Declaracion de Restriccion Explícita
-Todo comportamiento del sistema debe ser explícitamente declarado. RIGOR prohíbe:
-- Referencias de transacción implícitas.
-- Mutaciones de estado ocultas.
-- Efectos secundarios no declarados.
+Cada evento **DEBE** procesarse atómicamente.
 
-### 3.2 Maquina de Estados Explícita (FSM)
-Un Proceso es una máquina de estados finita definida por:
-- Un conjunto cerrado de estados.
-- Transiciones explícitas.
-- Eventos definidos.
-- Contexto de estado persistente.
+- La ejecución exitosa resulta en una transición de estado atómica y actualización de contexto.
+- El fallo resulta en ningún cambio de estado y ninguna mutación (rollback).
 
-No hay transiciones implícitas.
+## 5. Garantía de Determinismo
 
-### 3.3 Persistencia Formal
-Cada instancia de proceso debe tener:
-- Un identificador único (UUID).
-- Un estado actual persistido.
-- Un contexto tipificado persistido.
-- (Opcional) Historial de eventos.
+Para cualquier par dado `(estado, evento)**, debe haber **a lo sumo** una transición válida. Los mapeos ambiguos están prohibidos y **DEBEN** ser rechazados en el momento de la validación.
 
-El estado del proceso no puede depender de memoria volátil.
+## 6. Estados Terminales
 
-### 3.4 Determinismo
-Dado un estado actual, un contexto persistente y un evento recibido, la transición resultante debe ser completamente determinística.
+Un estado terminal es un estado sin transiciones salientes. Una vez alcanzado, el proceso **NO DEBE** aceptar más eventos.
 
-### 3.5 Flexibilidad Controlada
-Los puntos de extensión solo se permiten bajo contrato explícito. Extender el modelo a través de código ad-hoc fuera de la especificación está estrictamente prohibido.
+## 7. Invariantes
 
-## 4. Definicion Formal de Proceso
+### 7.1 Invariantes Estructurales
+- Un Proceso **DEBE** tener un único estado inicial.
+- Todos los objetivos de transición **DEBEN** existir en el conjunto de estados.
+- No **DEBEN** existir pares de transiciones duplicados **(estado, evento)**.
 
-Un Proceso es una entidad lógica definida como:
-**Proceso = (Estados, Estado Inicial, Contexto, Transiciones)**
+### 7.2 Invariantes de Runtime
+- El estado actual **DEBE** siempre ser un miembro del conjunto de estados declarados.
+- El contexto **DEBE** siempre ajustarse al esquema declarado.
 
-Donde:
-- **Estados**: Un conjunto finito de fases estables posibles.
-- **Estado Inicial**: El nodo de inicio (∈ Estados).
-- **Contexto**: Un conjunto de variables tipificadas.
-- **Transiciones**: Mapeo de (Estados × Evento) → Estados.
+## 8. Ejemplo Normativo
 
-## 5. Modelo de Contexto
+```json
+{
+  "process": {
+    "id": "OrderProcess",
+    "version": "1.0.0",
+    "initial_state": "created",
+    "context_schema": {
+      "order_id": { "type": "uuid" },
+      "status": { "type": "string", "enum": ["created", "approved", "rejected", "shipped"] },
+      "approved_at": { "type": "datetime", "required": false },
+      "rejected_at": { "type": "datetime", "required": false }
+    },
+    "states": [
+      { "id": "created", "type": "default" },
+      { "id": "approved", "type": "default" },
+      { "id": "rejected", "type": "terminal" },
+      { "id": "shipped", "type": "terminal" }
+    ],
+    "transitions": [
+      {
+        "id": "approve",
+        "from": "created",
+        "on": "approve",
+        "to": "approved",
+        "mutate": ["status", "approved_at"]
+      },
+      {
+        "id": "reject",
+        "from": "created",
+        "on": "reject",
+        "to": "rejected",
+        "mutate": ["status", "rejected_at"]
+      },
+      {
+        "id": "ship",
+        "from": "approved",
+        "on": "ship",
+        "to": "shipped",
+        "mutate": ["status"]
+      }
+    ]
+  }
+}
+```
 
-El Contexto es la única fuente mutable dentro de un Proceso. Es:
-- **Persistente**: Almacenado entre transiciones.
-- **Tipificado**: Campos estrictamente definidos.
-- **Declarativo**: Cambios solo a través de `update_context`.
-- **Cerrado**: Sin creación o eliminación dinámica de campos.
-
-### Tipos Soportados (v0.1)
-- `uuid`, `string`, `integer`, `boolean`, `datetime`.
-
-La nulabilidad explícita se soporta usando el sufijo `?`.
-
-## 6. Efectos de Estado
-
-Para asegurar simplicidad y determinismo, cada estado debe declarar **exactamente uno** de los siguientes efectos:
-
-### 6.1 `emit_command` (Asíncrono)
-Representa una acción externa. Es no bloqueante y produce efectos fuera de los límites del proceso.
-
-### 6.2 `invoke` (Síncrono)
-Representa una invocación técnica (ej., un UseCase interno). Debe ser determinístico e idempotente.
-
-### 6.3 `terminal` (Conclusion)
-Marca el fin del proceso. No se permiten transiciones salientes.
-
-## 7. Modelo de Ejecucion
-
-El motor maneja el ciclo de vida del proceso a través de estas etapas:
-1. Recepción de un `start_command`.
-2. Validación de unicidad (ver Sección 8).
-3. Creación de una instancia persistente.
-4. Asignación del `initial_state`.
-5. Ejecución del efecto del estado.
-6. Espera/Recepción de eventos.
-7. Evaluación de transición y `update_context`.
-8. Persistencia del nuevo estado.
-
-El motor debe garantizar atomicidad por transición.
-
-## 8. Regla de Unicidad
-Un proceso puede declarar opcionalmente unicidad por un campo de contexto. No pueden existir dos instancias activas con el mismo valor para el campo declarado. Una instancia terminal no bloquea nuevas instancias.
-
-## 9. Prueba Conceptual
-Un proceso debe ser ejecutable como una máquina de estados pura, independiente de infraestructura externa o dependencias reales, inyectando eventos y observando el estado final y el contexto actualizado.
-
-## 10. Limites Intencionales (v0.1)
-Para preservar la precisión generativa, RIGOR v0.1 intencionalmente excluye:
-- Sub-procesos.
-- Transiciones condicionales complejas.
-- Paralelismo.
-- Eventos compuestos.
-
-## 11. Objetivo Arquitectonico
-RIGOR está diseñado para permitir generación automática de código confiable, soportar ejecución distribuida futura, y escalar en complejidad sin introducir ambigüedad estructural. Prioriza estabilidad verificable sobre expresividad ilimitada.
+### Desglose del Ejemplo:
+- **Esquema de Contexto**: Define `order_id`, `status`, `approved_at`, `rejected_at`.
+- **Transición con Mutación**: La transición `approve` declara explícitamente `mutate: ["status", "approved_at"]`. Solo estos campos pueden cambiar.
+- **Estados Terminales**: `rejected` y `shipped` no tienen transiciones salientes.
+- **Determinismo**: Cada par `(estado, evento)` mapea a exactamente una transición.
