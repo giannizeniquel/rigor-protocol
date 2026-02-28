@@ -28,12 +28,18 @@
 - **Visión a Largo Plazo:** Hoja de ruta conservadora para capas derivadas (API, frontend, etc.).
 - **Sincronización i18n:** Traducción técnica completa al español manteniendo la integridad conceptual.
 
+### ✅ Fase 12: Actualización de la Especificación "Identity Core" (v1.0)
+- **Integración de Pilares Semánticos:** Inclusión de Contexto Tipado, Mutación Dirigida por Eventos y Semántica Transaccional.
+- **Congelación del Núcleo:** Formalización de la estabilidad del modelo semántico v0.1.
+- **Independencia del Motor:** Refuerzo de la distinción entre especificación formal e implementación de referencia.
+- **Consistencia en Inglés y Español:** Sincronización técnica total de la base conceptual del protocolo.
+
 ---
 
 ## 2. Estado del Repositorio
-El proyecto se encuentra en su estado definitivo de lanzamiento `v3.1` (Lanzamiento de Estándar Web y Documentación Finalizados).
+El proyecto se encuentra en su estado definitivo de lanzamiento `v3.2` (Identidad y Especificación Core Alineadas).
 - **Ramas:** `main` (Producción).
-- **Cobertura:** Landing v3 + Docs v1 + Design System.
+- **Cobertura:** Landing v3 + Docs v1 + Identity Core v1.
 - **Idiomas:** EN / ES (Sincronizados y Técnicamente Precisos).
 - **URLs:**
   - Landing: https://rigor-protocol.pages.dev
