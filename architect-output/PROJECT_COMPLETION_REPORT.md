@@ -36,19 +36,19 @@
 - **Declaración de Prohibiciones:** Listado explícito de características excluidas en v0.1 para asegurar el congelamiento semántico.
 - **Ejemplo de Referencia Canónico:** Implementación de un proceso de orden que sirve como estándar para implementadores de SDKs.
 
-### ✅ Fase 21: Especificación de "Eventos" (v0.1)
-- **Definición de Interfaz de Runtime:** Formalización del sobre de evento (*Envelope*) con metadatos obligatorios (`event_id`, `timestamp`, etc.).
-- **Esquema de Payload Estático:** Obligatoriedad de declarar tipos y campos requeridos para cada evento.
-- **Restricción de Entradas Externas:** Clarificación de que en v0.1 todos los eventos son externos al proceso.
-- **Taxonomía de Errores EV (001-006):** Integración de reglas de validación específicas para la integridad del payload y nombrado.
-- **Sincronización Normativa:** Alineación total con el Sistema de Tipos y el Modelo Transaccional de RIGOR Core v0.1.
+### ✅ Fase 22: Especificación de "Versionado" (v0.1)
+- **Fusión Normativa Definitiva:** Integración de la propuesta formal con disparadores técnicos granulares para incrementos SemVer.
+- **Identificadores Duales:** Consolidación de `rigor_spec_version` (lenguaje) y `spec_version` (proceso).
+- **Garantía de Determinismo:** Obligatoriedad de evaluación determinista de versiones antes de la validación estructural.
+- **Taxonomía de Errores ER (001-004):** Inclusión de códigos para formatos inválidos, versiones no soportadas y rangos no satisfechos.
+- **Reglas de Compatibilidad del Motor:** Definición formal de cómo el motor debe aceptar o rechazar versiones basadas en su capacidad.
 
 ---
 
 ## 2. Estado del Repositorio
-El proyecto se encuentra en su estado definitivo de lanzamiento `v4.1` (Especificación de Eventos Formalizada).
+El proyecto se encuentra en su estado definitivo de lanzamiento `v4.2` (Especificación de Versionado Formalizada).
 - **Ramas:** `main` (Producción).
-- **Cobertura:** Landing v3 + Docs v1 + Identity Core v1 + Protocol Model v1 + CLI v2 + Validation Matrix v1 + Graph Model v1 + Semantic Diff v1 + Spec Core v1 + Spec Reference v1 + Events v1.
+- **Cobertura:** Landing v3 + Docs v1 + Identity Core v1 + Protocol Model v1 + CLI v2 + Validation Matrix v1 + Graph Model v1 + Semantic Diff v1 + Spec Core v1 + Spec Reference v1 + Events v1 + Versioning v1.
 - **Idiomas:** EN / ES (Sincronizados y Técnicamente Precisos).
 - **URLs:**
   - Landing: https://rigor-protocol.pages.dev
