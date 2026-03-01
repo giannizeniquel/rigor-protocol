@@ -101,22 +101,20 @@ export default defineConfig({
             {
               text: 'Implementation',
               items: [
-                { 
-                  text: 'Introduction', 
-                  link: '/implementation/' 
-                },
-                { 
-                  text: 'Validation Engine', 
-                  link: '/implementation/validation-engine' 
-                },
-                { 
-                  text: 'Constraint Encoding', 
-                  link: '/implementation/constraint-encoding' 
-                },
-                { 
-                  text: 'CLI', 
-                  link: '/implementation/cli' 
-                }
+                { text: 'Introduction', link: '/implementation/' },
+                { text: 'System Architecture', link: '/implementation/architecture' },
+                { text: 'Parser & Loader', link: '/implementation/parser-loader' },
+                { text: 'Graph Builder', link: '/implementation/graph-builder' },
+                { text: 'Canonicalization', link: '/implementation/canonicalization' },
+                { text: 'Validation Engine', link: '/implementation/validation-engine' },
+                { text: 'Constraint Engine', link: '/implementation/constraint-engine' },
+                { text: 'Diff Engine', link: '/implementation/diff-engine' },
+                { text: 'Versioning Engine', link: '/implementation/versioning-engine' },
+                { text: 'Migration Engine', link: '/implementation/migration-engine' },
+                { text: 'Event Engine', link: '/implementation/event-engine' },
+                { text: 'Error Model', link: '/implementation/error-model' },
+                { text: 'CLI', link: '/implementation/cli' },
+                { text: 'Performance & Testing', link: '/implementation/performance-testing' }
               ]
             }
           ]
@@ -224,22 +222,20 @@ export default defineConfig({
             {
               text: 'Implementación',
               items: [
-                { 
-                  text: 'Introducción', 
-                  link: '/es/implementation/' 
-                },
-                { 
-                  text: 'Motor de Validación', 
-                  link: '/es/implementation/validation-engine' 
-                },
-                { 
-                  text: 'Codificación de Restricciones', 
-                  link: '/es/implementation/constraint-encoding' 
-                },
-                { 
-                  text: 'CLI', 
-                  link: '/es/implementation/cli' 
-                }
+                { text: 'Introducción', link: '/es/implementation/' },
+                { text: 'Arquitectura del Sistema', link: '/es/implementation/architecture' },
+                { text: 'Parser y Loader', link: '/es/implementation/parser-loader' },
+                { text: 'Constructor de Grafo', link: '/es/implementation/graph-builder' },
+                { text: 'Canonicalización', link: '/es/implementation/canonicalization' },
+                { text: 'Motor de Validación', link: '/es/implementation/validation-engine' },
+                { text: 'Motor de Restricciones', link: '/es/implementation/constraint-engine' },
+                { text: 'Motor de Diff', link: '/es/implementation/diff-engine' },
+                { text: 'Motor de Versionado', link: '/es/implementation/versioning-engine' },
+                { text: 'Motor de Migraciones', link: '/es/implementation/migration-engine' },
+                { text: 'Motor de Eventos', link: '/es/implementation/event-engine' },
+                { text: 'Modelo de Errores', link: '/es/implementation/error-model' },
+                { text: 'CLI', link: '/es/implementation/cli' },
+                { text: 'Rendimiento y Testing', link: '/es/implementation/performance-testing' }
               ]
             }
           ]
