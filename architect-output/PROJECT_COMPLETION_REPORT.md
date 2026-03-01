@@ -57,20 +57,20 @@
 - **Modelo de Concurrencia y Ordenamiento:** Requisito de ejecución monohilo por defecto y estabilidad lexicográfica.
 - **Definición de Extensibilidad:** Establecimiento de límites para nuevas reglas y generadores sin alterar el núcleo.
 
-### ✅ Fase 38: Especificación de "Modelo de Errores" (v0.1)
-- **Taxonomía Unificada de Errores:** Clasificación formal de fallos en 11 categorías (Parser, Graph, Validation, etc.).
-- **Codificación Normativa RIGOR-XXX:** Requisito de códigos estables, inmutables y bajo espacio de nombres para cada error.
-- **Esquema Base de Error:** Definición de la estructura `RigorError` con código, mensaje, ruta canónica y metadatos.
-- **Ordenamiento Determinista de Salida:** Garantía de estabilidad en reportes mediante ordenación por categoría, ruta y código.
-- **Contrato de Serialización CLI:** Especificación de los modos Texto y JSON, eliminando la ambigüedad en la presentación de diagnósticos.
+### ✅ Fase 39: Especificación de "Rendimiento y Testing" (v0.1)
+- **Garantías de Complejidad Computacional:** Definición de clases O-notación para los 7 motores core, asegurando escalabilidad lineal.
+- **Validación de Determinismo:** Requisito de igualdad a nivel de bytes para salidas JSON y pruebas de aleatorización de orden.
+- **Hoja de Ruta de Pruebas Obligatoria:** Integración de pruebas unitarias, de integración, *Golden*, de regresión y basadas en propiedades.
+- **Control de Calidad en CI:** Automatización de bloqueos ante regresiones de rendimiento o fallos en invariantes de ordenamiento.
+- **Robustez y Seguridad:** Pruebas mandatorias contra anidamiento profundo, ciclos ilegales y entradas malformadas.
 
 ---
 
 ## 2. Estado del Repositorio
-El proyecto se encuentra en su estado definitivo de lanzamiento `v4.18` (Suite de Implementación Formalizada al 100%).
+El proyecto se encuentra en su estado definitivo de lanzamiento `v5.0` (Infraestructura de Especificación e Implementación Completa al 100%).
 - **Ramas:** `main` (Producción).
-- **Cobertura:** Landing v3 + Docs v1 + Full Spec Suite v1 + Implementation Architecture v1 + 14 Motores/Módulos de Implementación v1.
-- **Idiomas:** EN / ES (Sincronizados y Técnicamente Precisos).
+- **Cobertura:** Landing v3 + Full Spec Suite v1 + Implementation Architecture & Modules v1.
+- **Idiomas:** EN / ES (Sincronizados y Técnicamente Precisos en todas las capas).
 - **URLs:**
   - Landing: https://rigor-protocol.pages.dev
   - Docs: https://rigor-docs.pages.dev
