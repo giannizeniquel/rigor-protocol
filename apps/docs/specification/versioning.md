@@ -1,34 +1,30 @@
 # Versioning (v0.1)
 
-## 1. Purpose
+## 1. Introduction
 
-RIGOR treats versioning as a formal structural component rather than an informal convention. The objective is to ensure controlled evolution of specifications, explicit compatibility, and safe migrations for persistent process instances.
+Versioning is a formal structural constraint in RIGOR, required for deterministic evolution and safe migrations.
 
-## 2. Levels of Versioning
-
-The RIGOR ecosystem operates across three distinct versioning levels:
+## 2. Version Identifiers (Normative)
 
 ### 2.1 `rigor_spec_version`
-Defines the version of the RIGOR language and its formal structural contract.
-- **Mandatory**: Must be declared at the root of every specification (e.g., `rigor_spec_version: 0.1.0`).
-- **Trigger**: Changes to the JSON Schema or formal semantics trigger a version increment. Structural changes to the language require a **MAJOR** increment.
-- **Enforcement**: The engine **must** reject specifications with an unsupported `rigor_spec_version`. The rejection must be explicit and deterministic.
+- Represents the RIGOR language/core version.
+- Format: `"MAJOR.MINOR"` (e.g., `"0.1"`).
+- Engines **MUST** reject specifications with an unsupported language version.
 
 ### 2.2 `spec_version`
-Identifies the version of a specific process implementation (states, events, transitions, and context).
-- **Usage**: Used as the primary trigger for migrations, diff comparisons, and tracking rehydration of persisted instances.
-- **Declaration**: Must be declared at the root (e.g., `spec_version: 1.0.0`).
-- **Immutability**: Once a `spec_version` is used in production, it is immutable. Any modification requires a version increment.
+- Represents the version of a specific process definition.
+- Format: `"MAJOR.MINOR.PATCH"` (e.g., `"1.0.0"`).
+- Follows Semantic Versioning rules.
 
-### 2.3 `engine_version`
-Identifies the version of the RIGOR runtime. The engine must declare its supported range for both the language and implementation versions (e.g., `supported_rigor_spec_range: "^0.1.0"`).
+## 3. Semantic Rules (Increment Logic)
 
-## 3. Semantic Versioning (SemVer) Rules
-
-RIGOR strictly enforces `MAJOR.MINOR.PATCH` rules for structural changes:
+| Segment | Increment Rule | Purpose |
+| :--- | :--- | :--- |
+| **MAJOR** | **MUST** increment | Breaking changes (removed states, changed types). |
+| **MINOR** | **MAY** increment | Backward-compatible features (new optional fields). |
+| **PATCH** | **MAY** increment | Bug fixes, clarifications, or documentation. |
 
 ### 3.1 MAJOR (Breaking Changes)
-Required when changes are backward-incompatible. Breaking changes require a formal [Migration Path](./migrations). Examples:
 - Removing or renaming an existing state or event.
 - Changing the type of a context field.
 - Removing a mandatory context field.
@@ -36,41 +32,81 @@ Required when changes are backward-incompatible. Breaking changes require a form
 - Changing the `initial_state`.
 - Converting an optional field into a mandatory one.
 
-### 3.2 MINOR (Compatible Additions)
-Required for backward-compatible structural additions. These must not break existing persisted instances. Examples:
-- Adding a new Event or State (provided it is not the new initial state).
+### 3.2 MINOR (Backward-Compatible)
+- Adding a new Event or State.
 - Adding a new transition.
 - Adding an optional field to the context or event payload.
 
-### 3.3 PATCH (Non-Structural Fixes)
-Required for non-breaking adjustments that do not alter the structural contract. Examples:
+### 3.3 PATCH (Non-Structural)
 - Documentation updates.
-- Internal engine optimizations.
-- Improving the clarity of error or log messages.
+- Improving clarity of error or log messages.
+- Clarifications without behavioral change.
 
-## 4. Compatibility Verification & CLI Integration
+## 4. Version Range Support
 
-The RIGOR CLI provides tools to enforce these rules during the development lifecycle.
+Engines **SHOULD** support range operators for compatibility checks:
 
-### 4.1 The `diff` Command
-The command `rigor diff <old.yaml> <new.yaml>` is used to:
-- Compare `spec_version` nodes.
-- Automatically detect breaking changes based on structural analysis.
-- Suggest the required version increment (PATCH, MINOR, or MAJOR).
+| Operator | Description |
+| :--- | :--- |
+| `=` | Exact match |
+| `>` | Greater than |
+| `>=` | Greater than or equal |
+| `<` | Less than |
+| `<=` | Less than or equal |
+| `^` | Compatible (e.g., ^1.0.0 means >=1.0.0 <2.0.0) |
+| `~` | Tilde (e.g., ~1.0.0 means >=1.0.0 <1.1.0) |
 
-Failure to increment the version correctly when a breaking change is detected should trigger a CI/CD failure.
+**Behavior**: A spec is valid only if the identifiers satisfy the engine's supported range.
 
-## 5. Support & Deprecation Policy
+## 5. Versioning in Validation
 
-To maintain ecosystem stability, RIGOR implementers are encouraged to:
-- **Active Support**: Support at least the last two **MAJOR** versions active in production.
-- **Deprecation Window**: Define an explicit deprecation window before removing support for an older `rigor_spec_version`.
-- **Traceability**: Maintain a complete, immutable history of all published specification versions.
+Integration with the Validation Matrix:
+1. Validator **MUST** verify both identifiers at the start of the process.
+2. Mismatches or malformed strings trigger immediate failure.
+3. Version evolution **SHOULD** be logged for auditability.
 
-## 6. Formal Guarantees
+## 6. Error Taxonomy
 
-The RIGOR Versioning model v0.1 guarantees:
-- **Explicit Evolution**: No silent structural changes.
-- **Measurable Compatibility**: Mathematical verification of backward compatibility.
-- **Integrity**: Persistent instances can always be mapped to their specific structural contract.
-- **Separation**: Clear distinction between the language, the implementation, and the runtime versions.
+| Code | Condition | Severity |
+| :--- | :--- | :--- |
+| `ER-VERSION-INCOMPATIBLE` | Spec version not supported by engine. | Error |
+| `ER-UNSUPPORTED-RIGOR-SPEC` | `rigor_spec_version` is outside engine capability. | Error |
+| `ER-INVALID-VERSION-STRING` | Version identifier does not follow mandated format. | Error |
+
+## 7. Examples
+
+### Valid: Standard Compliant Version Block
+
+```yaml
+rigor_spec_version: "0.1"
+spec_version: "1.2.0"
+
+process: OrderProcess
+context:
+  order_id: uuid
+states:
+  created:
+    terminal: true
+```
+
+### Invalid: Breaking Change Without MAJOR Increment
+
+```yaml
+# INVALID: Removed 'pending' state but didn't increment MAJOR
+rigor_spec_version: "0.1"
+spec_version: "1.0.0"  # Should be "2.0.0"
+
+process: OrderProcess
+# 'pending' state was removed
+states:
+  completed:
+    terminal: true
+```
+
+### Invalid: Engine Rejects Future Language Version
+
+```yaml
+# INVALID: Engine supports "0.1" but spec uses "2.0"
+rigor_spec_version: "2.0"  # ER-UNSUPPORTED-RIGOR-SPEC
+spec_version: "1.0.0"
+```
