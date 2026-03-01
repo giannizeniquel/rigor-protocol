@@ -1,63 +1,192 @@
 # Migraciones (v0.1)
 
-## 1. Propósito
+## 1. Definición Formal
 
-La especificación de Migraciones de RIGOR define el modelo formal para migrar instancias de proceso persistidas cuando una especificación sufre un cambio de versión `MAJOR`. Esto aplica estrictamente a procesos con `persistence: true`. El objetivo es asegurar la integridad de los datos y prevenir corrupción del estado estructural durante la evolución.
+Una Migración es un conjunto ordenado y determinista de operaciones que transforma una especificación de la versión A a la versión B.
 
-## 2. Disparar una Migración
+- **DEBE** ser declarativa y determinista.
+- **DEBE** ser validable.
+- **NO DEBE** depender de estado externo.
 
-Una migración es obligatoria siempre que ocurra un cambio `MAJOR`, específicamente cuando:
-- Un tipo de campo del contexto cambia.
-- Un estado existente es removido o renombrado.
-- Un campo requerido es removido del contexto.
-- El `initial_state` es cambiado.
+## 2. Estructura del Archivo y Ubicación
 
-Las migraciones **no son requeridas** para cambios `MINOR` o `PATCH`.
+Las migraciones se declaran en el bloque raíz `migrations:` del documento de especificación.
 
-## 3. Estrategias de Migracion
+```yaml
+rigor_spec_version: "0.1"
+spec_version: "2.0.0"
 
-RIGOR soporta dos estrategias principales de migración:
+migrations:
+  - from: "1.0.0"
+    to: "2.0.0"
+    operations:
+      - remove_state: pending
 
-### 3.1 Migración Offline
-- **Proceso**: Detener el motor, transformar todas las instancias persistidas a la nueva especificación, y reiniciar.
-- **Trade-off**: Más simple de implementar pero requiere tiempo de inactividad.
+process: OrderProcess
+# ...
+```
 
-### 3.2 Migración On-Read (Perezosa)
-- **Proceso**: Múltiples versiones de especificación permanecen activas. Una instancia es migrada automáticamente cuando es cargada por el motor.
-- **Requisito**: Un transformador determinístico y persistencia inmediata de la versión migrada.
+**Reglas:**
+- Solo migraciones hacia adelante son soportadas en v0.1 (`from < to`).
+- La cadena debe ser secuencial (sin huecos, ciclos o bifurcaciones).
 
-## 4. Transformador de Migración
+## 3. Gramática Formal (EBNF)
 
-Una migración debe ser definida como una función formal: `migrate(v_old) -> v_new`.
+```ebnf
+migrations_block ::= "migrations:" migration_definition+
+migration_definition ::= "-" "from:" version "to:" version "operations:" operation+
+operation ::= add_state | remove_state | rename_state | add_event | remove_event | modify_transition | modify_context_schema
+```
 
-### 4.1 Propiedades Obligatorias
-- **Determinístico**: Dada la misma entrada, debe producir la misma salida.
-- **Puro**: Sin efectos secundarios externos (ej., llamadas a API) durante la transformación.
-- **Idempotente**: Puede ser ejecutado múltiples veces de forma segura sin alterar el resultado.
+## 4. Operaciones Permitidas (v0.1)
 
-## 5. Reglas de Transformacion Estructural
+### 4.1 add_state
 
-### 5.1 Migración de Estado
-Si un estado es removido, un estado destino equivalente debe ser definido. Una instancia no puede ser dejada en un estado no existente después de la migración.
+Añade un nuevo estado a la especificación.
 
-### 5.2 Migración de Contexto
-- **Nuevos Campos Obligatorios**: Deben tener un valor por defecto explícito.
-- **Campos Removidos**: Deben ser descartados.
-- **Conversión de Tipo**: Debe ser manejada explícitamente (ej., convertir un `integer` a un `string`).
+```yaml
+operations:
+  - add_state:
+      name: processing
+      terminal: false
+```
 
-## 6. Control de Version de Instancia
+**Reglas:**
+- El nombre del estado **NO DEBE** existir previamente.
+- Si se marca como `initial: true`, **NO DEBE** entrar en conflicto con el estado inicial existente.
 
-Cada instancia persistida debe almacenar:
-- `spec_version`: La versión de la especificación a la que adher actualmente.
-- `migrated_at`: (Nullable) La marca de tiempo de la última migración.
+### 4.2 remove_state
 
-El motor debe comparar la `spec_version` de la instancia con la versión de la especificación actual antes de procesar cualquier evento. Si difieren, la migración debe ser ejecutada primero.
+Remueve un estado existente de la especificación.
 
-## 7. Validacion Post-Migracion
+```yaml
+operations:
+  - remove_state: pending
+```
 
-Inmediatamente después de una migración, el motor debe:
-1. Ejecutar **Validación Semántica** en la instancia migrada.
-2. Verificar que el `current_state` existe en la nueva especificación.
-3. Confirmar que todos los tipos de contexto son coherentes.
+**Reglas:**
+- El estado **NO DEBE** ser el `initial_state`.
+- El estado **NO DEBE** tener transiciones entrantes o salientes activas (a menos que se redirija).
+- Solo permitido en incrementos de versión MAJOR.
 
-Si la validación falla, la instancia debe ser marcada como **corrupta** y la ejecución debe ser detenida para prevenir mayor inconsistencia.
+### 4.3 rename_state
+
+Renombra un estado existente.
+
+```yaml
+operations:
+  - rename_state:
+      from: pending
+      to: awaiting
+```
+
+**Reglas:**
+- El estado origen **DEBE** existir.
+- El nombre destino **NO DEBE** existir previamente.
+- **DEBE** actualizar todas las referencias (transiciones, `initial_state`).
+
+### 4.4 add_event
+
+Añade un nuevo evento a la especificación.
+
+```yaml
+operations:
+  - add_event:
+      name: ProcessCompleted
+      payload:
+        result: string
+```
+
+**Reglas:**
+- El nombre del evento **NO DEBE** existir previamente.
+
+### 4.5 remove_event
+
+Remueve un evento existente.
+
+```yaml
+operations:
+  - remove_event: OrderCancelled
+```
+
+**Reglas:**
+- Solo permitido en incrementos de versión MAJOR (cambio destructivo).
+- El evento **NO DEBE** ser referenciado por ninguna transición.
+
+### 4.6 modify_transition
+
+Modifica una transición existente.
+
+```yaml
+operations:
+  - modify_transition:
+      from: created
+      event: OrderPlaced
+      to: processing
+```
+
+**Reglas:**
+- La transición **DEBE** existir.
+- **NO DEBE** romper el determinismo (sin transiciones conflictivas al mismo estado).
+
+### 4.7 modify_context_schema
+
+Modifica el esquema del contexto.
+
+```yaml
+operations:
+  - modify_context_schema:
+      field: customer_id
+      type: string
+      required: false
+```
+
+**Reglas:**
+- Cambios de tipo incompatibles **DEBEN** requerir incremento MAJOR.
+- Añadir campos opcionales es MINOR.
+- Añadir campos requeridos **DEBEN** incluir valor por defecto.
+
+## 5. Capas de Validación
+
+### 5.1 Validación Estructural
+- El formato del bloque de migración es válido.
+- La cadena es secuencial (sin huecos o bifurcaciones).
+- Las operaciones no están vacías y tienen el formato correcto.
+
+### 5.2 Validación de Grafo
+- El grafo post-migración **DEBE** ser válido.
+- Todos los estados permanecen alcanzables desde `initial_state`.
+- El determinismo se preserva (sin transiciones ambiguas).
+
+### 5.3 Validación de Compatibilidad
+- Las operaciones permitidas **DEBEN** coincidir con el tipo de incremento SemVer.
+- Incrementos MINOR: solo operaciones de adición.
+- Incrementos MAJOR: operaciones destructivas permitidas.
+
+## 6. Taxonomía de Errores
+
+| Código | Descripción |
+| :--- | :--- |
+| `ER-MIGRATION-INVALID-VERSION` | Formato de versión inválido. |
+| `ER-MIGRATION-NON-SEQUENTIAL` | Hueco en la cadena de migración. |
+| `ER-MIGRATION-CYCLE` | Ciclo detectado en la cadena. |
+| `ER-MIGRATION-INVALID-OPERATION` | Operación no soportada o mal formada. |
+| `ER-MIGRATION-GRAPH-BROKEN` | Grafo inválido resulta después de la migración. |
+
+## 7. Integración con CLI
+
+El comando `rigor migrate` resuelve y aplica cadenas de migración:
+
+```bash
+rigor migrate <spec.yaml> --to <version>
+```
+
+**Comportamiento:**
+1. **Resolver Cadena**: Encontrar el camino secuencial desde la versión actual hasta la objetivo.
+2. **Aplicar Secuencialmente**: Ejecutar cada operación de migración en orden.
+3. **Validar Resultado**: Ejecutar validación completa en la especificación resultante.
+4. **Emitir Spec**: Salida de la especificación migrada.
+
+**Códigos de Salida:**
+- `0`: Migración exitosa.
+- `1`: Error de validación o fallo en resolución de cadena.

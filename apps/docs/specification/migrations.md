@@ -1,63 +1,192 @@
 # Migrations (v0.1)
 
-## 1. Purpose
+## 1. Formal Definition
 
-The RIGOR Migrations specification defines the formal model for migrating persisted process instances when a specification undergoes a `MAJOR` version change. This applies strictly to processes with `persistence: true`. The objective is to ensure data integrity and prevent structural state corruption during evolution.
+A Migration is an ordered, deterministic set of operations that transforms a specification from version A to version B.
 
-## 2. Triggering a Migration
+- **MUST** be declarative and deterministic.
+- **MUST** be validatable.
+- **MUST NOT** depend on external state.
 
-A migration is mandatory whenever a `MAJOR` change occurs, specifically when:
-- A context field type changes.
-- An existing state is removed or renamed.
-- A required field is removed from the context.
-- The `initial_state` is changed.
+## 2. File Structure & Location
 
-Migrations are **not required** for `MINOR` or `PATCH` changes.
+Migrations are declared in the root `migrations:` block of the specification document.
 
-## 3. Migration Strategies
+```yaml
+rigor_spec_version: "0.1"
+spec_version: "2.0.0"
 
-RIGOR supports two primary migration strategies:
+migrations:
+  - from: "1.0.0"
+    to: "2.0.0"
+    operations:
+      - remove_state: pending
 
-### 3.1 Offline Migration
-- **Process**: Stop the engine, transform all persisted instances to the new specification, and restart.
-- **Trade-off**: Simpler to implement but requires downtime.
+process: OrderProcess
+# ...
+```
 
-### 3.2 On-Read (Lazy) Migration
-- **Process**: Multiple specification versions remain active. An instance is migrated automatically when it is loaded by the engine.
-- **Requirement**: A deterministic transformer and immediate persistence of the migrated version.
+### Rules
+- Only forward migrations are supported in v0.1 (`from < to`).
+- Chain must be sequential (no gaps, cycles, or forks).
 
-## 4. Migration Transformer
+## 3. Formal Grammar (EBNF)
 
-A migration must be defined as a formal function: `migrate(v_old) -> v_new`.
+```ebnf
+migrations_block ::= "migrations:" migration_definition+
+migration_definition ::= "-" "from:" version "to:" version "operations:" operation+
+operation ::= add_state | remove_state | rename_state | add_event | remove_event | modify_transition | modify_context_schema
+```
 
-### 4.1 Mandatory Properties
-- **Deterministic**: Given the same input, it must produce the same output.
-- **Pure**: No external side effects (e.g., API calls) during transformation.
-- **Idempotent**: Can be safely executed multiple times without altering the result.
+## 4. Permitted Operations (v0.1)
 
-## 5. Structural Transformation Rules
+### 4.1 add_state
 
-### 5.1 State Migration
-If a state is removed, an equivalent destination state must be defined. An instance cannot be left in a non-existent state after migration.
+Adds a new state to the specification.
 
-### 5.2 Context Migration
-- **New Required Fields**: Must have an explicit default value.
-- **Removed Fields**: Must be discarded.
-- **Type Conversion**: Must be explicitly handled (e.g., converting an `integer` to a `string`).
+```yaml
+operations:
+  - add_state:
+      name: processing
+      terminal: false
+```
 
-## 6. Instance Version Control
+**Rules:**
+- State name **MUST NOT** already exist.
+- If marked as `initial: true`, it **MUST NOT** conflict with existing initial state.
 
-Every persisted instance must store:
-- `spec_version`: The version of the specification it currently adheres to.
-- `migrated_at`: (Nullable) The timestamp of the last migration.
+### 4.2 remove_state
 
-The engine must compare the instance's `spec_version` with the current specification's version before processing any event. If they differ, the migration must be executed first.
+Removes an existing state from the specification.
 
-## 7. Post-Migration Validation
+```yaml
+operations:
+  - remove_state: pending
+```
 
-Immediately after a migration, the engine must:
-1. Run **Semantic Validation** on the migrated instance.
-2. Verify the `current_state` exists in the new specification.
-3. Confirm all context types are coherent.
+**Rules:**
+- State **MUST NOT** be the `initial_state`.
+- State **MUST NOT** have active incoming or outgoing transitions (unless redirected).
+- Allowed only in MAJOR version increments.
 
-If validation fails, the instance must be marked as **corrupt** and execution must be halted to prevent further inconsistency.
+### 4.3 rename_state
+
+Renames an existing state.
+
+```yaml
+operations:
+  - rename_state:
+      from: pending
+      to: awaiting
+```
+
+**Rules:**
+- Source state **MUST** exist.
+- Target name **MUST NOT** already exist.
+- **MUST** update all references (transitions, `initial_state`).
+
+### 4.4 add_event
+
+Adds a new event to the specification.
+
+```yaml
+operations:
+  - add_event:
+      name: ProcessCompleted
+      payload:
+        result: string
+```
+
+**Rules:**
+- Event name **MUST NOT** already exist.
+
+### 4.5 remove_event
+
+Removes an existing event.
+
+```yaml
+operations:
+  - remove_event: OrderCancelled
+```
+
+**Rules:**
+- Allowed only in MAJOR version increments (destructive change).
+- Event **MUST NOT** be referenced by any transition.
+
+### 4.6 modify_transition
+
+Modifies an existing transition.
+
+```yaml
+operations:
+  - modify_transition:
+      from: created
+      event: OrderPlaced
+      to: processing
+```
+
+**Rules:**
+- Transition **MUST** exist.
+- **MUST NOT** break determinism (no conflicting transitions to same state).
+
+### 4.7 modify_context_schema
+
+Modifies the context schema.
+
+```yaml
+operations:
+  - modify_context_schema:
+      field: customer_id
+      type: string
+      required: false
+```
+
+**Rules:**
+- Incompatible type changes **MUST** require MAJOR increment.
+- Adding optional fields is MINOR.
+- Adding required fields **MUST** include default value.
+
+## 5. Validation Layers
+
+### 5.1 Structural Validation
+- Migration block format is valid.
+- Chain is sequential (no gaps or forks).
+- Operations are non-empty and properly formatted.
+
+### 5.2 Graph Validation
+- Post-migration graph **MUST** be valid.
+- All states remain reachable from `initial_state`.
+- Determinism is preserved (no ambiguous transitions).
+
+### 5.3 Compatibility Validation
+- Permitted operations **MUST** match the SemVer increment type.
+- MINOR increments: add-only operations.
+- MAJOR increments: destructive operations allowed.
+
+## 6. Error Taxonomy
+
+| Code | Description |
+| :--- | :--- |
+| `ER-MIGRATION-INVALID-VERSION` | Invalid version format. |
+| `ER-MIGRATION-NON-SEQUENTIAL` | Gap in migration chain. |
+| `ER-MIGRATION-CYCLE` | Cycle detected in chain. |
+| `ER-MIGRATION-INVALID-OPERATION` | Unsupported or malformed operation. |
+| `ER-MIGRATION-GRAPH-BROKEN` | Invalid graph results after migration. |
+
+## 7. CLI Integration
+
+The `rigor migrate` command resolves and applies migration chains:
+
+```bash
+rigor migrate <spec.yaml> --to <version>
+```
+
+**Behavior:**
+1. **Resolve Chain**: Find sequential path from current version to target.
+2. **Apply Sequential**: Execute each migration operation in order.
+3. **Validate Result**: Run full validation on resulting specification.
+4. **Emit Spec**: Output the migrated specification.
+
+**Exit Codes:**
+- `0`: Migration successful.
+- `1`: Validation error or chain resolution failure.
