@@ -65,7 +65,7 @@ Optional commands MAY exist but MUST NOT alter core behavior.
 
 ## 4.1 Validate
 
-```
+```id="cli_validate"
 rigor validate <spec-file> [--strict] [--json]
 ```
 
@@ -87,7 +87,7 @@ Exit codes:
 
 ## 4.2 Diff
 
-```
+```id="cli_diff"
 rigor diff <previous-spec> <current-spec> [--json]
 ```
 
@@ -109,7 +109,7 @@ Exit codes:
 
 ## 4.3 Version
 
-```
+```id="cli_version"
 rigor version <previous-spec> <current-spec> [--json]
 ```
 
@@ -130,7 +130,7 @@ Exit codes:
 
 ## 4.4 Migrate
 
-```
+```id="cli_migrate"
 rigor migrate <previous-spec> <current-spec> <migration-file> [--json]
 ```
 
@@ -154,7 +154,7 @@ Exit codes:
 
 ## 4.5 Resolve Events
 
-```
+```id="cli_resolve"
 rigor resolve-events <spec-file> [--json]
 ```
 
@@ -235,7 +235,7 @@ Logs MUST NOT alter behavior or output structure.
 
 CLI MAY accept configuration file:
 
-```
+```id="cli_config_schema"
 RigorConfig {
     validationMode: "strict" | "non-strict"
     versionPolicy: object

@@ -57,19 +57,19 @@
 - **Modelo de Concurrencia y Ordenamiento:** Requisito de ejecución monohilo por defecto y estabilidad lexicográfica.
 - **Definición de Extensibilidad:** Establecimiento de límites para nuevas reglas y generadores sin alterar el núcleo.
 
-### ✅ Fase 35: Especificación de "Motor de Resolución de Eventos" (v0.1)
-- **Pipeline de Resolución de 5 Fases:** Formalización del proceso: Scope → Dependencias → Condiciones → Acciones → Ciclos.
-- **Detección de Ciclos de Eventos:** Requisito mandatorio de análisis de grafos para prevenir bucles infinitos en la lógica dirigida por eventos.
-- **Ordenamiento de Ejecución Determinista:** Definición de reglas de precedencia basadas en el scope y tipo de trigger para asegurar reproducibilidad.
-- **Validación Estática de Expresiones:** Obligatoriedad de verificar sintaxis e identificadores de condiciones sin ejecución de código.
-- **Integración con Validación y Migración:** Mapeo de violaciones de eventos a errores de cumplimiento del protocolo.
+### ✅ Fase 36: Especificación de "CLI y Modelo de Ejecución" (v0.1)
+- **Orquestación Normativa de Motores:** Definición del pipeline de ejecución canónico en 9 pasos secuenciales.
+- **Estandarización de Comandos:** Formalización de los comandos `validate`, `diff`, `version`, `migrate` y `resolve-events`.
+- **Contrato de Códigos de Salida:** Definición precisa de exit codes para cada tipo de fallo (0-5 e internos > 10).
+- **Garantías de Determinismo:** Obligatoriedad de salidas JSON estables, ordenadas y sin inyección de metadatos variables.
+- **Aislamiento de Invocación:** Requisito de ejecuciones sin estado e independientes de la infraestructura.
 
 ---
 
 ## 2. Estado del Repositorio
-El proyecto se encuentra en su estado definitivo de lanzamiento `v4.15` (Resolución de Eventos Formalizada).
+El proyecto se encuentra en su estado definitivo de lanzamiento `v4.16` (Modelo de Ejecución y Orquestación Formalizados).
 - **Ramas:** `main` (Producción).
-- **Cobertura:** Landing v3 + Docs v1 + Full Spec Suite v1 + Implementation Architecture v1 + 11 Motores de Implementación v1.
+- **Cobertura:** Landing v3 + Docs v1 + Full Spec Suite v1 + Implementation Architecture v1 + 12 Motores/Módulos de Implementación v1.
 - **Idiomas:** EN / ES (Sincronizados y Técnicamente Precisos).
 - **URLs:**
   - Landing: https://rigor-protocol.pages.dev
