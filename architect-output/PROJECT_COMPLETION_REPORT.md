@@ -57,19 +57,19 @@
 - **Modelo de Concurrencia y Ordenamiento:** Requisito de ejecución monohilo por defecto y estabilidad lexicográfica.
 - **Definición de Extensibilidad:** Establecimiento de límites para nuevas reglas y generadores sin alterar el núcleo.
 
-### ✅ Fase 29: Especificación de "Constructor de Grafo Canónico" (v0.1)
-- **Pipeline de Construcción de 5 Fases:** Formalización del proceso desde la inicialización hasta el congelamiento estructural.
-- **Garantía de Inmutabilidad:** Establecimiento del grafo como estructura de solo lectura una vez finalizada su construcción.
-- **Identidad y Rutas Canónicas:** Definición del sistema de direccionamiento único (`/segmento/segmento`) y unicidad de identificadores.
-- **Resolución Determinista de Referencias:** Obligatoriedad de transformar identificadores en aristas directas y detectar ciclos ilegales.
-- **Sincronización Técnica Total:** Implementación coordinada en inglés y español asegurando la integridad del modelo conceptual.
+### ✅ Fase 30: Especificación de "Motor de Canonicalización" (v0.1)
+- **Garantía de Estabilidad Estructural:** Eliminación de variabilidad no semántica (orden de campos, formato) para asegurar grafos idénticos ante entradas equivalentes.
+- **Jerarquía de Ordenamiento Canónico:** Definición del orden mandatorio por Tipo de Nodo, ID y Ruta para todas las colecciones.
+- **Normalización de Datos:** Estándares para escalares (booleanos, números, nulos) y estabilización de rutas canónicas.
+- **Requisito de Inmutabilidad:** Obligatoriedad de producir un resultado inmutable para consumo de motores de Diff y Hashing.
+- **Preparación para Diff y Hashing:** Establecimiento de la base determinista necesaria para la detección de cambios y firmas estructurales.
 
 ---
 
 ## 2. Estado del Repositorio
-El proyecto se encuentra en su estado definitivo de lanzamiento `v4.9` (Modelo de Grafo Interno Formalizado).
+El proyecto se encuentra en su estado definitivo de lanzamiento `v4.10` (Normalización Estructural Formalizada).
 - **Ramas:** `main` (Producción).
-- **Cobertura:** Landing v3 + Docs v1 + Full Spec Suite v1 + Implementation Architecture v1 + Parser Spec v1 + Graph Builder v1.
+- **Cobertura:** Landing v3 + Docs v1 + Full Spec Suite v1 + Implementation Architecture v1 + Parser Spec v1 + Graph Builder v1 + Canonicalization v1.
 - **Idiomas:** EN / ES (Sincronizados y Técnicamente Precisos).
 - **URLs:**
   - Landing: https://rigor-protocol.pages.dev
