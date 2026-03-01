@@ -50,12 +50,19 @@
 - **Navegación de Pipeline:** Integración del menú lateral reflejando el flujo lógico de implementación: Input → Grafo → Validación → Diff → Ejecución.
 - **Estandarización de Motores:** Renombramiento y categorización unificada de los motores de restricciones, eventos y migraciones.
 
+### ✅ Fase 27: Especificación de "Arquitectura del Sistema" (v0.1)
+- **Descomposición en 13 Módulos:** Formalización de responsabilidades, entradas y salidas para cada componente del motor.
+- **Contratos de Datos Estrictos:** Definición de inmutabilidad para el Grafo Canónico y determinismo para ChangeSets y Reportes.
+- **Reglas de Interacción y Aislamiento:** Codificación de interacciones permitidas y prohibidas entre capas para evitar dependencias implícitas.
+- **Modelo de Concurrencia y Ordenamiento:** Requisito de ejecución monohilo por defecto y estabilidad lexicográfica.
+- **Definición de Extensibilidad:** Establecimiento de límites para nuevas reglas y generadores sin alterar el núcleo.
+
 ---
 
 ## 2. Estado del Repositorio
-El proyecto se encuentra en su estado definitivo de lanzamiento `v4.6` (Suite de Especificaciones e Infraestructura de Implementación Finalizadas).
+El proyecto se encuentra en su estado definitivo de lanzamiento `v4.7` (Arquitectura Global de Implementación Formalizada).
 - **Ramas:** `main` (Producción).
-- **Cobertura:** Landing v3 + Docs v1 + Full Spec Suite v1 + Implementation Skeleton v1.
+- **Cobertura:** Landing v3 + Docs v1 + Full Spec Suite v1 + Implementation Architecture v1.
 - **Idiomas:** EN / ES (Sincronizados y Técnicamente Precisos).
 - **URLs:**
   - Landing: https://rigor-protocol.pages.dev
