@@ -1,38 +1,98 @@
-# Implementation (v0.1)
+# Implementation Introduction (v0.2)
 
-The implementation of the RIGOR protocol consists of the set of tools and practices that translate a formal specification into a deterministic, verifiable, and executable system.
+This document defines the architectural foundations, design principles, and processing pipeline of a compliant RIGOR implementation. It serves as the definitive roadmap for translating formal specifications into deterministic executable systems.
 
-## 1. The Implementation Pipeline
+## 1. Purpose & Scope
 
-Any RIGOR-compliant implementation must follow a strict lifecycle of **Validation before Execution**:
+The Implementation section establishes:
+- The executable architecture of the RIGOR engine.
+- The multi-stage processing pipeline (from YAML to CLI/JSON).
+- Internal engine responsibilities and isolation boundaries.
+- Strict requirements for **determinism**, **immutability**, and **ACID persistence**.
 
-1. **Specification Phase**: Definition of the Constraint Contract (YAML).
-2. **Validation Phase**: Pre-execution verification (Schema, Structural, Semantic, and Executability).
-3. **Artifact Generation**: Automatic translation of the specification into target implementation artifacts (Code, Diagrams, DDLs).
-4. **Execution Phase**: Running the deterministic state machine within the RIGOR Engine.
-5. **Evolution Phase**: Managing structural changes through version classification and migrations.
+Any implementation claiming compliance with the RIGOR protocol **MUST** conform to the principles defined herein.
 
-## 2. Core Implementation Pillars
+## 2. Architectural Philosophy
 
-### 2.1 The Validation Engine
-The primary gatekeeper. No specification enters the implementation phase without a `valid: true` compliance report. This ensures that every process instance is structurally sound from its inception.
+RIGOR is designed to be:
+- **Deterministic**: Identical inputs **MUST** yield identical graphs and outputs.
+- **Immutable**: Core structures (Canonical Graph) cannot be modified after construction.
+- **Modular**: Independent engines handle parsing, validation, and evolution.
+- **Auditable**: Every transition and mutation must be traceable and reproducible.
 
-### 2.2 Deterministic State Machine
-The implementation of states and transitions must be **pure and deterministic**. Side effects are isolated into `emit_command` and `invoke` effects, ensuring that the core state transition logic is always predictable and testable.
+## 3. High-Level Processing Pipeline
 
-### 2.3 Strict Persistence
-Implementation requires an ACID-compliant persistence layer. Every transition is an atomic transaction that includes:
-- Updating the current state.
-- Applying context modifications.
-- Logging the event for a permanent audit trail.
+A compliant implementation **MUST** process specifications through the following logical flow:
 
-## 3. Getting Started
+```
+Source YAML
+    ↓
+Parser & Loader (Input Layer)
+    ↓
+Canonical Graph Builder (Structural Layer)
+    ↓
+Canonicalization Engine (Normalization)
+    ↓
+Validation Engine (Semantic Layer)
+    ↓
+(Evolution Layer - Optional)
+  → Diff Engine
+  → Versioning Engine
+  → Migration Engine
+    ↓
+Interface Layer (CLI / JSON Output)
+```
 
-To implement a RIGOR-compliant system, follow these steps:
-1. **Define the Specification**: Use the [Spec Reference](../specification/spec-reference) to author your processes and events.
-2. **Run the Validator**: Use the [CLI](./cli) to confirm your specification's integrity.
-3. **Generate Implementation Code**: Automatically create the state machine skeletons and data models for your target environment.
-4. **Configure the Engine**: Deploy the runtime that will handle event ingestion and state persistence.
-5. **Integrate with CI/CD**: Ensure every version change is validated and classified before being deployed to production.
+## 4. Core Architectural Layers
 
-This implementation guide provides the technical foundation to build systems where structural precision is the primary guarantee of stability.
+### 4.1 Input Layer
+Handles raw file reading, syntax validation (YAML/JSON), and initial normalization. No semantic or domain-level validation occurs at this stage.
+
+### 4.2 Structural Layer (The Canonical Graph)
+The **single source of truth**. Transforms the abstract syntax tree into a directed, typed graph. It resolves internal references and guarantees that all subsequent operations are performed on a stable, immutable model.
+
+### 4.3 Semantic Layer (Validation)
+Enforces the [Validation Matrix](../specification/validation-matrix). It performs structural, process, event, and constraint checks to produce a formal Compliance Report.
+
+### 4.4 Evolution Layer
+Activated during version comparisons or updates. It classifies changes (Breaking/Non-breaking) and executes atomic migration operations.
+
+### 4.5 Persistence Layer (Execution)
+While the protocol is runtime-agnostic, any persistent execution **MUST** utilize an ACID-compliant strategy. Every transition is an atomic unit of work:
+1. Load State/Context.
+2. Apply Mutation.
+3. Commit Transition.
+4. Log for Audit.
+
+## 5. Determinism & Error Model
+
+Implementations **MUST** guarantee stable ordering of nodes, changes, and errors. All errors **MUST** include a stable code (e.g., `ERR_...`) and reference a canonical path when applicable.
+
+## 6. Implementation Documentation Roadmap
+
+This section is composed of detailed specifications for each module:
+1. **Introduction** (This document)
+2. **System Architecture**
+3. **Parser & Loader**
+4. **Canonical Graph Builder**
+5. **Canonicalization Engine**
+6. **Validation Engine**
+7. **Constraint Engine**
+8. **Diff Engine**
+9. **Versioning Engine**
+10. **Migration Engine**
+11. **Event Engine**
+12. **Error Model**
+13. **CLI**
+14. **Performance & Testing**
+
+## 7. Getting Started for Implementers
+
+To build a RIGOR-compliant engine:
+1. **Bootstrap the Parser**: Implement strict YAML ingestion.
+2. **Implement the Graph Model**: Create the internal representation of nodes and edges.
+3. **Build the Validator**: Follow the 22-rule Validation Matrix.
+4. **Define the CLI**: Implement the normative grammar for `validate`, `diff`, and `migrate`.
+
+---
+*Note: In case of ambiguity between Implementation and Specification sections, the [Specification](../specification/identity-core) prevails.*

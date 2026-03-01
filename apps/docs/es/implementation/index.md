@@ -1,38 +1,98 @@
-# Implementación (v0.1)
+# Introducción a la Implementación (v0.2)
 
-La implementación del protocolo RIGOR consiste en el conjunto de herramientas y prácticas que traducen una especificación formal en un sistema determinístico, verificable y ejecutable.
+Este documento define los fundamentos arquitectónicos, los principios de diseño y el pipeline de procesamiento de una implementación conforme de RIGOR. Sirve como la hoja de ruta definitiva para traducir las especificaciones formales en sistemas ejecutables deterministas.
 
-## 1. El Pipeline de Implementación
+## 1. Propósito y Alcance
 
-Cualquier implementación compatible con RIGOR debe seguir un ciclo de vida estricto de **Validación antes de Ejecución**:
+La sección de Implementación establece:
+- La arquitectura ejecutable del motor RIGOR.
+- El pipeline de procesamiento multietapa (desde YAML hasta CLI/JSON).
+- Las responsabilidades de los motores internos y los límites de aislamiento.
+- Requisitos estrictos de **determinismo**, **inmutabilidad** y **persistencia ACID**.
 
-1. **Fase de Especificación**: Definición del Contrato de Restricción (YAML).
-2. **Fase de Verificación**: Verificación pre-ejecución (Schema, Estructural, Semántica y Ejecutabilidad).
-3. **Generación de Artefactos**: Traducción automática de la especificación a artefactos de implementación objetivo (Código, Diagramas, DDLs).
-4. **Fase de Ejecución**: Ejecutar la máquina de estados determinística dentro del Motor de RIGOR.
-5. **Fase de Evolución**: Gestionar cambios estructurales a través de clasificación de versión y migraciones.
+Cualquier implementación que reclame conformidad con el protocolo RIGOR **DEBE** cumplir con los principios definidos en este documento.
 
-## 2. Pilares de Implementación Core
+## 2. Filosofía Arquitectónica
 
-### 2.1 El Motor de Validación
-El guardián principal. Ninguna especificación entra a la fase de implementación sin un reporte de cumplimiento `valid: true`. Esto asegura que cada instancia de proceso sea estructuralmente sonido desde su inception.
+RIGOR está diseñado para ser:
+- **Determinista**: Entradas idénticas **DEBEN** producir grafos y salidas idénticas.
+- **Inmutable**: Las estructuras centrales (Grafo Canónico) no pueden modificarse después de su construcción.
+- **Modular**: Motores independientes manejan el parseo, la validación y la evolución.
+- **Auditable**: Cada transición y mutación debe ser rastreable y reproducible.
 
-### 2.2 Maquina de Estados Determinística
-La implementación de estados y transiciones debe ser **pura y determinística**. Los efectos secundarios son aislados en efectos `emit_command` e `invoke`, asegurando que la lógica de transición de estado core sea siempre predecible y probable.
+## 3. Pipeline de Procesamiento de Alto Nivel
 
-### 2.3 Persistencia Estricta
-La implementación requiere una capa de persistencia compatible con ACID. Cada transición es una transacción atómica que incluye:
-- Actualizar el estado actual.
-- Aplicar modificaciones al contexto.
-- Registrar el evento para una auditoría permanente.
+Una implementación conforme **DEBE** procesar las especificaciones a través del siguiente flujo lógico:
 
-## 3. Primeros Pasos
+```
+YAML Fuente
+    ↓
+Parser y Loader (Capa de Entrada)
+    ↓
+Constructor de Grafo Canónico (Capa Estructural)
+    ↓
+Motor de Canonicalización (Normalización)
+    ↓
+Motor de Validación (Capa Semántica)
+    ↓
+(Capa de Evolución - Opcional)
+  → Motor de Diff
+  → Motor de Versionado
+  → Motor de Migraciones
+    ↓
+Capa de Interfaz (Salida CLI / JSON)
+```
 
-Para implementar un sistema compatible con RIGOR, sigue estos pasos:
-1. **Define la Especificación**: Usa la [Referencia de Spec](../specification/spec-reference) para autorar tus procesos y eventos.
-2. **Ejecuta el Validador**: Usa el [CLI](./cli) para confirmar la integridad de tu especificación.
-3. **Genera Código de Implementación**: Crea automáticamente los esqueletos de máquina de estados y modelos de datos para tu entorno objetivo.
-4. **Configura el Motor**: Despliega el tiempo de ejecución que manejará la ingestión de eventos y persistencia de estado.
-5. **Integra con CI/CD**: Asegura que cada cambio de versión sea validado y clasificado antes de ser desplegado a producción.
+## 4. Capas Arquitectónicas Centrales
 
-Esta guía de implementación proporciona la base técnica para construir sistemas donde la precisión estructural es la garantía principal de estabilidad.
+### 4.1 Capa de Entrada
+Maneja la lectura de archivos crudos, la validación sintáctica (YAML/JSON) y la normalización inicial. No se realiza validación semántica ni de dominio en esta etapa.
+
+### 4.2 Capa Estructural (El Grafo Canónico)
+La **única fuente de verdad**. Transforma el árbol de sintaxis abstracta en un grafo dirigido y tipado. Resuelve las referencias internas y garantiza que todas las operaciones posteriores se realicen sobre un modelo estable e inmutable.
+
+### 4.3 Capa Semántica (Validación)
+Aplica la [Matriz de Validación](../specification/validation-matrix). Realiza comprobaciones estructurales, de procesos, de eventos y de restricciones para producir un Informe de Conformidad formal.
+
+### 4.4 Capa de Evolución
+Se activa durante las comparaciones de versiones o actualizaciones. Clasifica los cambios (Rompedores/No rompedores) y ejecuta operaciones de migración atómicas.
+
+### 4.5 Capa de Persistencia (Ejecución)
+Aunque el protocolo es agnóstico al tiempo de ejecución, cualquier ejecución persistente **DEBE** utilizar una estrategia compatible con ACID. Cada transición es una unidad atómica de trabajo:
+1. Cargar Estado/Contexto.
+2. Aplicar Mutación.
+3. Confirmar Transición.
+4. Registrar para Auditoría.
+
+## 5. Determinismo y Modelo de Errores
+
+Las implementaciones **DEBEN** garantizar un ordenamiento estable de nodos, cambios y errores. Todos los errores **DEBEN** incluir un código estable (ej. `ERR_...`) y referenciar una ruta canónica cuando sea aplicable.
+
+## 6. Hoja de Ruta de Documentación de Implementación
+
+Esta sección se compone de especificaciones detalladas para cada módulo:
+1. **Introducción** (Este documento)
+2. **Arquitectura del Sistema**
+3. **Parser y Loader**
+4. **Constructor de Grafo Canónico**
+5. **Motor de Canonicalización**
+6. **Motor de Validación**
+7. **Motor de Restricciones**
+8. **Motor de Diff**
+9. **Motor de Versionado**
+10. **Motor de Migraciones**
+11. **Motor de Resolución de Eventos**
+12. **Modelo de Errores**
+13. **CLI**
+14. **Rendimiento y Testing**
+
+## 7. Guía de Inicio para Implementadores
+
+Para construir un motor conforme a RIGOR:
+1. **Bootstrap del Parser**: Implementar la ingesta estricta de YAML.
+2. **Implementar el Modelo de Grafo**: Crear la representación interna de nodos y aristas.
+3. **Construir el Validador**: Seguir la Matriz de Validación de 22 reglas.
+4. **Definir el CLI**: Implementar la gramática normativa para `validate`, `diff` y `migrate`.
+
+---
+*Nota: En caso de ambigüedad entre las secciones de Implementación y Especificación, prevalece la [Especificación](../specification/identity-core).*
