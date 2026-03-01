@@ -1,6 +1,10 @@
-# Constraint Engine (Normative – v0.1)
+# RIGOR
 
-Status: Normative  
+# Implementation
+
+## Constraint Engine (Normative – v0.1)
+
+Status: Normative
 Scope: Defines the evaluation, enforcement, and deterministic resolution of declarative constraints within the Canonical Graph.
 
 This document formalizes how constraints are defined, resolved, evaluated, and integrated with the Validation Engine.
@@ -45,7 +49,7 @@ They represent logical conditions that MUST hold true for the graph to be valid.
 
 ## 3.1 Input
 
-```
+```id="c12_input_contract"
 evaluateConstraints(
     graph: CanonicalGraph
 ): ConstraintEvaluationResult
@@ -57,7 +61,7 @@ Graph MUST be canonicalized before evaluation.
 
 ## 3.2 Output
 
-```
+```id="c12_output_contract"
 ConstraintEvaluationResult {
     status: "valid" | "invalid"
     violations: OrderedCollection<ConstraintViolation>
@@ -73,7 +77,7 @@ If violations exist → status MUST be `"invalid"`.
 
 Each constraint MUST include:
 
-```
+```id="c12_constraint_schema"
 Constraint {
     id: string
     scope: CanonicalPath | "graph"
@@ -183,7 +187,7 @@ Identical input MUST produce identical output.
 
 # 9. ConstraintViolation Schema
 
-```
+```id="c12_violation_schema"
 ConstraintViolation {
     code: string
     constraintId: string

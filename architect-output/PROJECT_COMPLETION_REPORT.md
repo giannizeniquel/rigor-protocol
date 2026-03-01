@@ -57,19 +57,19 @@
 - **Modelo de Concurrencia y Ordenamiento:** Requisito de ejecución monohilo por defecto y estabilidad lexicográfica.
 - **Definición de Extensibilidad:** Establecimiento de límites para nuevas reglas y generadores sin alterar el núcleo.
 
-### ✅ Fase 36: Especificación de "CLI y Modelo de Ejecución" (v0.1)
-- **Orquestación Normativa de Motores:** Definición del pipeline de ejecución canónico en 9 pasos secuenciales.
-- **Estandarización de Comandos:** Formalización de los comandos `validate`, `diff`, `version`, `migrate` y `resolve-events`.
-- **Contrato de Códigos de Salida:** Definición precisa de exit codes para cada tipo de fallo (0-5 e internos > 10).
-- **Garantías de Determinismo:** Obligatoriedad de salidas JSON estables, ordenadas y sin inyección de metadatos variables.
-- **Aislamiento de Invocación:** Requisito de ejecuciones sin estado e independientes de la infraestructura.
+### ✅ Fase 37: Especificación de "Motor de Restricciones" (v0.1)
+- **Evaluación de Invariantes Declarativos:** Formalización del motor puro que valida condiciones lógicas sobre el Grafo Canónico.
+- **Pipeline de 3 Fases:** Codificación del proceso: Resolución → Grafo de Dependencias → Evaluación de Expresiones.
+- **Modelo de Expresión Determinista:** Restricción estricta de expresiones para ser libres de efectos secundarios, tiempo o aleatoriedad.
+- **Soporte de Agregación y Cross-Node:** Definición de reglas para validaciones sobre colecciones y relaciones entre nodos del grafo.
+- **Integración Semántica:** Posicionamiento como módulo central de la fase semántica del Motor de Validación.
 
 ---
 
 ## 2. Estado del Repositorio
-El proyecto se encuentra en su estado definitivo de lanzamiento `v4.16` (Modelo de Ejecución y Orquestación Formalizados).
+El proyecto se encuentra en su estado definitivo de lanzamiento `v4.17` (Suite de Motores de Implementación Finalizada al 100%).
 - **Ramas:** `main` (Producción).
-- **Cobertura:** Landing v3 + Docs v1 + Full Spec Suite v1 + Implementation Architecture v1 + 12 Motores/Módulos de Implementación v1.
+- **Cobertura:** Landing v3 + Docs v1 + Full Spec Suite v1 + Implementation Architecture v1 + 13 Motores/Módulos de Implementación v1.
 - **Idiomas:** EN / ES (Sincronizados y Técnicamente Precisos).
 - **URLs:**
   - Landing: https://rigor-protocol.pages.dev
