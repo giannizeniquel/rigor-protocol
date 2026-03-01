@@ -57,12 +57,19 @@
 - **Modelo de Concurrencia y Ordenamiento:** Requisito de ejecución monohilo por defecto y estabilidad lexicográfica.
 - **Definición de Extensibilidad:** Establecimiento de límites para nuevas reglas y generadores sin alterar el núcleo.
 
+### ✅ Fase 28: Especificación de "Parser & Loader" (v0.1)
+- **Ingesta Estricta de YAML:** Prohibición formal de claves duplicadas, anchors y etiquetas ejecutables para garantizar seguridad.
+- **Representación Intermedia (IR) Determinista:** Definición de la IR como una estructura inmutable y ordenada, independiente del formato fuente.
+- **Validación Sintáctica Pura:** Aislamiento total de la lógica semántica, limitando el módulo al análisis gramatical y de codificación (UTF-8).
+- **Modelo de Errores de Entrada:** Integración de reporte de ubicación (línea/columna) para fallos de parseo.
+- **Hardening de Seguridad:** Protección mandatoria contra ataques de expansión de entidades y carga de recursos remotos.
+
 ---
 
 ## 2. Estado del Repositorio
-El proyecto se encuentra en su estado definitivo de lanzamiento `v4.7` (Arquitectura Global de Implementación Formalizada).
+El proyecto se encuentra en su estado definitivo de lanzamiento `v4.8` (Pipeline de Ingesta Formalizado).
 - **Ramas:** `main` (Producción).
-- **Cobertura:** Landing v3 + Docs v1 + Full Spec Suite v1 + Implementation Architecture v1.
+- **Cobertura:** Landing v3 + Docs v1 + Full Spec Suite v1 + Implementation Architecture v1 + Parser Spec v1.
 - **Idiomas:** EN / ES (Sincronizados y Técnicamente Precisos).
 - **URLs:**
   - Landing: https://rigor-protocol.pages.dev
