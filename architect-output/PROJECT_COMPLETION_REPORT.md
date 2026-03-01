@@ -57,19 +57,19 @@
 - **Modelo de Concurrencia y Ordenamiento:** Requisito de ejecución monohilo por defecto y estabilidad lexicográfica.
 - **Definición de Extensibilidad:** Establecimiento de límites para nuevas reglas y generadores sin alterar el núcleo.
 
-### ✅ Fase 30: Especificación de "Motor de Canonicalización" (v0.1)
-- **Garantía de Estabilidad Estructural:** Eliminación de variabilidad no semántica (orden de campos, formato) para asegurar grafos idénticos ante entradas equivalentes.
-- **Jerarquía de Ordenamiento Canónico:** Definición del orden mandatorio por Tipo de Nodo, ID y Ruta para todas las colecciones.
-- **Normalización de Datos:** Estándares para escalares (booleanos, números, nulos) y estabilización de rutas canónicas.
-- **Requisito de Inmutabilidad:** Obligatoriedad de producir un resultado inmutable para consumo de motores de Diff y Hashing.
-- **Preparación para Diff y Hashing:** Establecimiento de la base determinista necesaria para la detección de cambios y firmas estructurales.
+### ✅ Fase 31: Especificación de "Motor de Validación" (v0.1)
+- **Pipeline de 6 Fases:** Formalización del orden de ejecución: Estructural → Referencial → Semántica → Proceso → Evento → Versión.
+- **Arquitectura Basada en Reglas Puras:** Requisito de que cada regla sea una función determinista sin efectos secundarios ni mutación del grafo.
+- **Determinismo de Reporte:** Ordenamiento mandatorio de errores por Ruta Canónica e ID de Regla para asegurar salidas idénticas.
+- **Integración con Evolución:** Capacidad de validar ChangeSets para asegurar consistencia de versiones y seguridad en migraciones.
+- **Modos Estricto y No Estricto:** Definición del comportamiento de escalada de avisos a errores para certificación de cumplimiento.
 
 ---
 
 ## 2. Estado del Repositorio
-El proyecto se encuentra en su estado definitivo de lanzamiento `v4.10` (Normalización Estructural Formalizada).
+El proyecto se encuentra en su estado definitivo de lanzamiento `v4.11` (Motor de Validación Formalizado).
 - **Ramas:** `main` (Producción).
-- **Cobertura:** Landing v3 + Docs v1 + Full Spec Suite v1 + Implementation Architecture v1 + Parser Spec v1 + Graph Builder v1 + Canonicalization v1.
+- **Cobertura:** Landing v3 + Docs v1 + Full Spec Suite v1 + Implementation Architecture v1 + Parser Spec v1 + Graph Builder v1 + Canonicalization v1 + Validation Engine v1.
 - **Idiomas:** EN / ES (Sincronizados y Técnicamente Precisos).
 - **URLs:**
   - Landing: https://rigor-protocol.pages.dev

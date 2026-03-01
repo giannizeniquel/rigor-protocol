@@ -2,80 +2,382 @@
 
 ## 1. Purpose
 
-The RIGOR Validation Engine defines the **formal pipeline** for specification verification before engine execution. The objective is to guarantee that every Spec is:
-- Syntactically correct
-- Structurally consistent
-- Semantically coherent
-- Deterministically executable
+The Validation Engine evaluates a Canonical Graph against the rules defined by the RIGOR Specification.
 
-## 2. Validation Phases (F1–F4)
+It is responsible for:
+- Structural validation
+- Referential validation
+- Semantic validation
+- Process validation
+- Event validation
+- Version validation
 
-The validation pipeline must execute in the following order. If any phase fails, the process stops.
+It **MUST NOT**:
+- Mutate the Canonical Graph
+- Perform diff logic
+- Apply migrations
+- Generate artifacts
 
-### F1: Schema Validation (JSON/YAML Schema)
-Validates the base structure against the **Core**, **Events**, and **Reference** schemas.
-- **Mandatory Keys**: Checks for `processes`, `context`, `initial_state`, `states`, etc.
-- **Data Types**: Validates that fields have correct types (boolean, integer, string, etc.).
-- **Naming Regex**: Ensures PascalCase and snake_case adherence.
+The Validation Engine is a pure evaluation system.
 
-### F2: Cross-Structural Validation
-Verifies consistency between different sections of the Spec:
-- **Event References**: All events referenced in a Process must exist in the Events definition.
-- **State Existence**: All `transition_to` references must point to existing states in the `states` map.
-- **Initial State**: The `initial_state` must exist and **cannot** be a terminal state.
-- **Reachability**: All states must be reachable from the `initial_state`. No "orphan" states are allowed.
-- **Process Closure**: A process must have at least one terminal state.
-- **Process States**: A process cannot exist without a defined `states` map.
+---
 
-### F3: Semantic Validation
-Checks for logical and type-specific consistency:
-- **`update_context` Compatibility**: Types in `update_context` must match the field type in `context`.
-- **Operator Usage**: `increment` is only allowed on `integer` fields; `now` is only allowed on `datetime` fields.
-- **Persistence Requirements**: If `persistence` were `false`, the `increment` operator would be prohibited (unsupported in v0.1).
-- **Mutuality**: States must have exactly one effect (`emit_command`, `invoke`, or `terminal`).
-- **Terminal Transitions**: Terminal states **must not** have outgoing transitions (`on:`).
+## 2. Input and Output Contracts
 
-### F4: Executability Validation
-Ensures the state machine is safe for the engine:
-- **Finite Graph**: The state machine graph must be finite (Error).
-- **Terminal Path**: Every state should have a valid path toward a terminal state. Failure to find a terminal path produces a **WARNING** (potential infinite loop).
-- **Missing Terminal**: A process without at least one terminal state produces a **WARNING**.
-- **Start Command**: A `start_command` must be defined if `persistence` is true.
+### 2.1 Input
 
-## 3. Error Classification
-Validation results are classified to guide developers:
-- **ERROR (VAL-XXX)**: Structural or semantic violation. **Invalidates execution**.
-- **WARNING**: Potential risk (e.g., unreachable state or infinite loop). Execution is possible but not recommended.
-- **INFO**: Structural recommendations or naming convention reminders.
+The engine **MUST** accept:
 
-## 4. Stability Error Codes
-...
-| `VAL-006` | Invalid Operator | `increment` or `now` used on an invalid field type. |
-| `VAL-007` | Missing Terminal | No terminal state defined in the process. |
+```
+validate(graph: CanonicalGraph, options?: ValidationOptions)
+```
 
-## 5. Compliance Report Format
-...
+Where:
+- `graph` **MUST** be canonicalized
+- `options` **MAY** include strictness and filtering parameters
 
-## 6. Validator's Guarantee
-A specification that passes RIGOR VALIDATION v0.1 is guaranteed to be:
-- **Structurally Sound**: No broken references or missing keys.
-- **Unambiguous**: Clear transition paths for all declared events.
-- **Type-Coherent**: Consistent data handling in context updates.
-- **Deterministically Executable**: Safe for processing by the RIGOR Engine.
+The engine **MUST NOT** accept raw YAML or IR.
 
-The Validation Engine produces a JSON report:
-```json
-{
-  "valid": false,
-  "errors": [
-    {
-      "code": "VAL-002",
-      "message": "Transition to non-existent state: 'PENDING'",
-      "location": "processes.OrderProcess.states.INITIAL.on.PaymentApproved"
+### 2.2 Output
+
+The engine **MUST** return a Validation Report:
+
+```
+ValidationReport {
+    status: "valid" | "invalid"
+    errors: OrderedCollection<ValidationError>
+    warnings: OrderedCollection<ValidationWarning>
+    metadata: {
+        ruleCount
+        executionTime
     }
-  ],
-  "warnings": [],
-  "info": []
 }
 ```
-A specification is only **RIGOR-compliant** if the report returns `valid: true`.
+
+`status` **MUST** be `"invalid"` if at least one error exists.
+
+---
+
+## 3. Architectural Decomposition
+
+The Validation Engine **MUST** consist logically of the following components:
+
+### 3.1 Rule Registry
+
+Responsible for:
+- Registering validation rules
+- Providing deterministic rule ordering
+- Enforcing unique rule identifiers
+
+Each rule **MUST** have:
+
+```
+Rule {
+    id: string
+    category: RuleCategory
+    severity: "error" | "warning"
+    appliesTo: NodeType | "graph"
+    execute(graph, context): RuleResult[]
+}
+```
+
+Rule IDs **MUST** be stable and immutable.
+
+### 3.2 Rule Executor
+
+Responsible for:
+- Iterating rules in deterministic order
+- Executing rule logic
+- Collecting violations
+- Respecting execution phases
+
+### 3.3 Validation Context
+
+Provides:
+- Graph access
+- Node lookup
+- Helper utilities
+- Shared read-only state
+
+The context **MUST NOT** allow mutation.
+
+### 3.4 Error Aggregator
+
+Responsible for:
+- Collecting errors
+- Enforcing deterministic ordering
+- Deduplicating if necessary
+- Producing final report
+
+---
+
+## 4. Validation Phases
+
+Rules **MUST** execute in defined ordered phases.
+
+The phases **MUST** be:
+1. Structural
+2. Referential
+3. Semantic
+4. Process
+5. Event
+6. Version
+
+Rules within a phase **MUST** execute in deterministic lexicographic order of Rule ID.
+
+A later phase **MUST NOT** execute if a fatal structural invariant is violated (implementation-defined threshold).
+
+---
+
+## 5. Rule Categories
+
+Each rule **MUST** belong to one category:
+- STRUCTURAL
+- REFERENTIAL
+- SEMANTIC
+- PROCESS
+- EVENT
+- VERSION
+
+Categories determine execution phase.
+
+---
+
+## 6. Determinism Requirements
+
+The engine **MUST** guarantee:
+- Stable rule execution order
+- Stable error ordering
+- Stable error codes
+- Stable canonical paths
+
+Given identical Canonical Graph input, output **MUST** be identical.
+
+Error ordering **MUST** follow:
+1. Canonical path (lexicographic)
+2. Rule ID
+3. Message
+
+---
+
+## 7. ValidationError Schema
+
+Each error **MUST** include:
+
+```
+ValidationError {
+    code: string
+    ruleId: string
+    path: CanonicalPath
+    message: string
+    severity: "error"
+}
+```
+
+Warnings **MUST** follow:
+
+```
+ValidationWarning {
+    code: string
+    ruleId: string
+    path: CanonicalPath
+    message: string
+    severity: "warning"
+}
+```
+
+Codes **MUST** be stable across versions.
+
+---
+
+## 8. Strict vs Non-Strict Mode
+
+ValidationOptions **MAY** include:
+
+```
+ValidationOptions {
+    mode: "strict" | "non-strict"
+    disabledRules?: string[]
+}
+```
+
+In strict mode:
+- All rules **MUST** execute
+
+In non-strict mode:
+- Implementation **MAY** downgrade specific errors to warnings
+- Disabled rules **MUST** be excluded deterministically
+
+Rule disabling **MUST NOT** alter ordering of remaining rules.
+
+---
+
+## 9. Short-Circuit Strategy
+
+The engine **MAY** implement short-circuiting only at phase boundaries.
+
+It **MUST NOT** short-circuit inside a phase in a non-deterministic way.
+
+Example:
+- If structural phase yields fatal invariant violation, semantic phase **MAY** be skipped.
+
+This behavior **MUST** be documented and stable.
+
+---
+
+## 10. Rule Implementation Constraints
+
+Rules **MUST**:
+- Be pure functions
+- Not mutate graph
+- Not depend on global state
+- Not depend on execution order side-effects
+- Not modify other rule behavior
+
+Rules **MUST NOT**:
+- Register new rules at runtime
+- Access filesystem
+- Perform network calls
+
+---
+
+## 11. Graph Access Rules
+
+Rules **MAY**:
+- Traverse nodes
+- Inspect attributes
+- Follow edges
+- Query lookup maps
+
+Rules **MUST NOT**:
+- Modify nodes
+- Modify edges
+- Add derived attributes
+
+---
+
+## 12. Version Validation
+
+Version rules **MUST**:
+- Compare declared version
+- Validate semantic version format
+- Enforce bump requirements (if ChangeSet provided)
+
+If ChangeSet is not provided, version bump validation **MAY** be skipped.
+
+---
+
+## 13. Integration with Diff Engine
+
+If validation is executed in evolution context:
+
+```
+validate(graph, { changeSet })
+```
+
+The engine **MAY**:
+- Execute version rules
+- Execute migration safety checks
+
+Validation **MUST NOT** compute diff itself.
+
+---
+
+## 14. Performance Expectations
+
+The engine **SHOULD** operate in:
+
+**O(R × N)**
+
+Where:
+- R = number of rules
+- N = number of nodes
+
+Rules **SHOULD** avoid nested full-graph traversals.
+
+Caching **MAY** be used within context but **MUST** be deterministic.
+
+---
+
+## 15. Error Codes
+
+Error codes **MUST**:
+- Be stable
+- Be namespaced (e.g., RIGOR-VAL-001)
+- Never be reused for different meanings
+
+Removing a rule **MUST** deprecate its code explicitly.
+
+---
+
+## 16. CLI Integration
+
+CLI behavior **MUST** follow:
+- Exit code 0 → no errors
+- Exit code 1 → validation errors present
+- Exit code >1 → internal failure
+
+Output format **MUST** support:
+- JSON
+- Human-readable text
+
+JSON output **MUST** serialize ValidationReport exactly.
+
+---
+
+## 17. Logging
+
+The Validation Engine **MAY** emit logs, but:
+- Logs **MUST NOT** affect behavior
+- Logs **MUST NOT** alter determinism
+- Logging **MUST** be optional
+
+---
+
+## 18. Testing Requirements
+
+The Validation Engine **MUST** support:
+- Unit tests per rule
+- Integration tests over sample graphs
+- Golden tests for error output
+- Determinism tests (same input, same output)
+- Regression tests for rule evolution
+
+Rule behavior **MUST** be independently testable.
+
+---
+
+## 19. Non-Goals
+
+The Validation Engine does **NOT**:
+- Apply changes
+- Fix errors automatically
+- Generate migrations
+- Reorder graph
+- Canonicalize graph
+
+Canonicalization **MUST** occur prior.
+
+---
+
+## 20. Compliance Criteria
+
+An implementation is compliant if:
+- It executes rules in deterministic phased order
+- It produces stable ValidationReport
+- It respects immutability
+- It enforces stable error codes
+- It supports strict mode
+
+---
+
+## 21. Summary
+
+The Validation Engine is:
+- Deterministic
+- Phase-driven
+- Pure
+- Rule-based
+- Immutable in behavior
+
+It enforces specification correctness without altering structure and provides a stable, reproducible validation result.
