@@ -60,7 +60,7 @@ Each category MUST be namespaced.
 
 Every error MUST have a stable code:
 
-```
+```id="err_code_format"
 RIGOR-<CATEGORY>-<NNN>
 ```
 
@@ -83,7 +83,7 @@ Rules:
 
 All errors MUST conform to:
 
-```
+```id="err_base_schema"
 RigorError {
     code: string
     category: string
@@ -141,7 +141,7 @@ Engines MAY extend the base error model with typed wrappers, but serialization M
 
 Example extension:
 
-```
+```id="err_version_extension"
 VersionViolation extends RigorError {
     expectedBump: string
     declaredBump: string
@@ -228,7 +228,7 @@ Message: State transition target does not exist.
 
 ## JSON Mode
 
-```json
+```id="err_json_output"
 {
   "status": "invalid",
   "errors": [
