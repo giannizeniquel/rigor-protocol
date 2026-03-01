@@ -1,46 +1,69 @@
-# Eventos (v0.1)
+# Especificación de Eventos (v0.1)
 
-## 1. Definición Formal
+## 1. Propósito
 
-Un Evento es una entrada externa nombrada con un esquema de payload explícitamente declarado y estáticamente tipado que activa transiciones de estado dentro de un Proceso.
+Este documento define los **Eventos** para RIGOR Core v0.1. Establece un estándar formal y normativo para la declaración de eventos, el tipado de payloads y la integración con las transiciones de los Procesos.
 
-- Los eventos son declarativos y no ejecutables.
-- Los eventos **NO DEBEN** mutar el estado directamente (solo vía transiciones).
+Los eventos son **entradas externas con payloads tipados** que activan transiciones de estado. En la v0.1, todos los eventos se consideran **externos**; no se soporta la emisión de eventos internos.
 
-## 2. Gramática Formal (EBNF)
+## 2. Definición de Evento
+
+**Definición Formal:**
+> Un Evento es una entrada externa nombrada con un esquema de payload declarado y estáticamente tipado que activa transiciones en un Proceso.
+> Los eventos son declarativos y no ejecutables. **NO DEBEN** mutar el estado directamente; la mutación del estado ocurre exclusivamente a través de las transiciones.
+
+## 3. Gramática de Eventos (EBNF)
 
 ```ebnf
-events_block ::= "events:" event_definition+
-event_definition ::= identifier ":" payload_block
-payload_block ::= "payload:" payload_field+
-payload_field ::= identifier ":" type
+events_block       ::= "events:" event_definition+
+
+event_definition   ::= "-" "event_id:" identifier NEWLINE
+                       INDENT "payload_schema:" payload_schema DEDENT
+
+payload_schema     ::= "type: object" NEWLINE
+                       INDENT "properties:" properties
+                       "required:" required_fields DEDENT
+
+properties         ::= (field_name ":" type_reference)+
+required_fields    ::= field_name+
+field_name         ::= identifier
+type_reference     ::= "string" | "integer" | "boolean" | "uuid" | "datetime"
 ```
 
-## 3. Reglas de Nombrado (Normativas)
+## 4. Reglas de Nombrado (Normativas)
 
-- **Identificadores de Eventos**: **DEBEN** ser únicos dentro del proceso y seguir `PascalCase` (`^[A-Z][a-zA-Z0-9]*$`).
+- **Identificadores de Eventos**: **DEBEN** ser únicos dentro del proceso y seguir `PascalCase` (`^[A-Z][a-zA-Z0-9]+$`).
 - **Campos de Payload**: **DEBEN** seguir `snake_case` (`^[a-z_][a-z0-9_]*$`).
 
-## 4. Reglas del Esquema de Payload
+## 5. Reglas del Esquema de Payload
 
-- Los tipos de payload **DEBEN** ajustarse al Sistema de Tipos de RIGOR.
-- Los campos opcionales **DEBEN** usar el sufijo `?` (ej., `reason: string?`).
-- Los payloads vacíos **ESTÁN PERMITIDOS** pero **DEBEN** declararse explícitamente como un bloque `payload` vacío.
-- **Restricción v0.1**: No se permiten objetos anidados, tipos de unión, o campos dinámicos.
+- **Sistema de Tipos**: Los tipos de payload **DEBEN** ajustarse al Sistema de Tipos de RIGOR.
+- **Campos Requeridos**: **DEBEN** listarse explícitamente en el bloque `required`.
+- **Campos Opcionales**: Pueden declararse usando el sufijo `?` en las propiedades (ej., `reason: string?`).
+- **Payloads Vacíos**: **PERMITIDOS** pero **DEBEN** usar la sintaxis explícita:
+```yaml
+payload_schema:
+  type: object
+  properties: {}
+  required: []
+```
+- **Restricciones v0.1**: No se permiten tipos de unión, campos dinámicos ni objetos anidados (a menos que se tipen explícitamente como una sub-estructura formal).
 
-## 5. Reglas Semánticas
+## 6. Reglas Semánticas
 
-- Los eventos **DEBEN** declararse antes de su uso.
-- Las transiciones **DEBEN** referenciar Eventos declarados.
-- La validación del payload **DEBE** ocurrir antes de la evaluación de la transición.
-- Todos los eventos en v0.1 son **Externos**. La emisión de eventos internos **NO** está soportada.
+1. Un Evento **DEBE** declararse en `events:` antes de su uso.
+2. Una Transición **DEBE** referenciar un Evento declarado.
+3. Un Evento **NO DEBE** causar mutación fuera de una Transición.
+4. La validación del payload **DEBE** ocurrir antes de la evaluación de la transición.
+5. Las declaraciones de eventos son **inmutables entre versiones compatibles**.
 
-## 6. Modelo de Procesamiento de Eventos
+## 7. Modelo de Procesamiento de Eventos
 
-- Cada evento constituye un único límite transaccional atómico.
-- Si la validación o transición falla, **NINGUNA** mutación de estado o actualización de contexto es persistida.
+- Cada evento se procesa de forma atómica y constituye un único **límite transaccional**.
+- El fallo en la validación o en la transición resulta en que **NO** se persiste ninguna mutación de estado ni actualización de contexto.
+- El procesamiento de eventos asegura una consistencia fuerte a nivel de proceso.
 
-## 7. Sobre de Evento en Tiempo de Ejecución (Envelope)
+## 8. Sobre de Evento en Tiempo de Ejecución (Envelope)
 
 Un evento compatible con RIGOR recibido por un motor **DEBE** contener los siguientes metadatos:
 
@@ -53,7 +76,7 @@ Un evento compatible con RIGOR recibido por un motor **DEBE** contener los sigui
 
 El motor **DEBERÍA** usar el `event_id` para asegurar la idempotencia y prevenir el procesamiento duplicado.
 
-## 8. Taxonomía de Validación y Errores
+## 9. Validación y Taxonomía de Errores
 
 | Código | Condición | Severidad |
 | :--- | :--- | :--- |
@@ -64,23 +87,26 @@ El motor **DEBERÍA** usar el `event_id` para asegurar la idempotencia y preveni
 | EV-005 | Campo de payload requerido faltante | Error |
 | EV-006 | Patrón de nombre de evento inválido | Error |
 
-## 8. Ejemplos
+## 10. Ejemplos
 
 ### Ejemplo Válido: PaymentConfirmed
 
 ```yaml
 events:
-  PaymentConfirmed:
-    payload:
-      order_id: uuid
-      amount: integer
-      confirmed_at: datetime
+  - event_id: PaymentConfirmed
+    payload_schema:
+      type: object
+      properties:
+        order_id: uuid
+        amount: integer
+        confirmed_at: datetime
+      required:
+        - order_id
+        - amount
+        - confirmed_at
 
 process: OrderProcess
-context:
-  order_id: uuid
-  status: string
-  paid_at: datetime?
+initial_state: pending
 
 states:
   pending:
@@ -99,7 +125,17 @@ states:
 ```yaml
 # INVÁLIDO: comienza con minúscula
 events:
-  payment_confirmed:  # EV-006
-    payload:
-      order_id: uuid
+  - event_id: payment_confirmed  # EV-006
+    payload_schema:
+      type: object
+      properties:
+        order_id: uuid
+      required:
+        - order_id
 ```
+
+## 11. Referencias Cruzadas
+* Ver [Sistema de Tipos](./spec-reference#3-sistema-de-tipos)
+* Ver [Matriz de Validación](./validation-matrix)
+* Ver [Modelo de Grafo](./graph-model)
+* Ver [Núcleo de la Spec](./spec-core)

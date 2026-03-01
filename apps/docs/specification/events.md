@@ -1,46 +1,69 @@
-# Events (v0.1)
+# Events Specification (v0.1)
 
-## 1. Formal Definition
+## 1. Purpose
 
-An Event is a named external input with an explicitly declared, statically typed payload schema that triggers state transitions within a Process.
+This document defines **Events** for RIGOR Core v0.1. It establishes a formal, normative standard for event declaration, payload typing, and integration with Process transitions.
 
-- Events are declarative and non-executable.
-- Events **MUST NOT** mutate state directly (only via transitions).
+Events are **external inputs with typed payloads** that trigger state transitions. In v0.1, all events are considered **external**; internal event emission is not supported.
 
-## 2. Formal Grammar (EBNF)
+## 2. Event Definition
+
+**Formal Definition:**
+> An Event is a named external input with a declared, statically typed payload schema that triggers transitions in a Process.
+> Events are declarative and non-executable. They **MUST NOT** mutate state directly; state mutation occurs exclusively via transitions.
+
+## 3. Event Grammar (EBNF)
 
 ```ebnf
-events_block ::= "events:" event_definition+
-event_definition ::= identifier ":" payload_block
-payload_block ::= "payload:" payload_field+
-payload_field ::= identifier ":" type
+events_block       ::= "events:" event_definition+
+
+event_definition   ::= "-" "event_id:" identifier NEWLINE
+                       INDENT "payload_schema:" payload_schema DEDENT
+
+payload_schema     ::= "type: object" NEWLINE
+                       INDENT "properties:" properties
+                       "required:" required_fields DEDENT
+
+properties         ::= (field_name ":" type_reference)+
+required_fields    ::= field_name+
+field_name         ::= identifier
+type_reference     ::= "string" | "integer" | "boolean" | "uuid" | "datetime"
 ```
 
-## 3. Naming Rules (Normative)
+## 4. Naming Rules (Normative)
 
-- **Event Identifiers**: **MUST** be unique within the process and follow `PascalCase` (`^[A-Z][a-zA-Z0-9]*$`).
+- **Event Identifiers**: **MUST** be unique within the process and follow `PascalCase` (`^[A-Z][a-zA-Z0-9]+$`).
 - **Payload Fields**: **MUST** follow `snake_case` (`^[a-z_][a-z0-9_]*$`).
 
-## 4. Payload Schema Rules
+## 5. Payload Schema Rules
 
-- Payload types **MUST** conform to the RIGOR Type System.
-- Optional fields **MUST** use the `?` suffix (e.g., `reason: string?`).
-- Empty payloads are **ALLOWED** but **MUST** be explicitly declared as an empty `payload` block.
-- **v0.1 Constraint**: No nested objects, union types, or dynamic fields.
+- **Type System**: Payload types **MUST** conform to the RIGOR Type System.
+- **Required Fields**: **MUST** be explicitly listed in the `required` block.
+- **Optional Fields**: Can be declared using the `?` suffix in properties (e.g., `reason: string?`).
+- **Empty Payloads**: **ALLOWED** but **MUST** use explicit syntax:
+```yaml
+payload_schema:
+  type: object
+  properties: {}
+  required: []
+```
+- **v0.1 Constraints**: No union types, no dynamic fields, and no nested objects (unless explicitly typed as a formal sub-structure).
 
-## 5. Semantic Rules
+## 6. Semantic Rules
 
-- Events **MUST** be declared before use.
-- Transitions **MUST** reference declared Events.
-- Payload validation **MUST** occur before transition evaluation.
-- All events in v0.1 are **External**. Internal event emission is **NOT** supported.
+1. An Event **MUST** be declared in `events:` before use.
+2. A Transition **MUST** reference a declared Event.
+3. An Event **MUST NOT** cause mutation outside a Transition.
+4. Payload validation **MUST** occur before transition evaluation.
+5. Event declarations are **immutable across compatible versions**.
 
-## 6. Event Processing Model
+## 7. Event Processing Model
 
-- Each event constitutes a single atomic transactional boundary.
-- If validation or transition fails, **NO** state mutation or context update is persisted.
+- Each event is processed atomically and constitutes a single **transactional boundary**.
+- Failed validation or transition results in **NO** state mutation or context update being persisted.
+- Event processing ensures strong consistency at the process level.
 
-## 7. Runtime Event Envelope
+## 8. Runtime Event Envelope
 
 A RIGOR-compliant event received by an engine **MUST** contain the following metadata:
 
@@ -53,7 +76,7 @@ A RIGOR-compliant event received by an engine **MUST** contain the following met
 
 The engine **SHOULD** use the `event_id` to ensure idempotency and prevent duplicate processing.
 
-## 8. Validation & Error Taxonomy
+## 9. Validation & Error Taxonomy
 
 | Code | Condition | Severity |
 | :--- | :--- | :--- |
@@ -64,23 +87,26 @@ The engine **SHOULD** use the `event_id` to ensure idempotency and prevent dupli
 | EV-005 | Missing required payload field | Error |
 | EV-006 | Invalid event naming pattern | Error |
 
-## 8. Examples
+## 10. Examples
 
 ### Valid Example: PaymentConfirmed
 
 ```yaml
 events:
-  PaymentConfirmed:
-    payload:
-      order_id: uuid
-      amount: integer
-      confirmed_at: datetime
+  - event_id: PaymentConfirmed
+    payload_schema:
+      type: object
+      properties:
+        order_id: uuid
+        amount: integer
+        confirmed_at: datetime
+      required:
+        - order_id
+        - amount
+        - confirmed_at
 
 process: OrderProcess
-context:
-  order_id: uuid
-  status: string
-  paid_at: datetime?
+initial_state: pending
 
 states:
   pending:
@@ -99,7 +125,17 @@ states:
 ```yaml
 # INVALID: starts with lowercase
 events:
-  payment_confirmed:  # EV-006
-    payload:
-      order_id: uuid
+  - event_id: payment_confirmed  # EV-006
+    payload_schema:
+      type: object
+      properties:
+        order_id: uuid
+      required:
+        - order_id
 ```
+
+## 11. Cross-References
+* See [Type System](./spec-reference#3-type-system)
+* See [Validation Matrix](./validation-matrix)
+* See [Graph Model](./graph-model)
+* See [Spec Core](./spec-core)
