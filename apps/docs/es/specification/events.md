@@ -1,146 +1,105 @@
 # Eventos (v0.1)
 
-## 1. Propósito
+## 1. Definición Formal
 
-Mientras que un Proceso define la máquina de estados, un **Evento** define la estructura tipificada de las entradas que activan las transiciones. La especificación de Eventos de RIGOR formaliza el contrato de eventos para permitir:
-- Validación estructural.
-- Tipado fuerte en generación de código impulsada por IA.
-- Compatibilidad determinística con `update_context`.
+Un Evento es una entrada externa nombrada con un esquema de payload explícitamente declarado y estáticamente tipado que activa transiciones de estado dentro de un Proceso.
 
-El objetivo es proporcionar un contrato formal entre los sistemas externos y el Motor de RIGOR.
+- Los eventos son declarativos y no ejecutables.
+- Los eventos **NO DEBEN** mutar el estado directamente (solo vía transiciones).
 
-## 2. Estructura Raíz
+## 2. Gramática Formal (EBNF)
 
-El nodo `events` es obligatorio en una especificación de RIGOR si el sistema define procesos. Es un mapa donde cada clave representa un evento único.
+```ebnf
+events_block ::= "events:" event_definition+
+event_definition ::= identifier ":" payload_block
+payload_block ::= "payload:" payload_field+
+payload_field ::= identifier ":" type
+```
+
+## 3. Reglas de Nombrado (Normativas)
+
+- **Identificadores de Eventos**: **DEBEN** ser únicos dentro del proceso y seguir `PascalCase` (`^[A-Z][a-zA-Z0-9]*$`).
+- **Campos de Payload**: **DEBEN** seguir `snake_case` (`^[a-z_][a-z0-9_]*$`).
+
+## 4. Reglas del Esquema de Payload
+
+- Los tipos de payload **DEBEN** ajustarse al Sistema de Tipos de RIGOR.
+- Los campos opcionales **DEBEN** usar el sufijo `?` (ej., `reason: string?`).
+- Los payloads vacíos **ESTÁN PERMITIDOS** pero **DEBEN** declararse explícitamente como un bloque `payload` vacío.
+- **Restricción v0.1**: No se permiten objetos anidados, tipos de unión, o campos dinámicos.
+
+## 5. Reglas Semánticas
+
+- Los eventos **DEBEN** declararse antes de su uso.
+- Las transiciones **DEBEN** referenciar Eventos declarados.
+- La validación del payload **DEBE** ocurrir antes de la evaluación de la transición.
+- Todos los eventos en v0.1 son **Externos**. La emisión de eventos internos **NO** está soportada.
+
+## 6. Modelo de Procesamiento de Eventos
+
+- Cada evento constituye un único límite transaccional atómico.
+- Si la validación o transición falla, **NINGUNA** mutación de estado o actualización de contexto es persistida.
+
+## 7. Sobre de Evento en Tiempo de Ejecución (Envelope)
+
+Un evento compatible con RIGOR recibido por un motor **DEBE** contener los siguientes metadatos:
+
+| Campo | Tipo | Descripción |
+| :--- | :--- | :--- |
+| `event_id` | `uuid` | Identificador único global para esta instancia de evento. |
+| `event_name` | `string` | El nombre formal del evento (coincidente con la spec). |
+| `payload` | `object` | Los datos que se ajustan al esquema de payload declarado. |
+| `timestamp` | `datetime` | La marca de tiempo UTC cuando se generó el evento. |
+
+El motor **DEBERÍA** usar el `event_id` para asegurar la idempotencia y prevenir el procesamiento duplicado.
+
+## 8. Taxonomía de Validación y Errores
+
+| Código | Condición | Severidad |
+| :--- | :--- | :--- |
+| EV-001 | event_id duplicado | Error |
+| EV-002 | Transición referencia evento no declarado | Error |
+| EV-003 | Incompatibilidad de tipos en payload | Error |
+| EV-004 | Campo de payload desconocido | Error |
+| EV-005 | Campo de payload requerido faltante | Error |
+| EV-006 | Patrón de nombre de evento inválido | Error |
+
+## 8. Ejemplos
+
+### Ejemplo Válido: PaymentConfirmed
 
 ```yaml
 events:
-  <EventName>:
+  PaymentConfirmed:
     payload:
-      <field_name>: <type>
-```
+      order_id: uuid
+      amount: integer
+      confirmed_at: datetime
 
-### 2.1 Reglas de Nombrado
-- **Nombre del Evento**: Debe comenzar con letra mayúscula, ser alfanumérico, y usar `PascalCase` (ej., `PaymentApproved`).
-- **Regex**: `^[A-Z][a-zA-Z0-9]*$`
-- **Campo de Payload**: Debe usar `snake_case` (solo letras minúsculas y guiones bajos).
-- **Regex**: `^[a-z_]+$`
+process: OrderProcess
+context:
+  order_id: uuid
+  status: string
+  paid_at: datetime?
 
-## 3. Especificación de Payload
-
-### 3.1 Reglas Generales
-- El nodo `payload` es **obligatorio** y debe contener al menos un campo.
-- Cada campo debe tener un tipo definido.
-
-### 3.2 Tipos Soportados
-Los eventos soportan los mismos tipos primitivos que el contexto del Proceso:
-- `uuid`: Identificador único universal RFC 4122.
-- `string`: Texto codificado en UTF-8.
-- `integer`: Entero signed de 64 bits.
-- `boolean`: `true` o `false`.
-- `datetime`: Marca de tiempo ISO 8601 o UTC.
-
-La nulabilidad se soporta usando el sufijo `?` (ej., `error_code: integer?`). Para mantener simplicidad y determinismo, objetos anidados, listas, o tipos compuestos **no están permitidos** en v0.1.
-
-## 4. Relacion con Procesos
-
-Los eventos son referenciados dentro del bloque `on:` de una definición de estado:
-
-```yaml
 states:
-  WAITING_FOR_PAYMENT:
+  pending:
     on:
-      PaymentApproved:
-        transition_to: COMPLETED
+      PaymentConfirmed:
+        to: paid
+        update_context:
+          status: "paid"
+          paid_at: event.payload.confirmed_at
+  paid:
+    terminal: true
 ```
 
-### 4.1 Restricciones
-- **Existencia**: Cada evento referenciado en un Proceso debe estar definido en la sección `events`.
-- **Mapeo `update_context`**: Los valores del payload de un evento pueden ser mapeados al contexto del proceso usando la sintaxis `event.payload.<field>`. Los tipos deben coincidir exactamente entre el payload y el campo del contexto.
-
-## 5. Semantica del Motor
-
-Un evento compatible con RIGOR procesado por el motor debe contener:
-- `event_id` (UUID): Identificador único para la instancia del evento.
-- `event_name` (String): El nombre formal del evento como está definido en la especificación.
-- `payload` (Object): Los datos que acompañan al evento.
-- `timestamp` (DateTime): La hora en que ocurrió el evento.
-
-### 5.1 Idempotencia
-El motor **debe** ser capaz de ignorar eventos duplicados para mantener la integridad del proceso.
-- **Estrategia Recomendada**: Persistir cada `event_id` procesado en una tabla dedicada `processed_events` vinculada al `process_id`. Antes de ejecutar una transición, el motor debe verificar si el `event_id` ya ha sido aplicado.
-
-## 6. Reglas de Validacion Formal
-
-- **VAL-E1**: Cada evento referenciado en un Proceso debe existir en la sección `events`.
-- **VAL-E2**: El payload del evento debe coincidir con la definición de tipo en la especificación.
-- **VAL-E3**: La compatibilidad de tipos debe ser verificada al mapear campos del payload al contexto.
-- **VAL-E4**: Los campos de payload obligatorios (aquellos sin `?`) deben estar presentes en los datos del evento.
-- **VAL-E5 (Advertencia)**: Los eventos definidos en la especificación pero nunca referenciados en cualquier proceso deben activar una advertencia.
-
-## 7. Representacion JSON Schema
-
-El siguiente JSON Schema define la estructura formal de la sección `events`:
-
-```json
-{
-  "$schema": "http://json-schema.org/draft-07/schema#",
-  "type": "object",
-  "required": ["events"],
-  "properties": {
-    "events": {
-      "type": "object",
-      "patternProperties": {
-        "^[A-Z][a-zA-Z0-9]*$": {
-          "type": "object",
-          "required": ["payload"],
-          "properties": {
-            "payload": {
-              "type": "object",
-              "minProperties": 1,
-              "patternProperties": {
-                "^[a-z_]+$": {
-                  "type": "string",
-                  "pattern": "^(uuid|string|integer|boolean|datetime)(\\?)?$"
-                }
-              }
-            }
-          }
-        }
-      }
-    }
-  }
-}
-```
-
-## 8. Ejemplo Integrado
-
-La interacción entre `events` y `processes` a través de `update_context`:
+### Ejemplo de Nombrado Inválido
 
 ```yaml
+# INVÁLIDO: comienza con minúscula
 events:
-  EmailVerified:
+  payment_confirmed:  # EV-006
     payload:
-      user_id: uuid
-      timestamp: datetime
-
-processes:
-  UserOnboardingProcess:
-    persistence: true
-    start_command: StartOnboarding
-    context:
-      user_id: uuid
-      email_verified: boolean
-      verified_at: datetime?
-    initial_state: WAITING_FOR_VERIFICATION
-    states:
-      WAITING_FOR_VERIFICATION:
-        on:
-          EmailVerified:
-            update_context:
-              email_verified: true
-              verified_at: event.payload.timestamp
-            transition_to: COMPLETED
-      COMPLETED:
-        terminal: true
+      order_id: uuid
 ```
