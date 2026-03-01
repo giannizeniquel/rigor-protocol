@@ -66,14 +66,17 @@ export default defineConfig({
                   link: '/specification/graph-model' 
                 },
                 { 
-                  text: 'Differentiation', 
-                  link: '/specification/differentiation' 
-                }
-              ]
-            },
-            {
-              text: 'Process Specification',
-              items: [
+                  text: 'Versioning', 
+                  link: '/specification/versioning' 
+                },
+                { 
+                  text: 'Semantic Diff', 
+                  link: '/specification/diff' 
+                },
+                { 
+                  text: 'Migrations', 
+                  link: '/specification/migrations' 
+                },
                 { 
                   text: 'Spec Core', 
                   link: '/specification/spec-core' 
@@ -85,14 +88,6 @@ export default defineConfig({
                 { 
                   text: 'Events', 
                   link: '/specification/events' 
-                },
-                { 
-                  text: 'Versioning', 
-                  link: '/specification/versioning' 
-                },
-                { 
-                  text: 'Migrations', 
-                  link: '/specification/migrations' 
                 },
                 { 
                   text: 'Spec Appendix', 
@@ -194,14 +189,17 @@ export default defineConfig({
                   link: '/es/specification/graph-model' 
                 },
                 { 
-                  text: 'Diferenciación', 
-                  link: '/es/specification/differentiation' 
-                }
-              ]
-            },
-            {
-              text: 'Especificación de Procesos',
-              items: [
+                  text: 'Versionado', 
+                  link: '/es/specification/versioning' 
+                },
+                { 
+                  text: 'Diff Semántico', 
+                  link: '/es/specification/diff' 
+                },
+                { 
+                  text: 'Migraciones', 
+                  link: '/es/specification/migrations' 
+                },
                 { 
                   text: 'Núcleo de la Spec', 
                   link: '/es/specification/spec-core' 
@@ -213,14 +211,6 @@ export default defineConfig({
                 { 
                   text: 'Eventos', 
                   link: '/es/specification/events' 
-                },
-                { 
-                  text: 'Versionado', 
-                  link: '/es/specification/versioning' 
-                },
-                { 
-                  text: 'Migraciones', 
-                  link: '/es/specification/migrations' 
                 },
                 { 
                   text: 'Apéndice de la Spec', 

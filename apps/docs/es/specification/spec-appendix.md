@@ -1,201 +1,180 @@
 # Apéndice de la Spec (v0.1)
 
-## 1. Propósito
+Este documento complementa el Conjunto de Especificaciones de RIGOR. Define convenciones normativas auxiliares, reglas notacionales, términos del glosario, ejemplos de errores estructurados y planos de implementación.
 
-El Apéndice de Spec de RIGOR complementa las especificaciones Core y Referencia proporcionando:
-- JSON Schemas formales y validables.
-- Ejemplos completos de implementación de extremo a extremo.
-- Modelos de prueba detallados.
-- Diagramas conceptuales y flujos visuales.
-- Estrategias de integración CI/CD.
-- Preparación para ejecución distribuida futura.
+## A. Terminología Normativa
 
-## 2. Apéndice A: JSON Schema Formal (Draft-07)
+Las siguientes palabras clave son normativas en toda la documentación de RIGOR:
 
-El siguiente esquema permite validación estructural automática de cualquier archivo de especificación de RIGOR.
+- **MUST (DEBE)**: Requisito obligatorio.
+- **MUST NOT (NO DEBE)**: Comportamiento prohibido.
+- **SHOULD (DEBERÍA)**: Recomendación fuerte.
+- **MAY (PUEDE)**: Característica o comportamiento opcional.
+
+Estas palabras clave son semánticamente vinculantes para cualquier implementación que reclame conformidad con el protocolo.
+
+## B. Notación y Convenciones
+
+### B.1 Reglas de Identificadores
+Los identificadores (para entidades, procesos, estados, eventos y campos) **DEBEN**:
+- Ser solo ASCII.
+- Comenzar con una letra.
+- Contener solo letras, números y guiones bajos.
+- Ser sensibles a mayúsculas y minúsculas.
+
+**Regex Formal:** `^[A-Za-z][A-Za-z0-9_]*$`
+
+### B.2 Recomendaciones de Nombres
+Aunque no es obligatorio, se recomiendan encarecidamente los siguientes patrones para la interoperabilidad:
+- **Entidades / Procesos / Eventos**: `PascalCase`
+- **Campos / Claves de Contexto**: `snake_case`
+- **Estados**: `UPPER_SNAKE_CASE`
+- **Transiciones**: `verbNoun`
+
+## C. Sintaxis de Rutas Canónicas (Normativo)
+
+Las rutas se utilizan para referenciar de forma única los nodos en el [Modelo de Grafo](./graph-model) para informes de Diff, errores de validación y salidas de CLI.
+
+### C.1 Gramática de Rutas
+```
+Ruta     ::= "/" Segmento { "/" Segmento }
+Segmento ::= Identificador
+```
+
+**Ejemplos:**
+- `/entities/User`
+- `/processes/Order/states/PAID`
+- `/processes/Order/transitions/pay`
+- `/events/UserCreated/payload/user_id`
+
+### C.2 Acceso a Atributos
+Se accede a los atributos de las propiedades añadiendo el nombre del atributo:
+- `/entities/User/properties/email/type`
+- `/entities/User/relations/orders/cardinality`
+
+## D. Glosario (Normativo)
+
+- **Nodo**: Una unidad estructural en la representación de grafo canónico.
+- **Arista (Edge)**: Una relación dirigida y tipada entre dos nodos.
+- **Entidad**: Un objeto de dominio con identidad y propiedades tipadas.
+- **Proceso**: Una máquina de estados determinista que gobierna transiciones y mutaciones.
+- **Estado**: Una configuración discreta dentro de un proceso.
+- **Transición**: Un cambio dirigido de un estado a otro activado por un evento.
+- **Evento**: Una entrada externa nombrada con un payload tipado.
+- **Grafo Canónico**: La representación interna normalizada utilizada para la validación formal.
+- **Cambio de Ruptura (Breaking Change)**: Una modificación que invalida al menos una instancia previamente válida.
+- **ChangeSet**: Una lista estructurada de cambios atómicos producidos por el motor de Diff.
+
+## E. Guía Estructural YAML (Normativa para Herramientas)
+
+### E.1 Reglas de Formato
+- **Sangría**: Exactamente 2 espacios.
+- **Tabulaciones**: **NO DEBEN** utilizarse.
+- **Codificación**: UTF-8.
+
+### E.2 Orden de Bloques Recomendado
+1. `spec_version`
+2. `rigor_spec_version`
+3. `entities`
+4. `process`
+5. `events`
+6. `migrations`
+
+## F. Errores de Validación Comunes (Ejemplos)
+
+### ERR_STRUCTURE_REQUIRED_MISSING
+**Entrada:** Falta `rigor_spec_version` en la raíz.
+**Resolución:** Añadir el campo obligatorio de versión del lenguaje.
+
+### ERR_SYNTAX_INVALID_IDENTIFIER
+**Entrada:** `event_id: 123Pago`
+**Resolución:** Los identificadores deben comenzar con una letra (ver §B.1).
+
+### ERR_PROCESS_UNDEFINED_STATE
+**Entrada:** Transición `to: COMPLETED` donde `COMPLETED` no está en la lista de estados.
+**Resolución:** Declarar todos los estados de destino en el bloque `states:`.
+
+## G. Casos de Borde (Clarificaciones Normativas)
+
+- **Proceso Vacío**: Un proceso con un solo estado y sin transiciones es **VÁLIDO** si el estado está marcado como terminal.
+- **Transiciones Terminales**: Un estado marcado como `terminal: true` **NO DEBE** tener transiciones salientes.
+- **Payload Vacío Explícito**: Los eventos sin datos DEBERÍAN declarar `payload_schema: { type: object, properties: {}, required: [] }`.
+
+## H. Mapeo de Implementación y Esquema JSON
+
+### H.1 Derivación de Grafo Canónico
+Las implementaciones **DEBEN** mapear cada entidad del DSL a un nodo de grafo único. El anidamiento en YAML (ej. campos dentro de entidades) se mapea a aristas `HAS_FIELD` o `BELONGS_TO`.
+
+### H.2 Esquema JSON Formal (Draft-07)
+El siguiente esquema proporciona una validación estructural básica:
 
 ```json
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
   "type": "object",
-  "required": ["processes"],
+  "required": ["rigor_spec_version", "spec_version", "process"],
   "properties": {
-    "processes": {
-      "type": "object",
-      "patternProperties": {
-        "^[A-Z][a-zA-Z0-9]*$": {
-          "type": "object",
-          "required": [
-            "persistence",
-            "start_command",
-            "context",
-            "initial_state",
-            "states"
-          ],
-          "properties": {
-            "persistence": { "type": "boolean", "const": true },
-            "start_command": {
-              "type": "string",
-              "pattern": "^[A-Z][a-zA-Z0-9]*$"
-            },
-            "uniqueness": {
-              "type": "object",
-              "required": ["by"],
-              "properties": {
-                "by": { "type": "string" }
-              }
-            },
-            "context": {
-              "type": "object",
-              "minProperties": 1,
-              "patternProperties": {
-                "^[a-z_]+$": {
-                  "type": "string",
-                  "pattern": "^(uuid|string|integer|boolean|datetime)(\\?)?$"
-                }
-              }
-            },
-            "initial_state": { "type": "string" },
-            "states": {
-              "type": "object",
-              "minProperties": 1,
-              "patternProperties": {
-                "^[A-Z_]+$": {
-                  "type": "object",
-                  "properties": {
-                    "emit_command": { "type": "string" },
-                    "invoke": { "type": "string" },
-                    "terminal": { "type": "boolean" },
-                    "on": {
-                      "type": "object",
-                      "patternProperties": {
-                        "^[A-Z][a-zA-Z0-9]*$": {
-                          "type": "object",
-                          "required": ["transition_to"],
-                          "properties": {
-                            "transition_to": { "type": "string" },
-                            "update_context": { "type": "object" }
-                          }
-                        }
-                      }
-                    }
-                  },
-                  "oneOf": [
-                    { "required": ["emit_command"] },
-                    { "required": ["invoke"] },
-                    { "required": ["terminal"] }
-                  ]
-                }
-              }
-            }
-          }
-        }
-      }
-    }
+    "rigor_spec_version": { "type": "string" },
+    "spec_version": { "type": "string" },
+    "process": { "type": "string" }
   }
 }
 ```
-*Nota: Las validaciones lógicas semánticas (alcanzabilidad, unicidad global, etc.) deben ser implementadas en la lógica del validador más allá de este JSON Schema.*
+*(Esquema completo disponible en el repositorio de RIGOR en el directorio /schemas)*
 
-## 3. Apéndice B: Ejemplo Detallado de Extremo a Extremo
-
-### 3.1 Especificación Declarativa
-**Escenario:** Incorporación de Usuario con Verificación de Email.
+## I. Ejemplo de Referencia Completo (Base Normativa)
 
 ```yaml
-processes:
-  UserOnboardingProcess:
-    persistence: true
-    start_command: StartOnboarding
-    uniqueness:
-      by: user_id
-    context:
-      user_id: uuid
-      email_verified: boolean
-      verified_at: datetime?
-    initial_state: SENDING_EMAIL
-    states:
-      SENDING_EMAIL:
-        emit_command: SendVerificationEmail
-        on:
-          EmailSent:
-            transition_to: WAITING_FOR_VERIFICATION
-      WAITING_FOR_VERIFICATION:
-        on:
-          EmailVerified:
-            update_context:
-              email_verified: true
-              verified_at: now
-            transition_to: COMPLETED
-      COMPLETED:
-        terminal: true
+rigor_spec_version: "0.1"
+spec_version: "1.0.0"
+
+process: UserLifecycle
+initial_state: PENDING
+
+events:
+  - event_id: UserActivated
+    payload_schema:
+      type: object
+      properties:
+        user_id: uuid
+      required: [user_id]
+
+states:
+  PENDING:
+    on:
+      UserActivated:
+        to: ACTIVE
+  ACTIVE:
+    terminal: true
 ```
 
-### 3.2 Flujo de Ejecución
-1. **Disparador:** Recibir comando `StartOnboarding`.
-2. **Configuración:** El motor crea instancia persistente, establece estado a `SENDING_EMAIL`.
-3. **Acción:** El motor ejecuta `emit_command: SendVerificationEmail`.
-4. **Transición:** Recibir evento `EmailSent` → el estado se mueve a `WAITING_FOR_VERIFICATION`.
-5. **Finalización:** Recibir evento `EmailVerified` → actualizar contexto y mover a `COMPLETED` (terminal).
+## J. Modelos de Testing y Ejecución
 
-## 4. Apéndice C: Modelo Formal de Pruebas
+### J.1 Principio de Máquina de Estados Pura
+Un proceso RIGOR actúa como una función pura: `(Estado, Evento) -> (NuevoEstado, Mutaciones)`.
 
-### 4.1 Principio de Maquina de Estados Pura
-Un proceso debe comportarse como una máquina pura donde:
-- **Entrada:** Un evento.
-- **Salida:** Un nuevo estado determinístico y un contexto actualizado.
-
-### 4.2 Ejemplo de Caso de Prueba (Pseudocódigo)
+### J.2 Caso de Prueba (Pseudocódigo)
 ```python
-def test_successful_verification():
-    # Arrange
-    process = UserOnboardingProcess(user_id="uuid-123")
-    
-    # Act: Start
-    process.start()
-    assert process.state == "SENDING_EMAIL"
-    
-    # Act: Handle internal event
-    process.handle(EmailSent())
-    assert process.state == "WAITING_FOR_VERIFICATION"
-    
-    # Act: Handle verification
-    process.handle(EmailVerified())
-    
-    # Assert
-    assert process.state == "COMPLETED"
-    assert process.context.email_verified is True
-    assert process.context.verified_at is not None
+def test_activation():
+    instance = Engine.load(UserLifecycle, state="PENDING")
+    result = instance.handle(UserActivated(user_id="..."))
+    assert result.new_state == "ACTIVE"
+    assert result.transaction_committed == True
 ```
 
-## 5. Apéndice D: Diagramas Conceptuales
+## K. Estrategias Operativas
 
-### 5.1 Flujo de Maquina de Estados
-```
-[SENDING_EMAIL] --(EmailSent)--> [WAITING_FOR_VERIFICATION]
-                                      |
-                                (EmailVerified)
-                                      |
-                                      v
-                                 [COMPLETED] (terminal)
-```
+### K.1 Estrategia de Validación CI/CD
+1. **Lint**: Verificar sangría y estilo YAML (§E).
+2. **Schema**: Validar contra el Esquema JSON (§H.2).
+3. **Semántica**: Ejecutar `rigor validate --strict`.
+4. **Diff**: Verificar consistencia de versión usando `rigor diff`.
 
-## 6. Apéndice E: Ejecucion Distribuida Futura
+### K.2 Ejecución Distribuida
+RIGOR permite Sagas distribuidas seguras al proporcionar límites de estado deterministas y contratos de eventos explícitos.
 
-El modelo de RIGOR es nativamente compatible con arquitecturas distribuidas modernas:
-- **Arquitectura Dirigida por Eventos:** Usar como capa de restricción para message brokers.
-- **Microservicios:** Definir límites transaccionales entre servicios.
-- **Sagas:** Soporte futuro para compensaciones (`v1.1`) permite rollback distribuido seguro.
+## L. Conformidad y Alineación de Versiones
 
-## 7. Apéndice F: Estrategia de Validacion CI/CD
+Una implementación que reclame conformidad con RIGOR v0.1 **DEBE** implementar la resolución de rutas canónicas, seguir las restricciones de identificadores y superar todas las reglas en la [Matriz de Validación](./validation-matrix).
 
-Pipeline recomendado para proyectos compatibles con RIGOR:
-1. **Validación de Schema:** Verificar YAML contra el JSON Schema (Apéndice A).
-2. **Validación Semántica:** Ejecutar el Validador de RIGOR para coherencia de tipos y alcanzabilidad.
-3. **Generación de Código:** Usar el CLI para generar artefactos de implementación objetivo.
-4. **Pruebas Unitarias:** Ejecutar pruebas de máquina de estados pura (Apéndice C) en el código generado.
-5. **Despliegue:** Distribuir especificaciones validadas al motor de ejecución.
-
-## 8. Conclusión
-
-El Apéndice de RIGOR v0.1 proporciona los planos de nivel industrial necesarios para implementar, validar y probar sistemas compatibles. Combinado con las especificaciones Core y Referencia, completa el marco estructural formal requerido para la evolución de sistemas impulsada por IA determinística.
+Este Apéndice está alineado con **RIGOR Core v0.1**.

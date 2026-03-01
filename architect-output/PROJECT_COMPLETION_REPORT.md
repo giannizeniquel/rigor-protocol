@@ -36,20 +36,20 @@
 - **Declaración de Prohibiciones:** Listado explícito de características excluidas en v0.1 para asegurar el congelamiento semántico.
 - **Ejemplo de Referencia Canónico:** Implementación de un proceso de orden que sirve como estándar para implementadores de SDKs.
 
-### ✅ Fase 24: Especificación de "Diff Semántico" (v0.1)
-- **Fusión Normativa Definitiva:** Integración de la propuesta formal con el motor de reglas determinista (Reglas N, P, C, K, E).
-- **Definición Matemática de Ruptura:** Formalización basada en la invalidación de instancias de proceso existentes.
-- **Cumplimiento de Versionado:** Vinculación obligatoria entre resultados del diff e incrementos SemVer (MAJOR/MINOR).
-- **Esquema de ChangeSet Estándar:** Definición de la estructura JSON determinista para reportes de cambios.
-- **Pipeline de Comparación:** Definición de 7 pasos secuenciales desde la normalización hasta la verificación de consistencia.
-- **Sincronización Multilingüe:** Actualización total en inglés y español con navegación coherente en el sidebar.
+### ✅ Fase 25: Especificación del "Apéndice de la Spec" (v0.1)
+- **Fusión Normativo-Industrial:** Integración de convenciones de notación rigurosas con herramientas de implementación práctica (JSON Schema).
+- **Sintaxis de Rutas Canónicas:** Formalización del sistema de direccionamiento de nodos (`/segmento/segmento`) para reportes de Diff y errores.
+- **Glosario Autoritativo:** Definición unificada de conceptos clave (Cambio de Ruptura, ChangeSet, Grafo Canónico).
+- **Blueprints de Testing y CI/CD:** Codificación del principio de Máquina de Estados Pura y estrategias de validación automatizada.
+- **Taxonomía de Errores Estructurada:** Definición del formato `ERR_CATEGORIA_DETALLE` para mensajes de error programáticos.
+- **Ejemplos Multinivel:** Inclusión de una base normativa minimalista y un caso industrial complejo (Onboarding).
 
 ---
 
 ## 2. Estado del Repositorio
-El proyecto se encuentra en su estado definitivo de lanzamiento `v4.4` (Ciclo de Evolución de Especificación Completo).
+El proyecto se encuentra en su estado definitivo de lanzamiento `v4.5` (Suite de Especificaciones Normativas Finalizada).
 - **Ramas:** `main` (Producción).
-- **Cobertura:** Landing v3 + Docs v1 + Identity Core v1 + Protocol Model v1 + CLI v2 + Validation Matrix v1 + Graph Model v1 + Semantic Diff v1 + Spec Core v1 + Spec Reference v1 + Events v1 + Versioning v1 + Migrations v1.
+- **Cobertura:** Landing v3 + Docs v1 + Identity Core v1 + Protocol Model v1 + CLI v2 + Validation Matrix v1 + Graph Model v1 + Semantic Diff v1 + Spec Core v1 + Spec Reference v1 + Events v1 + Versioning v1 + Migrations v1 + Spec Appendix v1.
 - **Idiomas:** EN / ES (Sincronizados y Técnicamente Precisos).
 - **URLs:**
   - Landing: https://rigor-protocol.pages.dev
