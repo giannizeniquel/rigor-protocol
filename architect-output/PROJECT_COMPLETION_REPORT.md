@@ -36,18 +36,18 @@
 - **Declaración de Prohibiciones:** Listado explícito de características excluidas en v0.1 para asegurar el congelamiento semántico.
 - **Ejemplo de Referencia Canónico:** Implementación de un proceso de orden que sirve como estándar para implementadores de SDKs.
 
-### ✅ Fase 23: Especificación de "Migraciones" (v0.1)
-- **Fusión Normativa Definitiva:** Transformación de las migraciones de un concepto operativo en un componente declarativo del DSL.
-- **Cadena de Confianza Lineal:** Prohibición estricta de huecos, bifurcaciones y ciclos en la evolución de versiones.
-- **Operaciones Atómicas Certificadas:** Codificación de 7 operaciones permitidas con reglas de validación de grafo post-migración.
-- **Garantía de Seguridad y Atomicidad:** Obligatoriedad de ejecución atómica y prohibición absoluta de código arbitrario.
-- **Taxonomía de Errores MIG (001-007):** Integración de códigos concisos para fallos en la cadena, operaciones o integridad del grafo.
-- **Sincronización Multilingüe:** Alineación técnica total en inglés y español.
+### ✅ Fase 24: Especificación de "Diff Semántico" (v0.1)
+- **Fusión Normativa Definitiva:** Integración de la propuesta formal con el motor de reglas determinista (Reglas N, P, C, K, E).
+- **Definición Matemática de Ruptura:** Formalización basada en la invalidación de instancias de proceso existentes.
+- **Cumplimiento de Versionado:** Vinculación obligatoria entre resultados del diff e incrementos SemVer (MAJOR/MINOR).
+- **Esquema de ChangeSet Estándar:** Definición de la estructura JSON determinista para reportes de cambios.
+- **Pipeline de Comparación:** Definición de 7 pasos secuenciales desde la normalización hasta la verificación de consistencia.
+- **Sincronización Multilingüe:** Actualización total en inglés y español con navegación coherente en el sidebar.
 
 ---
 
 ## 2. Estado del Repositorio
-El proyecto se encuentra en su estado definitivo de lanzamiento `v4.3` (Especificación de Migraciones Formalizada).
+El proyecto se encuentra en su estado definitivo de lanzamiento `v4.4` (Ciclo de Evolución de Especificación Completo).
 - **Ramas:** `main` (Producción).
 - **Cobertura:** Landing v3 + Docs v1 + Identity Core v1 + Protocol Model v1 + CLI v2 + Validation Matrix v1 + Graph Model v1 + Semantic Diff v1 + Spec Core v1 + Spec Reference v1 + Events v1 + Versioning v1 + Migrations v1.
 - **Idiomas:** EN / ES (Sincronizados y Técnicamente Precisos).
