@@ -57,19 +57,19 @@
 - **Modelo de Concurrencia y Ordenamiento:** Requisito de ejecución monohilo por defecto y estabilidad lexicográfica.
 - **Definición de Extensibilidad:** Establecimiento de límites para nuevas reglas y generadores sin alterar el núcleo.
 
-### ✅ Fase 32: Especificación de "Motor de Diff" (v0.1)
-- **Implementación Verbatim de 20 Secciones:** Formalización completa del algoritmo, contratos y garantías según el plan maestro.
-- **Reglas de Igualdad Profunda:** Codificación de la comparación estricta para escalares, mapeos y colecciones semánticas.
-- **Optimización Estructural:** Definición del uso de hashes para cortocircuitar comparaciones en grafos grandes.
-- **Detección Atómica de Cambios:** Listado completo de los 6 tipos de cambios normativos (Nodos, Atributos, Aristas, Reordenamiento).
-- **Contrato de Salida Determinista:** Requisito de ordenamiento estable del ChangeSet y esquema de objeto de resumen.
+### ✅ Fase 33: Especificación de "Motor de Versionado" (v0.1)
+- **Validación SemVer Normativa:** Implementación de reglas estrictas para la evaluación de incrementos MAJOR, MINOR y PATCH basándose en el ChangeSet.
+- **Determinación de Incremento Requerido:** Algoritmo para calcular el "salto mínimo necesario" según el impacto estructural de los cambios.
+- **Contrato de Interfaz de Evaluación:** Definición formal de la entrada (Versiones + ChangeSet) y salida (Status + Violaciones).
+- **Integración con Validación:** Mapeo de violaciones de versión a errores de cumplimiento del protocolo.
+- **Taxonomía de Errores de Versión:** Codificación de fallos por degradación (downgrade), incrementos insuficientes o inconsistencias con el ChangeSet.
 
 ---
 
 ## 2. Estado del Repositorio
-El proyecto se encuentra en su estado definitivo de lanzamiento `v4.12` (Motor de Comparación Estructural Formalizado al 100%).
+El proyecto se encuentra en su estado definitivo de lanzamiento `v4.13` (Motores de Evolución Formalizados).
 - **Ramas:** `main` (Producción).
-- **Cobertura:** Landing v3 + Docs v1 + Full Spec Suite v1 + Implementation Architecture v1 + Parser Spec v1 + Graph Builder v1 + Canonicalization v1 + Validation Engine v1 + Diff Engine v1 (Verbatim).
+- **Cobertura:** Landing v3 + Docs v1 + Full Spec Suite v1 + Implementation Architecture v1 + Parser Spec v1 + Graph Builder v1 + Canonicalization v1 + Validation Engine v1 + Diff Engine v1 + Versioning Engine v1.
 - **Idiomas:** EN / ES (Sincronizados y Técnicamente Precisos).
 - **URLs:**
   - Landing: https://rigor-protocol.pages.dev

@@ -55,7 +55,7 @@ Pre-release and build metadata MAY be supported if defined in Specification.
 
 ## 3.1 Input
 
-```
+```id="v8_input_contract"
 evaluateVersion(
     previousVersion: SemVer,
     currentVersion: SemVer,
@@ -69,7 +69,7 @@ All inputs MUST be validated before evaluation.
 
 ## 3.2 Output
 
-```
+```id="v8_output_contract"
 VersionEvaluationResult {
     status: "valid" | "invalid"
     requiredBump: "none" | "patch" | "minor" | "major"
@@ -177,7 +177,7 @@ Invalid if:
 
 # 8. VersionViolation Schema
 
-```
+```id="v8_violation_schema"
 VersionViolation {
     code: string
     message: string
@@ -219,7 +219,7 @@ When integrated:
 
 The engine MAY support policy configuration:
 
-```
+```id="v8_policy_example"
 VersionPolicy {
     allowEmptyVersionBump: boolean
     allowPatchForMinor: boolean
